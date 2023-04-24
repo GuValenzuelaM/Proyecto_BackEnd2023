@@ -1,6 +1,6 @@
 //Importamos la clase router de la libreria express
 import {Router} from "express";
-import { CartManager } from "../managers/CartManager.js";
+import { CartManager } from "../managers/cartManager.js";
 import { ProductManager } from "../managers/ProductManager.js";
 
 const cartManager = new CartManager("carts.json");
@@ -48,8 +48,7 @@ router.post("/:cid/product/:pid", async(req,res)=>{
             res.status(400).json({status:"error", message:"el carrito no existe"});
         }
     } catch (error) {
-        //res.status(400).json({status:"error", message:error.message});
-        res.status(400).json({status:"error", message:"ERROR1"});
+        res.status(400).json({status:"error", message:"ERROR DESCONOCIDO"});
     }
 });
 
