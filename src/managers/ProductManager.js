@@ -66,7 +66,6 @@ class ProductManager{
         }
     };
 
-
     async getProduct(){
         try {
         //Si el archivo existe 
@@ -88,7 +87,6 @@ class ProductManager{
             throw new Error(error.message);
             }
     }
-
 
     async getProductById(id){
         try {

@@ -9,7 +9,7 @@ const port = 8080;
 
 app.listen(port,()=>console.log(`Server listening on port${port}`));
 
-
+/*
 app.get("/",(request,response)=>{
     response.send("Bienvenido al Desafio 3");
 });
@@ -28,8 +28,8 @@ app.get('/products', (req, res) => {
         res.send(products);
       }
     });
-  });
-
+});
+*/
 
 
 //midlewares: Para recibir la inforamción de la petición de tipo post

@@ -16,6 +16,16 @@ router.get("/", async(req,res)=>{
     }
 });
 
+router.get("/:pid", async(req,res)=>{
+        const productId = req.params.pid;
+        const products =await productManager.getProduct();
+        const product = products.find(item=>item.id ===parseInt(productId));
+        if(product){
+        res.json({status:"success", data:product});
+        } else {
+        res.status(400).json({status:"error", message:"No existe el producto"});
+    }
+});
 
 router.post("/", async(req,res)=>{
         try {
