@@ -4,12 +4,21 @@
       {
         "product": 1,
         "quantity": 2
+      },
+      {
+        "product": 2,
+        "quantity": 3
       }
     ],
     "id": 1
   },
   {
-    "products": [],
+    "products": [
+      {
+        "product": 2,
+        "quantity": 2
+      }
+    ],
     "id": 2
   },
   {
