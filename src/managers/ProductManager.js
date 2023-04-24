@@ -1,11 +1,10 @@
-//DESAFIO Nº2
-
 import fs from "fs";
-//const fs = require("fs");
+import path from "path";
+import { __dirname } from "../utils.js";
 
 class ProductManager{
     constructor(pathName){
-        this.path=pathName;
+        this.path=path.join(__dirname,`/files/${pathName}`);
     } 
 
     //función que determina si el archivo existe, en file system usamos el método asincrono en la variable "this.path" (true/false)
@@ -28,11 +27,7 @@ class ProductManager{
     }
 
     async addProduct(product){
-        try {
-            //condicional, todos los campos deben tener datos
-            if(!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock){
-            return console.log("Los campos son obligatorios")
-        } 
+        try { 
             //Si existe el archivo "products.json" es porque el arreglo products ya tiene productos
             if(this.fileExists()){
                 const content = await fs.promises.readFile(this.path,"utf-8");
@@ -42,27 +37,35 @@ class ProductManager{
                 const productId = this.generateId(products);
                 //Sobreescribe la propeidad "id" según la función "generateId"
                 product.id = productId;
-                // console.log("product: ", product);
-                //Cargamos el nuevo objeto "product" al arreglo "products"
-                products.push(product);
-                //Sobreescribe el archivo JSON manteniendo el formato del archivo (tipo cascada)
-                await fs.promises.writeFile(this.path,JSON.stringify(products,null,2));
-                return product;
-            } else {
-                //En caso que no exista el archivo "products.json" se genera un arreglo vacío y se aplica la función "generateId"
-                const productId = this.generateId([]);
-                //Sobreescribe la propeidad "id" según la función "generateId"
-                product.id = productId;
-                // console.log("product: ", product);
-                //Sobreescribe el archivo JSON manteniendo el formato del archivo (tipo cascada)
-                await fs.promises.writeFile(this.path,JSON.stringify([product],null,2));
-                return product;
+                product.status ="true";
+                if(isNaN(product.price) || isNaN(product.stock)) {
+                    throw new Error("El precio debe ser un número");
+                } else{
+                    products.push(product);
+                    //Sobreescribe el archivo JSON manteniendo el formato del archivo (tipo cascada)
+                    await fs.promises.writeFile(this.path,JSON.stringify(products,null,2));
+                    return product;    
+                }
             }
+            else {
+                if(isNaN(product.price) || isNaN(product.stock)) {
+                    throw new Error("El precio debe ser un número");
+                    //En caso que no exista el archivo "products.json" se genera un arreglo vacío y se aplica la función "generateId"
+                    const productId = this.generateId([]);
+                    //Sobreescribe la propeidad "id" según la función "generateId"
+                    product.id = productId;
+                    product.status ="true";
+                    // console.log("product: ", product);
+                    //Sobreescribe el archivo JSON manteniendo el formato del archivo (tipo cascada)
+                    await fs.promises.writeFile(this.path,JSON.stringify([product],null,2));
+                    return product;
+            }};
         } catch (error) {
             // console.log(error.message);
             throw new Error(error.message);
         }
     };
+
 
     async getProduct(){
         try {
@@ -70,7 +73,6 @@ class ProductManager{
             if(this.fileExists()){
                 const content = await fs.promises.readFile(this.path,"utf-8");
                 const products =JSON.parse(content);
-                
                 if(!products.length>=0){
                     return products;
                 //Si no encuentra el archivo "products.json" entrega un mensage de error que indica que el id no ha sido encontrado
@@ -169,8 +171,10 @@ class ProductManager{
 
 }
 
+export {ProductManager};
 
-//utilizar la clase
+
+/*
 
  const manager = new ProductManager("./products.json");
 
@@ -201,6 +205,4 @@ class ProductManager{
  }
 
 funcionPrincipal();
-
-export {fs};
-export {ProductManager};
+*/
