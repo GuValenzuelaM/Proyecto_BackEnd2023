@@ -6,6 +6,7 @@ const productManager = new ProductManager("products.json");
 console.log(productManager);
 const router = Router();
 
+//GET PRODUCTS CON LIMITES
 router.get("/", async(req,res)=>{
     try {
         const products = await productManager.getProduct();
@@ -23,6 +24,7 @@ router.get("/", async(req,res)=>{
     }
 });
 
+// GET CON ID
 router.get("/:pid", async(req,res)=>{
     const productId = req.params.pid;
     const products =await productManager.getProduct();
@@ -34,6 +36,7 @@ router.get("/:pid", async(req,res)=>{
 }
 });
 
+//CARGAR NUEVOS PRODUCTOS
 router.post("/", async(req,res)=>{
         try {
             const {title, description, code, price, stock, category} =req.body;
