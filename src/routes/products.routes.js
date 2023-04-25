@@ -49,4 +49,37 @@ router.post("/", async(req,res)=>{
     }
 );
 
+//DELETE
+//http://localhost:8080/api/products/2 (pendiente actualización del arreglo products.json)
+
+router.delete("/:pid", async(req,res)=>{
+    const productId = req.params.pid;
+    const products =await productManager.getProduct();
+    //const filteredProducts =await productManager.deleteProduct(productId);
+    const filteredProducts = products.filter(item => item.id !== parseInt(productId));
+    if(filteredProducts.length !== products.length){
+        res.json({status:"success", message:"El nuevo arreglo de prodcucto es el siguiente ",data:filteredProducts});
+        const products = filteredProducts;
+    } else {
+        res.status(400).json({status:"error", message:"No existe el producto"});
+    }
+});
+
+//UPDATE
+//http://localhost:8080/api/products/1 (sin pruebas)
+router.put("/:pid", async(req,res)=>{
+    try {
+        const productId = req.params.pid;
+        const product =await productManager.getProductById(productId);
+        const {title, description, code, price, stock, category} =req.body;
+        if(!title || !description || !code || !price || !stock || !category)
+            return res.status(400).json({status:"error", message:"No se completaron todos los campos, por favor intentar nuevamente"});
+        const updatedProduct =req.body;
+        const productSaved = await productManager.updateProduct(productId, updatedProduct);
+        res.json({status:"success", data:productSaved});
+    } catch (error) {
+        res.status(400).json({status:"error",message:"Por favor completar todos los campos con el formato adecuado"});
+    }
+});
+
 export{router as productRouter};
