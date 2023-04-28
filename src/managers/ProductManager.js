@@ -33,12 +33,18 @@ class ProductManager{
                 const content = await fs.promises.readFile(this.path,"utf-8");
                 //Al ser un archivo JSON se debe aplicar parse para mantener sus propiedades
                 const products = JSON.parse(content);
+                
+                const existingProduct = products.find(item => item.code === product.code);
+                if (existingProduct) {
+                    throw new Error("El código de producto ya se encuentra incluido");
+                }
+
                 //Se crea una constante utilizando la función generateId
                 const productId = this.generateId(products);
                 //Sobreescribe la propeidad "id" según la función "generateId"
                 product.id = productId;
                 product.status ="true";
-                if(isNaN(product.price) || isNaN(product.stock)) {
+                if(isNaN(product.price) || isNaN(product.stock)){
                     throw new Error("El precio debe ser un número");
                 } else{
                     products.push(product);
@@ -119,7 +125,8 @@ class ProductManager{
             if(this.fileExists()){
                 const content = await fs.promises.readFile(this.path,"utf-8");
                 const products = JSON.parse(content);
-                const productIndex = products.findIndex(item=>item.id === id);
+                const productId = parseInt(id)
+                const productIndex = products.findIndex(item=>item.id === productId);
                 if(productIndex>=0){
                     products[productIndex]={
                         ...products[productIndex],

@@ -40,14 +40,14 @@ router.get("/:pid", async(req,res)=>{
 router.post("/", async(req,res)=>{
         try {
             const {title, description, code, price, stock, category} =req.body;
-            if(!title || !description || !code || !price || !stock || !category)
+            if(!title || !description || !code || !price || !stock || !category){
                 return res.status(400).json({status:"error", message:"No se completaron todos los campos, por favor intentar nuevamente"});
-            //const productFormat = await manager.formatProduct(newProduct);
+            } 
             const newProduct =req.body;
             const productSaved = await productManager.addProduct(newProduct);
             res.json({status:"success", data:productSaved});
         } catch (error) {
-            res.status(400).json({status:"error",message:"Por favor completar todos los campos con el formato adecuado"});
+            res.status(400).json({status: "error", message: error.message});
         }
     }
 );
