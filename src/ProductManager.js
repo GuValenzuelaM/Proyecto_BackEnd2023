@@ -172,7 +172,7 @@ class ProductManager{
 
 //utilizar la clase
 
- const manager = new ProductManager("./products.json");
+ const manager = new ProductManager("../products.json");
 
  const funcionPrincipal=async()=>{
      try {
@@ -202,5 +202,4 @@ class ProductManager{
 
 funcionPrincipal();
 
-export {fs};
 export {ProductManager};

@@ -1,0 +1,35 @@
+[
+    {
+      "title": "lapiz",
+      "description": "lapiz color negro",
+      "code": "LX10",
+      "price": 200,
+      "stock": 10,
+      "category": "lapices",
+      "thumbnail": "https://static.vecteezy.com/system/resources/previews/003/985/024/non_2x/black-pencil-on-white-background-with-soft-shadow-vector.jpg",
+      "id": 1,
+      "status": "true"
+    },
+    {
+      "title": "Cuaderno",
+      "description": "Cuaderno Dibujo",
+      "code": "LA63",
+      "price": 100,
+      "stock": 20,
+      "category": "Cuadernos",
+      "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_998499-MLA49212063833_022022-V.jpg",
+      "id": 2,
+      "status": "true"
+    },
+    {
+      "title": "Tempera",
+      "description": "Tempera Roja",
+      "code": "TO13",
+      "price": 30,
+      "stock": 8,
+      "category": "Temperas",
+      "thumbnail": "https://ventaservice.cl/dinamicos/productos/img12482-1502302017.png",
+      "id": 3,
+      "status": "true"
+    }
+  ]
