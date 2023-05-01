@@ -1,10 +1,12 @@
 //Importamos la clase router de la libreria express
 import {Router} from "express";
 import {ProductManager} from "../managers/ProductManager.js";
+import { uploader } from "../utils.js";
 
 const productManager = new ProductManager("products.json");
-console.log(productManager);
+//console.log(productManager);
 const router = Router();
+
 
 //GET PRODUCTS CON LIMITES
 router.get("/", async(req,res)=>{
@@ -23,6 +25,7 @@ router.get("/", async(req,res)=>{
         res.status(400).json({status: "error", message: error.message});
     }
 });
+
 
 // GET CON ID
 router.get("/:pid", async(req,res)=>{
