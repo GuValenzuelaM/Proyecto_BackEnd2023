@@ -1,0 +1,25 @@
+<h1 class="title-color">Listado de productos</h1>
+<div>
+    <p>
+ <ul class="product-list">
+    {{#each products}}
+        <li>
+            Title: {{this.title}},
+            Description: {{this.description}},
+            Code: {{this.code}},
+            Price: {{this.price}},
+            Stock: {{this.stock}},
+            Category: {{this.category}},
+            Thumbnail: {{this.thumbnail}},
+            Id: {{this.id}},
+            Status: {{this.status}}
+        </li>
+    {{/each}}
+</ul>
+    </p>
+</div>
+
+<script scr="socket.io/socket.io.js"></script>
+<script scr="/js/home.js"></script>
+{{!-- <script scr="./public/js/home.js"></script> --}}
+{{!-- COMENTARIO --}}

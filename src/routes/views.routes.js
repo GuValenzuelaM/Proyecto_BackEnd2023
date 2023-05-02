@@ -28,7 +28,7 @@ router.get("/", async(req,res)=>{
     }
 });
 
-
+export {router as viewsRouter};
 
 
 /*
@@ -42,5 +42,3 @@ router.get("/", async(req,res)=>{
     }
 });
 */
-
-export {router as viewsRouter};
