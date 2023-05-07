@@ -28,6 +28,21 @@ router.get("/", async(req,res)=>{
     }
 });
 
+router.get("/realtimeproducts", async(req,res)=>{
+    try {
+        const products = await productManager.getProduct();
+        const objectInfo = {
+            products,
+            style: "/home.css"
+        };
+        res.render("realtimeproducts",objectInfo);
+    } catch (error) {
+        res.status(400).json({status: "error", message: error.message});
+    }
+});
+
+
+
 export {router as viewsRouter};
 
 
