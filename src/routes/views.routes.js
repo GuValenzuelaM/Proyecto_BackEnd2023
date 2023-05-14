@@ -28,19 +28,27 @@ router.get("/", async(req,res)=>{
     }
 });
 
-router.get("/realtimeproducts", async(req,res)=>{
+router.get("/realtimeproducts", async(req, res)=>{
     try {
         const products = await productManager.getProduct();
-        const objectInfo = {
-            products,
-            style: "/home.css"
-        };
-        res.render("realtimeproducts",objectInfo);
+
+        res.render("realTimeProducts", {products: products});
     } catch (error) {
-        res.status(400).json({status: "error", message: error.message});
-    }
+        res.status(500).json({status: "error", message: error.message});
+    }   
 });
 
+/*
+router.get("/realtimeproducts", async(req, res)=>{
+    try {
+        const products = await productManager.getProducts();
+
+        res.render("realTimeProducts", {products: products});
+    } catch (error) {
+        res.status(500).json({status: "error", message: error.message});
+    }   
+});
+*/
 
 
 export {router as viewsRouter};

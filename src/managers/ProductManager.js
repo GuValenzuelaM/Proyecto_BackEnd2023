@@ -177,37 +177,3 @@ class ProductManager{
 }
 
 export {ProductManager};
-
-
-/*
-
- const manager = new ProductManager("./products.json");
-
- const funcionPrincipal=async()=>{
-     try {
-            //const productAdded = await manager.addProduct({title:"Encimera",description:"Encimera Inducción",price:1500,thumbnail:"https://aireacondicionadopaco.es/wp-content/uploads/2019/10/EMI320-3F_WEB.png", code: "A1"});
-            //const productAdded = await manager.addProduct({title:"Horno",description:"Horno Eléctrico",price:2000,thumbnail:"https://www.mattechile.cl/wp-content/uploads/2017/10/PR2021BI18532_41560060_HLB_830_SZ1.png", code: "B1", stock:11});
-            //const productAdded = await manager.addProduct({title:"Refrigerador",description:"Refrigerador Doble",price:3000,thumbnail:"https://www.pngmart.com/files/6/Two-Door-Refrigerator-PNG-Clipart.png", code: "C1", stock:19});
-            //console.log("productAdded: ", productAdded);
-
-            const products = await manager.getProduct();
-            console.log("products: ", products);
-
-            //const product1 = await manager.getProductById(5);
-            //console.log("product1: ", product1);
-            //const product2 = await manager.getProductById(2);
-            //console.log("product2: ", product2);
-            
-            //const resultado = await manager.updateProduct(2,{price:1600});
-            //console.log("resultado: ", resultado);
-            
-            //const product = await manager.deleteProduct(5);
-            //console.log("product: ", product);
-      
-     } catch (error) {
-         console.log(error.message);
-     }
- }
-
-funcionPrincipal();
-*/

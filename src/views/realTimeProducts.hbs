@@ -1,25 +1,33 @@
-<h1 class="title-color">Listado de productos</h1>
-<div>
-    <p>
- <ul class="product-list">
-    {{#each products}}
-        <li>
-            Title: {{this.title}},
-            Description: {{this.description}},
-            Code: {{this.code}},
-            Price: {{this.price}},
-            Stock: {{this.stock}},
-            Category: {{this.category}},
-            Thumbnail: {{this.thumbnail}},
-            Id: {{this.id}},
-            Status: {{this.status}}
-        </li>
-    {{/each}}
-</ul>
-    </p>
-</div>
+<h1 class="title-color">Listado de productos en tiempo real</h1>
+
+    <h2>Desafío Nº4</h2>
+    <div>
+        <h3>Agregar Productos</h3>
+        <div>
+        <ul class="product-list">
+            <li><input type="text" id= "title" placeholder="Title"/></li>
+            <li><input type="text" id= "description" placeholder="Description"/></li>
+            <li><input type="text" id= "category" placeholder="Category"/></li>
+            <li><input type="text" id= "price" placeholder="Price"/></li>
+            <li><input type="text" id= "code" placeholder="Code"/></li>
+            <li><input type="text" id= "stock" placeholder="Stock"/></li>
+            <li><input type="text" id= "thumbnail" placeholder="Image URL"/></li>
+            <li><button id="addProduct">Agregar</button></li>
+        </ul>
+        </div>
+        <h3>Eliminar Producto</h3>
+        <div>
+        <button id="deleteProduct">Borrar</button>
+        <input type="text" id= "idProduct" placeholder="id">
+        </div>    
+    </div>
+    {{!-- ARREGLO FINAL --}}
+    <div id="getProducts"></div>
+
 
 <script scr="socket.io/socket.io.js"></script>
-<script scr="/js/realTimeProducts.js"></script>
+<script scr="js/realTimeProducts.js"></script>
+
+
 {{!-- <script scr="./public/js/realTimeProducts.js"></script> --}}
 {{!-- COMENTARIO --}}
