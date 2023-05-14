@@ -1,5 +1,3 @@
-//ENTREGA PROYECTO
-
 import express from "express";
 import {__dirname} from "./utils.js";
 import path from "path";
@@ -11,7 +9,8 @@ import {Server} from "socket.io";
 import {ProductManager} from "./managers/ProductManager.js";
 
 const app =express();
-const port = process.env.PORT || 8080;
+const port = 8080;
+//const port = process.env.PORT || 8080;
 
 //SERVIDOR HTTP
 const httpServer = app.listen(port,()=>console.log(`Server listening on port${port}`));
@@ -26,26 +25,26 @@ app.set('views', path.join(__dirname,"/views"));
 
 //MIDLEWARES:
 //Para recibir la inforamción de la petición de tipo post
+app.use(express.static(path.join(__dirname, "/public")));
 app.use(express.json());
-app.use(express.static(path.join(__dirname,"/public")));
+app.use(express.urlencoded({extended:true}));
 
 //ROUTES PARA PRODUCTOS Y CARRITOS
 app.use("/api/products",productRouter);
 app.use("/api/carts",cartRouter);
 app.use(viewsRouter); //ruta por defecto
 
-const productManager = new ProductManager("../files/products.json");
+const productManager = new ProductManager("products.json");
 const products = productManager.getProduct();
 
 //REAL TIME
-//Escucha el metodo la conexión de una nueva persona 
 socketServer.on("connection", async(socket)=>{
     try {
         console.log(`Se ha conectado un nuevo cliente: ${socket.id}`)
-    const totalProducts = await productManager.getProducts();
-    socketServer.emit("totalProductsMessage", totalProducts);
+        const totalProducts = await productManager.getProduct();
+        socketServer.emit("totalProductsMessage", totalProducts);
 
-    socket.on("newProduct", async(data)=>{
+        socket.on("newProduct", async(data)=>{
         try {
             console.log("newProduct", data);
             const addedProduct = await productManager.addProduct(data);
@@ -60,9 +59,9 @@ socketServer.on("connection", async(socket)=>{
         throw new error (error.message);
     }
 
-    socket.on("deleteProduct", async(data)=>{
+    socket.on("eraseProduct", async(data)=>{
         try {
-            await productManager.deleteProducts(data);
+            await productManager.deleteProduct(data);
         } catch (error) {
             throw new error (error.message); 
         }

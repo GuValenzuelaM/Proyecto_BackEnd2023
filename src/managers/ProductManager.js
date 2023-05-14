@@ -154,7 +154,7 @@ class ProductManager{
                 const content = await fs.promises.readFile(this.path,"utf-8");
                 const products =JSON.parse(content);
                 //Crea una variable que capture el objeto "product" dentro del arreglo "products" que no tenga el id utilizado en la función
-                const product = products.filter(item=>item.id !==id);
+                const product = products.filter(item=>item.id !==parseInt(id));
                 //si el objeto "product" existe, la consola muestra todas las propiedades de ese objeto
                 if(product){
                     const products=product

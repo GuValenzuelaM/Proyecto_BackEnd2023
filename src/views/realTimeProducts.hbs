@@ -1,5 +1,5 @@
-<h1 class="title-color">Listado de productos en tiempo real</h1>
 
+<h1 class="title-color">Listado de productos en tiempo real</h1>
     <h2>Desafío Nº4</h2>
     <div>
         <h3>Agregar Productos</h3>
@@ -17,16 +17,15 @@
         </div>
         <h3>Eliminar Producto</h3>
         <div>
+        <input type="text" id= "idProduct" placeholder="Id Product">
         <button id="deleteProduct">Borrar</button>
-        <input type="text" id= "idProduct" placeholder="id">
         </div>    
     </div>
     {{!-- ARREGLO FINAL --}}
     <div id="getProducts"></div>
 
-
-<script scr="socket.io/socket.io.js"></script>
-<script scr="js/realTimeProducts.js"></script>
+<script src="socket.io/socket.io.js"></script>
+<script src="js/realTimeProducts.js"></script>
 
 
 {{!-- <script scr="./public/js/realTimeProducts.js"></script> --}}
