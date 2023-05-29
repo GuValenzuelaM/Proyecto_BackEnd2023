@@ -6,9 +6,8 @@ export const options ={
     server: {
         port:8080
     },
-    //PROBLEMAS PARA UTILZIAR MONGO EN MACBOOK, REVISAR VIAS ALTERNATIVAS
     mongo:{
-        url:"mongodb+srv://guvalenzuelam:ndgc4HmJjmkq@coderhouse.zqpfl7k.mongodb.net/Entrega2?retryWrites=true&w=majority"
+        url:"URL"
     }
 }
  
