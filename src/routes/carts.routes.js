@@ -3,6 +3,13 @@ import {Router} from "express";
 import { CartManager } from "../managers/cartManager.js";
 import { ProductManager } from "../managers/ProductManager.js";
 
+import { CartFiles } from "../daos/managers/carts.files.js";
+//import { CartsMongo } from "../dao/managers/carts.mongo.js";
+
+const cartsService = new CartFiles();
+//const cartsService = new CartsMongo();
+
+
 const cartManager = new CartManager("carts.json");
 const productManager = new ProductManager("products.json");
 
@@ -20,7 +27,7 @@ router.post("/", async(req,res)=>{
 router.get("/:cid", async(req,res)=>{
     try {
         const cartId = req.params.cid;
-        const cart = await cartManager.getCartById(cartId);
+        const cart = await cartsService.getCartById(cartId);
         if(cart){
             res.json({status:"success", data:cart});    
         } else{
@@ -53,4 +60,4 @@ router.post("/:cid/product/:pid", async(req,res)=>{
 });
 
 
-export{router as cartRouter};
+export{router as cartsRouter};

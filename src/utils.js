@@ -1,11 +1,12 @@
 //Este archivo permite ubicar y dirigir a las rutas determinadas
-
 import path from 'path';
-import {fileURLToPath} from 'url'
+import { fileURLToPath } from 'url';
 import multer from "multer";
 
 export const __dirname = path.dirname(fileURLToPath(import.meta.url));
-console.log("dirname:", __dirname);
+
+//-------PENDIENTE---------
+/*
 
 //carpeta destino de imagenes subidas
 const storage = multer.diskStorage({
@@ -23,3 +24,4 @@ const storage = multer.diskStorage({
 //función middleware para subir imagenes en las distintas rutas
 
 export const uploader = multer({storage});
+*/

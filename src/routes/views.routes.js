@@ -1,39 +1,84 @@
-import {Router} from "express";
-import fs from "fs";
-import path from "path";
-import { __dirname } from "../utils.js";
-import {ProductManager} from "../managers/ProductManager.js";
-import { uploader } from "../utils.js";
-import {productRouter} from "../routes/products.routes.js";
-import {cartRouter} from "../routes/carts.routes.js";
+import { Router } from "express";
+import { ProductsMongo } from "../daos/managers/products.mongo.js";
 
-const router =Router();
-const productManager = new ProductManager("products.json");
-const products = productManager.getProduct();
+const productsService = new ProductsMongo();
 
+const router = Router();
 
-//GET PRODUCTS VERSIÓN 1(PROBLEMA - NO MUESTRA OBJETOS DEL ARREGLO)
-router.get("/", async(req,res)=>{
+router.get("/",(req,res)=>{
+    res.render("home");
+});
+
+router.get("/products",async(req,res)=>{
     try {
-        const products = await productManager.getProduct();
-        const objectInfo = {
-            products,
-            style: "/home.css"
+        const {limit=3,page=1,sort="asc",category,stock} = req.query;
+        if(!["asc","desc"].includes(sort)){
+            return res.json({status:"error", message:"ordenamiento no valido, solo puede ser asc o desc"})
         };
-        res.render("home",objectInfo);
+        const sortValue = sort === "asc" ? 1 : -1;
+        const stockValue = stock === 0 ? undefined : parseInt(stock);
+        // console.log("limit: ", limit, "page: ", page, "sortValue: ", sortValue, "category: ", category, "stock: ", stock);
+        let query = {};
+        if(category && stockValue){
+            query = {category: category, stock:stockValue}
+        } else {
+            if(category || stockValue){
+                if(category){
+                    query={category:category}
+                } else {
+                    query={stock:stockValue}
+                }
+            }
+        }
+        // console.log("query: ", query)
+        const baseUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
+        console.log("baseUrl", baseUrl);
+        //baseUrl: http://localhost:8080/api/products
+        const result = await productsService.getPaginate(query, {
+            page,
+            limit,
+            sort:{price:sortValue},
+            lean:true
+        });
+        // console.log("result: ", result);
+        const response = {
+            status:"success",
+            payload:result.docs,
+            totalPages:result.totalPages,
+            totalDocs:result.totalDocs,
+            prevPage: result.prevPage,
+            nextPage: result.nextPage,
+            page:result.page,
+            hasPrevPage:result.hasPrevPage,
+            hasNextPage:result.hasNextPage,
+            prevLink: result.hasPrevPage ? `${baseUrl.replace( `page=${result.page}` , `page=${result.prevPage}` )}` : null,
+            nextLink: result.hasNextPage ? `${baseUrl.replace( `page=${result.page}` , `page=${result.nextPage}` )}` : null,
+        }
+        console.log("response: ", response);
+        res.render("products",response);
     } catch (error) {
-        res.status(400).json({status: "error", message: error.message});
+        res.json({status:"error", message:error.message});
+    }
+    res.render("products");
+});
+
+/*
+router.get("/:cid", async(req,res)=>{
+    try {
+        const cartId = req.params.cid;
+        const cart = await cartsService.getCartById(cartId);
+        if(cart){
+            res.json({status:"success", data:cart});    
+        } else{
+            res.status(400).json({status:"error",message:"El carro no existe"});
+        }
+    } catch (error) {
+        res.status(400).json({status:"error",message:error.message});
     }
 });
 
-router.get("/realtimeproducts", async(req, res)=>{
-    try {
-        const products = await productManager.getProduct();
+*/
 
-        res.render("realTimeProducts", {products: products});
-    } catch (error) {
-        res.status(400).json({status: "error", message: error.message});
-    }   
-});
+
 
 export {router as viewsRouter};
