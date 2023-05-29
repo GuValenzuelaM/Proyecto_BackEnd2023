@@ -8,7 +8,10 @@ export const options ={
     },
     //PROBLEMAS PARA UTILZIAR MONGO EN MACBOOK, REVISAR VIAS ALTERNATIVAS
     mongo:{
-        url:"mongodb+srv://guvalenzuelam:ndgc4HmJjmkq@coderhouse.zqpfl7k.mongodb.net/Entrega2?retryWrites=true&w=majority"
+        url:"URL"
     }
+    
+    //url:"mongodb+srv://guvalenzuelam:CLAVE@coderhouse.zqpfl7k.mongodb.net/Entrega2?retryWrites=true&w=majority"
+    
 }
  
