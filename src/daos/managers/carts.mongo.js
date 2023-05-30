@@ -18,28 +18,52 @@ import {cartsModel} from "../models/carts.model.js";
      };
 
      async createCart(cart){
-         try {
-             const cart = {};
-             const data = await this.model.create(cart);
-             return data;
-         } catch (error) {
-             throw new Error(`Error al crear el carrito ${error.message}`);
-         }
-     };
+        try {
+            const cart = {};
+            const data = await this.model.create(cart);
+            return data;
+        } catch (error) {
+            throw new Error(`Error al crear el carrito ${error.message}`);
+        }
+    };
+    
+    async addProduct(cartId,productId){
+       try {
+       const data = await this.model.findOneAndUpdate(
+         { _id: cartId },
+         { $push: { products: cart.products } },
+         { new: true }
+       );
+       if (!data) {
+         throw new Error("El carrito no existe");
+       }
+       return data;
+     } catch (error) {
+       throw new Error(`Error al actualizar el carrito: ${error.message}`);
+     }
+   };
+   
+    async deleteProduct(cartId, productId){
+        try {
+            const data = await this.model.findByIdAndUpdate(cartId, cart, { new: true });
+            if (!data) {
+                throw new Error("El producto no existe");
+            }
+            return data;
+        }catch (error) {
+          throw new Error(`Error al actualizar el carrito: ${error.message}`);
+        }
+    };
 
-     async addProduct(cartId,productId){};
-
-     async deleteProduct(cartId, productId){};
-
-     async updateCart(cartId, cart){
-         try {
-             const data = await this.model.findByIdAndUpdate(cartId,cart,{new:true});
-             if(!data){
-                 throw new Error("el carrito no existe")
-             }
-             return data;
-         } catch (error) {
-             throw new Error(`Error al actualizar el carrito ${error.message}`);
-         }
-     };
+    async updateCart(cartId, cart){
+        try {
+            const data = await this.model.findByIdAndUpdate(cartId,cart,{new:true});
+            if(!data){
+                throw new Error("el carrito no existe")
+            }
+            return data;
+        } catch (error) {
+            throw new Error(`Error al actualizar el carrito ${error.message}`);
+        }
+    };
  } 

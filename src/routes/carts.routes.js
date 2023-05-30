@@ -59,5 +59,17 @@ router.post("/:cid/product/:pid", async(req,res)=>{
     }
 });
 
+router.delete('/api/carts/:cartId/:productId', async (req, res) => {
+    try {
+      const cartId = req.params.cartId;
+      const productId = req.params.productId;
+      
+        PENDIENTE
+
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+    });
+  
 
 export{router as cartsRouter};
