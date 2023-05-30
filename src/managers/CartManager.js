@@ -120,5 +120,34 @@ class CartManager{
             throw new Error(error.message);
         }
     };
+
+    async deleteProductFromCart(cartId, productId) {
+        try {
+          if (this.fileExists()) {
+            const content = await fs.promises.readFile(this.path, 'utf-8');
+            const carts = JSON.parse(content);
+            const cartIndex = carts.findIndex((item) => item.id === parseInt(cartId));
+            if (cartIndex >= 0) {
+              const productIndex = carts[cartIndex].products.findIndex(
+                (item) => item.product === parseInt(productId)
+              );
+              if (productIndex >= 0) {
+                carts[cartIndex].products.splice(productIndex, 1);
+                await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2));
+                return 'Producto eliminado del carrito';
+              } else {
+                throw new Error('El producto no existe en el carrito');
+              }
+            } else {
+              throw new Error('El carrito no existe');
+            }
+          } else {
+            throw new Error('El archivo no existe');
+          }
+        } catch (error) {
+          throw new Error(`Error al eliminar el producto del carrito: ${error.message}`);
+        }
+    }      
+
 }
     export {CartManager};
