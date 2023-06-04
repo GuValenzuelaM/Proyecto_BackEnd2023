@@ -66,11 +66,13 @@ router.delete('/api/carts/:cartId/:productId', async (req, res) => {
       const cartId = req.params.cartId;
       const productId = req.params.productId;
       const quantity = req.body.quantity;
+
       const cart = await cartManager.getCartById(cartId);
         if(cart){
             const product = await productManager.getProductById(productId);
             if(product){
                 const response  = await cartManager.deleteProductFromCart(cartId,productId,quantity);
+
                 res.json({status:"success", message:response});
             } else {
                 res.status(400).json({status:"error", message:"No es posible eliminar este producto"});
