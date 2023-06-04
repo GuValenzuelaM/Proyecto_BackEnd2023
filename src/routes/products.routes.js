@@ -64,5 +64,4 @@ router.post("/",async(req,res)=>{
         res.json({status:"error", message:error.message});
     }
 })
-
 export {router as productsRouter};

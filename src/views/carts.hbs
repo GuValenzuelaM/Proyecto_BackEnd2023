@@ -1,0 +1,21 @@
+<div>
+    <h1>Carrito `{{this._id}}`</h1>
+
+    {{#if _id}}
+        <h1>Carrito `{{this._id}}`</h1>
+        {{#if products}}
+            <h2>Lista de productos</h2>
+            {{#each products}}
+                <div>
+                    <p>id: {{this._id}}</p>
+                    <p>Cantidad: {{this.quantity}}</p>
+                </div>
+            {{/each}}
+        {{else}}
+            No hay productos en el carrito
+        {{/if}}
+    {{else}}
+        <p>El carrito no existe</p>
+    {{/if}}
+
+<script src="js/carts.js"></script>

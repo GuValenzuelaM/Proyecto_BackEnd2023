@@ -1,17 +1,16 @@
 //Importamos la clase router de la libreria express
 import {Router} from "express";
-import { CartManager } from "../managers/cartManager.js";
-import { ProductManager } from "../managers/ProductManager.js";
+import { CartsMongo } from "../daos/managers/carts.mongo.js";
+import { ProductsMongo } from "../daos/managers/products.mongo.js";
 
 import { CartFiles } from "../daos/managers/carts.files.js";
 //import { CartsMongo } from "../dao/managers/carts.mongo.js";
 
-const cartsService = new CartFiles();
-//const cartsService = new CartsMongo();
+//const cartsService = new CartFiles();
+const cartsService = new CartsMongo();
 
-
-const cartManager = new CartManager("carts.json");
-const productManager = new ProductManager("products.json");
+const cartManager = new CartsMongo();
+const productManager = new ProductsMongo();
 
 const router = Router();
 
@@ -66,11 +65,12 @@ router.delete('/api/carts/:cartId/:productId', async (req, res) => {
     try {
       const cartId = req.params.cartId;
       const productId = req.params.productId;
+      const quantity = req.body.quantity;
       const cart = await cartManager.getCartById(cartId);
         if(cart){
             const product = await productManager.getProductById(productId);
             if(product){
-                const response  = await cartManager.deleteProductFromCart(cartId,productId);
+                const response  = await cartManager.deleteProductFromCart(cartId,productId,quantity);
                 res.json({status:"success", message:response});
             } else {
                 res.status(400).json({status:"error", message:"No es posible eliminar este producto"});
@@ -142,5 +142,4 @@ router.delete('/api/carts/:cid', async (req, res) => {
 //NO ENTENDI LA INSTRUCCIÓN:
 //Esta vez, para el modelo de Carts, en su propiedad products, el id de cada producto generado dentro del array tiene que hacer referencia al modelo de Products. Modificar la ruta /:cid para que al traer todos los productos, los traiga completos mediante un “populate”. De esta manera almacenamos sólo el Id, pero al solicitarlo podemos desglosar los productos asociados.
 
-  
 export{router as cartsRouter};
