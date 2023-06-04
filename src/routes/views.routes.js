@@ -62,23 +62,21 @@ router.get("/products",async(req,res)=>{
     res.render("products");
 });
 
-/*
-router.get("/:cid", async(req,res)=>{
-    try {
-        const cartId = req.params.cid;
-        const cart = await cartsService.getCartById(cartId);
-        if(cart){
-            res.json({status:"success", data:cart});    
-        } else{
-            res.status(400).json({status:"error",message:"El carro no existe"});
-        }
-    } catch (error) {
-        res.status(400).json({status:"error",message:error.message});
-    }
+router.get("/login", (req,res)=>{
+    res.render("login");
 });
 
-*/
+router.get("/signup", (req,res)=>{
+    res.render("registro");
+});
 
-
+router.get("/profile", (req,res)=>{
+    if(req.user){
+        console.log(req.user)
+        return res.render("perfil",{email:req.user.email});
+    } else {
+        res.redirect("/login")
+    }
+});
 
 export {router as viewsRouter};

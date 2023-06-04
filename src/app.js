@@ -10,6 +10,13 @@ import {Server} from "socket.io";
 import {productsRouter} from "./routes/products.routes.js";
 import {cartsRouter} from "./routes/carts.routes.js";
 
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import { options } from "./config/options.js";
+import passport from "passport";
+import { initializePassport } from "./config/passport.config.js";
+import { authRouter } from "./routes/auth.routes.js";
+
 const app =express();
 const port = 8080;
 
@@ -28,6 +35,21 @@ app.listen(port,()=>console.log(`Server listening on port ${port}`));
 
 connectDB();
 
+//CONFIGURACIÓN DE SESIÓN
+app.use(session({
+    store:MongoStore.create({
+        mongoUrl:options.mongo.url
+    }),
+    secret:"claveSecreta",
+    resave:true,
+    saveUninitialized:true
+}));
+
+//CONFIGURACIÓN PASSPORT
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 //CONFIGURACUÓN HANDLEBARS
 app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
@@ -37,6 +59,7 @@ app.set('views', path.join(__dirname,"/views"));
 app.use(viewsRouter); //ruta por defecto
 app.use("/api/products",productsRouter);
 app.use("/api/carts",cartsRouter);
+app.use("/api/sessions", authRouter);
 
 //PENDIENTE DE REVISIÓN
 
