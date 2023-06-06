@@ -11,7 +11,7 @@ export class ChatMongo{
             const response = JSON.parse(JSON.stringify(data));
             return response;
         } catch (error) {
-            throw new Error(`Hubo un error al guardar el mensaje`)
+            throw new Error(`No se logró enviar el mensaje, ${error.message}`)
         }
     };
 
@@ -21,7 +21,7 @@ export class ChatMongo{
             const response = JSON.parse(JSON.stringify(data));
             return response;
         } catch (error) {
-            throw new Error(`Hubo un error al guardar el mensaje`)
+            throw new Error(`No se logró enviar el mensaje, ${error.message}`)
         }
     };
-}
+};

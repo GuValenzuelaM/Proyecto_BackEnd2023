@@ -2,9 +2,7 @@
 import {Router} from "express";
 import { CartsMongo } from "../daos/managers/carts.mongo.js";
 import { ProductsMongo } from "../daos/managers/products.mongo.js";
-
 import { CartFiles } from "../daos/managers/carts.files.js";
-//import { CartsMongo } from "../dao/managers/carts.mongo.js";
 
 //const cartsService = new CartFiles();
 const cartsService = new CartsMongo();

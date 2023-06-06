@@ -5,6 +5,10 @@ const productsService = new ProductsMongo();
 
 const router = Router();
 
+router.get("/chat",(req,res)=>{
+    res.render("chat");
+});
+
 router.get("/",(req,res)=>{
     res.render("home");
 });

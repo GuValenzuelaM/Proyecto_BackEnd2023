@@ -12,43 +12,33 @@ import {cartsRouter} from "./routes/carts.routes.js";
 
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import {ChatMongo} from "./daos/managers/chat.mongo.js";
 import { options } from "./config/options.js";
 import passport from "passport";
 import { initializePassport } from "./config/passport.config.js";
 import { authRouter } from "./routes/auth.routes.js";
 
-const app =express();
+
+const app = express();
 const port = 8080;
+
+const productManager = new ProductManager("products.json")
+
+connectDB();
 
 //MIDLEWARES:
 //Para recibir la inforamción de la petición de tipo post
 app.use(express.json());
+app.set('views', path.join(__dirname, "/views"));
 app.use(express.static(path.join(__dirname, "/public")));
-//app.use(express.urlencoded({extended:true}));
-
-//SERVIDOR DE WEBSOCKET
-//const socketServer = new Server (httpServer);
-app.listen(port,()=>console.log(`Server listening on port ${port}`));
+app.use(express.urlencoded({extended:true}));
 
 //SERVIDOR HTTP
-//const httpServer = app.listen(port,()=>console.log(`Server listening on port ${port}`));
+const httpServer = app.listen(port,()=>console.log(`Server listening on port ${port}`));
 
-connectDB();
-
-//CONFIGURACIÓN DE SESIÓN
-app.use(session({
-    store:MongoStore.create({
-        mongoUrl:options.mongo.url
-    }),
-    secret:"claveSecreta",
-    resave:true,
-    saveUninitialized:true
-}));
-
-//CONFIGURACIÓN PASSPORT
-initializePassport();
-app.use(passport.initialize());
-app.use(passport.session());
+//SERVIDOR DE WEBSOCKET
+const socketServer = new Server (httpServer);
+app.listen(port,()=>console.log(`Server listening on port ${port}`));
 
 //CONFIGURACUÓN HANDLEBARS
 app.engine('.hbs', engine({extname: '.hbs'}));
@@ -61,41 +51,16 @@ app.use("/api/products",productsRouter);
 app.use("/api/carts",cartsRouter);
 app.use("/api/sessions", authRouter);
 
-//PENDIENTE DE REVISIÓN
+const chatService = new ChatMongo();
 
-/*
-const productManager = new ProductManager("products.json");
-const products = productManager.getProduct();
-
-//REAL TIME
 socketServer.on("connection", async(socket)=>{
-    try {
-        console.log(`Se ha conectado un nuevo cliente: ${socket.id}`)
-        const totalProducts = await productManager.getProduct();
-        socketServer.emit("totalProductsMessage", totalProducts);
+    const messages = await chatService.getMessages();
+    socketServer.emit("MessageHistory", messages);
 
-        socket.on("newProduct", async(data)=>{
-        try {
-            console.log("newProduct", data);
-            const addedProduct = await productManager.addProduct(data);
-            
-            socketServer.emit("newProductMessage", addedProduct);
-        } catch (error) {
-            throw new error (error.message);
-        }
-       
-    });
-    } catch (error) {
-        throw new error (error.message);
-    }
-
-    socket.on("eraseProduct", async(data)=>{
-        try {
-            await productManager.deleteProduct(data);
-        } catch (error) {
-            throw new error (error.message); 
-        }
-        
+    socket.on("message", async(data)=>{
+        await chatService.addMessage(data);
+        const messages = await chatService.getMessages();
+        socketServer.emit("MessageHistory", messages);
     })
-});
-*/
+})
+
