@@ -14,6 +14,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import { options } from "./config/options.js";
 import { authRouter } from "./routes/auth.routes.js";
+
 //Almacena las sesiones en archivos
 import FileStore from "session-file-store";
 

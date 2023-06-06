@@ -21,4 +21,4 @@ router.get("/profile", (req,res)=>{
     res.render("perfil",{email:req.session.user.email});
 });
 
-export { router as viewsRouter};
+export { router as authRouter};
