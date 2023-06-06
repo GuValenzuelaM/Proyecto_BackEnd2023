@@ -7,6 +7,7 @@ import {productRouter} from "./routes/products.routes.js";
 import {cartRouter} from "./routes/carts.routes.js";
 import {Server} from "socket.io";
 import {ProductManager} from "./managers/ProductManager.js";
+import {ChatMongo} from "./daos/managers/chat.mongo.js";
 
 const app =express();
 const port = 8080;
@@ -23,17 +24,12 @@ app.engine('.hbs', handlebars.engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname,"/views"));
 
-//MIDLEWARES:
-//Para recibir la inforamción de la petición de tipo post
-app.use(express.static(path.join(__dirname, "/public")));
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
-
 //ROUTES PARA PRODUCTOS Y CARRITOS
 app.use("/api/products",productRouter);
 app.use("/api/carts",cartRouter);
 app.use(viewsRouter); //ruta por defecto
 
+/*
 const productManager = new ProductManager("products.json");
 const products = productManager.getProduct();
 
@@ -67,4 +63,20 @@ socketServer.on("connection", async(socket)=>{
         }
         
     })
+});
+*/
+
+connectDB();
+
+const chatService = new ChatMongo();
+io.on("connection",async(socket)=>{
+    const messages = await chatService.getMessages();
+    io.emit("msgHistory", messages);
+
+    //recibir el mensaje del cliente
+    socket.on("message",async(data)=>{
+        await chatService.addMessage(data);
+        const messages = await chatService.getMessages();
+        io.emit("msgHistory", messages);
+    });
 });
