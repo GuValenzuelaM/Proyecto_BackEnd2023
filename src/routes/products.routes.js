@@ -50,7 +50,7 @@ router.get("/", async(req,res)=>{
             nextLink: result.hasNextPage ? `${baseUrl}?page=${result.nextPage}` : null,
         }
         console.log("response: ", response);
-        res.json(response);
+        res.json(response); 
     } catch (error) {
         res.json({status:"error", message:error.message});
     }

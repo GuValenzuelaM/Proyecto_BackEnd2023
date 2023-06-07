@@ -7,7 +7,6 @@ import {__dirname} from "../../utils.js";
          this.path = path.join(__dirname,`/dao/files/${options.fileSystem.products}`)
      };
 
-
     async getProducts(){
         return []
     };

@@ -62,23 +62,4 @@ router.get("/products",async(req,res)=>{
     res.render("products");
 });
 
-/*
-router.get("/:cid", async(req,res)=>{
-    try {
-        const cartId = req.params.cid;
-        const cart = await cartsService.getCartById(cartId);
-        if(cart){
-            res.json({status:"success", data:cart});    
-        } else{
-            res.status(400).json({status:"error",message:"El carro no existe"});
-        }
-    } catch (error) {
-        res.status(400).json({status:"error",message:error.message});
-    }
-});
-
-*/
-
-
-
 export {router as viewsRouter};
