@@ -7,6 +7,7 @@ export class CartFiles{
         this.path = path.join(__dirname,`/dao/files/${options.fileSystem.carts}`)
     };
 
+    async getCarts(){};
     async getCartById(id){};
     async createCart(){};
     async addProduct(cartId,productId){};

@@ -18,7 +18,7 @@
     "express-session": "^1.17.3",
     "handlebars": "^4.7.7",
     "mongodb": "^5.5.0",
-    "mongoose": "^7.2.2",
+    "mongoose": "^7.2.3",
     "mongoose-paginate-v2": "^1.7.1",
     "multer": "^1.4.5-lts.1",
     "session-file-store": "^1.5.0",

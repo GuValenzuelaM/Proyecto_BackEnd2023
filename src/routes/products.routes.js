@@ -64,4 +64,36 @@ router.post("/",async(req,res)=>{
         res.json({status:"error", message:error.message});
     }
 })
+
+router.get("/:pid",async(req,res)=>{
+    try {
+        const productId = await productsService.getProductById(req.params.pid);
+        res.json({status:"success",data:productId});
+    } catch (error) {
+        console.log(error.message);
+        res.status(400).json({status:"error", message:error.message});
+    }
+});
+
+router.put("/:id",async(req,res)=>{
+    try {
+        //const {price}= req.body;
+        const modProduct = await productsService.updateProduct(req.params.id , req.body);
+        res.json({status:"success",data:modProduct});
+    } catch (error) {
+        console.log(error.message);
+        res.status(400).json({status:"error", message:error.message});
+    }
+});
+
+router.delete("/:id",async(req,res)=>{
+    try {
+        const result = await productsService.deleteProduct(req.params.id);
+        res.json({status:"success",data:result.message});
+    } catch (error) {
+        console.log(error.message);
+        res.status(400).json({status:"error", message:error.message});
+    }
+});
+
 export {router as productsRouter};
