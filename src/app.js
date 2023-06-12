@@ -17,16 +17,17 @@ import MongoStore from "connect-mongo";
 import { options } from "./config/options.js";
 import { authRouter } from "./routes/auth.routes.js";
 
+import MongoStore from "connect-mongo";
+
 //Almacena las sesiones en archivos
-import FileStore from "session-file-store";
+//import FileStore from "session-file-store";
+//CONECTAR AL MODULO SESSION CON FILESTORE
+//const fileStorage = FileStore(session);
 
 const app =express();
 const port = 8080;
 
 connectDB();
-
-//CONECTAR AL MODULO SESSION CON FILESTORE
-const fileStorage = FileStore(session);
 
 //MIDLEWARES:
 //Para recibir la inforamción de la petición de tipo post
@@ -43,10 +44,9 @@ app.listen(port,()=>console.log(`Server listening on port ${port}`));
 
 //CONFIGURACIÓN DE SESSION
 app.use(session({
-    store:new fileStorage({
-        ttl:10,//sesion activa por 60 segundos
-        retries:0,
-        path:path.join(__dirname,"/sessions"),//ruta de la carpeta donde almacenamos las sesiones
+    store: MongoStore.create({
+        mongoUrl:"mongodb+srv://guvalenzuelam:Coder2023@coderhouse.zqpfl7k.mongodb.net/sessionsDB?retryWrites=true&w=majority",
+        ttl:20
     }),
     secret:"claveSecreta",
     resave:true,

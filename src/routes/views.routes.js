@@ -62,6 +62,7 @@ router.get("/products",async(req,res)=>{
         res.json({status:"error", message:error.message});
     }
     res.render("products");
+});
 
     router.get("/carts/:cid",async(req,res)=>{
         try {
@@ -72,9 +73,6 @@ router.get("/products",async(req,res)=>{
         } catch (error) {
             res.json({status:"error", message:error.message});
         }
-})
-
-
-});
+    })
 
 export {router as viewsRouter};

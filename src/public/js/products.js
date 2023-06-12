@@ -1,11 +1,8 @@
-//ID del carrito
 let cartDiv = document.getElementById("cartDiv");
-//ID del producto
 let productsDiv = document.getElementById("productsDiv");
 
-
 //router.post("/:cid/product/:pid"
-const addToCart = async(cartId, productId,quantity)=>{
+const addToCart = async(cartId, productId)=>{
     try {
         if(cartId){
             if(productId){    

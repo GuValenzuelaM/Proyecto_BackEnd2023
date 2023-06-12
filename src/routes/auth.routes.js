@@ -8,8 +8,11 @@ router.get("/", (req,res)=>{
     res.render("home");
 });
 
-router.get("/login", (req,res)=>{
-    res.render("login");
+app.get("/login",(req,res)=>{
+    const {name} = req.query;
+    console.log("sesion actual", req.session);
+    req.session.user=name;
+    res.send("sesion creada");
 });
 
 router.get("/signup", (req,res)=>{

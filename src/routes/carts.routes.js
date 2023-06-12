@@ -18,9 +18,9 @@ router.put("/:cid/:pid",async(req,res)=>{
     try {
         const cartId = req.params.cid;
         const productId = req.params.pid;
-        const cart = await cartService.get(cartId);
+        const cart = await cartsService.get(cartId);
         // verificar que el producto exista antes de agregarlo al carrito.
-        const result = await cartService.addProduct(cartId,productId);
+        const result = await cartsService.addProduct(cartId,productId);
         res.json({status:"success", data:result});
     } catch (error) {
         res.json({status:"error", message:error.message});
