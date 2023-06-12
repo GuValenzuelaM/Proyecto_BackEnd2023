@@ -61,4 +61,16 @@ router.get("/logout",(req,res)=>{
     });
 });
 
+router.get("/github",passport.authenticate("githubSignup"));
+
+router.get("/github-callback",
+    passport.authenticate("githubSignup",{
+        failureRedirect:"/api/sessions/signup-failed"
+    }),
+    (req,res)=>{
+        res.redirect("/profile");
+    }
+);
+
+
 export { router as authRouter};
