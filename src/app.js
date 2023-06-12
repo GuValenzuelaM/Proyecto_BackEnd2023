@@ -46,7 +46,7 @@ app.listen(port,()=>console.log(`Server listening on port ${port}`));
 app.use(session({
     store: MongoStore.create({
         mongoUrl:"mongodb+srv://guvalenzuelam:Coder2023@coderhouse.zqpfl7k.mongodb.net/sessionsDB?retryWrites=true&w=majority",
-        ttl:20
+        ttl:20 //20 segundos
     }),
     secret:"claveSecreta",
     resave:true,
