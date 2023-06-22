@@ -1,9 +1,7 @@
 import { Router } from "express";
 import { ProductsMongo } from "../daos/managers/products.mongo.js";
-import { CartsMongo } from "../daos/managers/carts.mongo.js";
 
 const productsService = new ProductsMongo();
-const cartsService = new CartsMongo();
 
 const router = Router();
 
@@ -61,19 +59,7 @@ router.get("/products",async(req,res)=>{
     } catch (error) {
         res.json({status:"error", message:error.message});
     }
-    res.render("products");
 });
-
-    router.get("/carts/:cid",async(req,res)=>{
-        try {
-            const cartId = req.params.cid;
-            const cart = await cartsService.get(cartId);
-            console.log(cart);
-            res.render("cart",cart);
-        } catch (error) {
-            res.json({status:"error", message:error.message});
-        }
-    })
 
     router.get("/", (req,res)=>{
         res.render("home");
@@ -88,7 +74,6 @@ router.get("/products",async(req,res)=>{
     });
     
     router.get("/profile", (req,res)=>{
-        console.log(req.session.user)
         res.render("perfil",{email:req.session.user.email});
     });
 

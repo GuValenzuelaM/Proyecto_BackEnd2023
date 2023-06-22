@@ -1,49 +1,73 @@
 //Importamos la clase router de la libreria express
 import {Router} from "express";
 import { CartsMongo } from "../daos/managers/carts.mongo.js";
+import { ProductsMongo } from "../daos/managers/products.mongo.js";
 
 const router = Router();
-const cartsService = new CartsMongo();
+const cartService = new CartsMongo();
+const productsService = new ProductsMongo();
 
+//Crea una nuevo carrito
 router.post("/", async(req,res)=>{
         try {
-            const cartCreated = await cartsService.create();
+            const cartCreated = await cartService.create();
             res.json({status:"success", data:cartCreated});
         } catch (error) {
             res.status(400).json({status:"error",message:error.message});
         }
 });
 
-router.put("/:cid/:pid",async(req,res)=>{
+//Muestra los productos que se encuentran en el carrito
+router.get("/:cid",async(req,res)=>{
     try {
         const cartId = req.params.cid;
-        const productId = req.params.pid;
-        const cart = await cartsService.get(cartId);
-        // verificar que el producto exista antes de agregarlo al carrito.
-        const result = await cartsService.addProduct(cartId,productId);
-        res.json({status:"success", data:result});
+        //Busca si el carro existe
+        const cart = await cartService.get(cartId);
+        res.json({status:"success", data:cart});
     } catch (error) {
         res.json({status:"error", message:error.message});
     }
 });
 
+//Agrega productos al carrito (IMPORTANTE MODIFICAR LOS CONDICIONALES)
+router.put("/:cid/:pid",async(req,res)=>{
+    try {
+        const cartId = req.params.cid;
+        const productId = req.params.pid;
+        const quantity = req.body.quantity;
+        //La función get verifica la existencia del carrito
+        const cart = await cartService.get(cartId);
+        //Verifica la existencia del producto
+            if(!productId){
+                res.status(400).json({status:"error", message:`No se puede agregar el producto ${productId}`});
+            } else{
+                const result = await cartService.addProduct(cartId,productId);
+                res.json({status:"success", data:result});
+            }
+    } catch (error) {
+        res.json({status:"El carrito no existe", message:error.message});
+    }
+});
+
 router.get("/",async(req,res)=>{
     try {
-        const cart = await cartsService.getCarts();
+        const cart = await cartService.getCarts();
        res.json({status:"success",data:cart});
     } catch (error) {
         res.status(400).json({status:"error", message:"Hubo un error al obtener el carrito"});
     }
 });
 
+
+/*
 //MOSTRAR EL CARRO
 router.get("/:cid", async(req,res)=>{
     try {
         const cartId = req.params.cid;
-        const cart = await cartsService.getCartById(cartId);
+        const cart = await cartService.getCartById(cartId);
         if(cart){
-            res.json({status:"success", data:cart});
             console.log(cart)
+            res.json({status:"success", data:cart});
         } else{
             res.status(400).json({status:"error",message:"El carro no existe"});
         }
@@ -51,28 +75,38 @@ router.get("/:cid", async(req,res)=>{
         res.status(400).json({status:"error",message:error.message});
     }
 });
+*/
 
 //AGREGAR UN PRODUCTO AL CARRO
 router.post("/:cid/product/:pid", async(req,res)=>{
     try {
-        const cartId = req.params.cid;
-        const productId = req.params.pid;
-        const cart = await cartsService.getCartById(cartId);
-        if(cart){
-            const product = await productManager.getProductById(productId);
-            if(product){
-                const response  = await cartsService.addProductToCart(cartId,productId);
-                res.json({status:"success", message:response});
-            } else {
-                res.status(400).json({status:"error", message:"No es posible agregar este producto"});
-            }
-        } else {
-            res.status(400).json({status:"error", message:"el carrito no existe"});
+        //Busca si existe el cartId
+        const cart = await this.model.findOne({_id:cartsId});
+        //Si el carro no existe, crea uno nuevo y se agrega el producto
+        if(!cart){
+            const cart = await createCart(cart)
+            cart.products.push({productId:productId, quantity:1});
+            console.log(`Se ha agregado un nuevo producto ${productId} a tu carro ${cart}`);
+            } else{
+                //Si el producto no estaba en el carro se agrega 1 unidad
+                if (!productId) {
+                    const existingProductIndex = cart.products.findIndex(prod => prod.productId === productId);
+                    if (existingProductIndex >= 0) {
+                      cart.products[existingProductIndex].quantity += 1;
+                      console.log(`Se ha agregado una unidad del producto ${productId}`);
+                      
+                    } else {
+                      cart.products.push({ productId: productId, quantity: 1 });
+                      console.log(`Se ha agregado un nuevo producto ${productId}`);
+                    }
+                }
         }
     } catch (error) {
-        res.status(400).json({status:"error", message:"ERROR DESCONOCIDO"});
+        throw new Error(`Error al agregar producto al carrito ${error.message}`);
     }
-});
+})
+//                res.json({status:"success", message:response});
+
 
 //ELIMINAR UN PRODUCTO DEL CARRO
 router.delete('/api/carts/:cartId/:productId', async (req, res) => {
@@ -81,12 +115,11 @@ router.delete('/api/carts/:cartId/:productId', async (req, res) => {
       const productId = req.params.productId;
       const quantity = req.body.quantity;
 
-      const cart = await cartsService.getCartById(cartId);
+      const cart = await cartService.getCartById(cartId);
         if(cart){
             const product = await productManager.getProductById(productId);
             if(product){
-                const response  = await cartsService.deleteProductFromCart(cartId,productId,quantity);
-
+                const response  = await cartService.deleteProductFromCart(cartId,productId,quantity);
                 res.json({status:"success", message:response});
             } else {
                 res.status(400).json({status:"error", message:"No es posible eliminar este producto"});
@@ -103,7 +136,7 @@ router.delete('/api/carts/:cartId/:productId', async (req, res) => {
 router.put('/api/carts/:cid', async (req, res) => {
     const cartId = req.params.cid;
     const updatedCart = req.body;
-    const cart = await cartsService.getCartById(cartId)
+    const cart = await cartService.getCartById(cartId)
     try {
         if(cart){
             res.json({status:"success", data:cart});
@@ -120,12 +153,12 @@ router.put('/api/carts/:cid/products/:pid', async (req, res) => {
     const cartId = req.params.cid;
     const productId = req.params.pid;
     const quantity = req.body.quantity;
-    const cart = await cartsService.getCartById(cartId);
+    const cart = await cartService.getCartById(cartId);
     try {
         if(cart){
             const product = await productManager.getProductById(productId);
             if(product){
-                const response  = await cartsService.updateProduct(cartId,productId);
+                const response  = await cartService.updateProduct(cartId,productId);
                 res.json({status:"success", message:response});
             } else {
                 res.status(400).json({status:"error", message:"El producto no esta agregado en el carro"});
@@ -154,8 +187,5 @@ router.delete('/api/carts/:cid', async (req, res) => {
       res.status(400).json({ status: 'error', message: 'Error desconocido' });
     }
   });
-  
-//NO ENTENDI LA INSTRUCCIÓN:
-//Esta vez, para el modelo de Carts, en su propiedad products, el id de cada producto generado dentro del array tiene que hacer referencia al modelo de Products. Modificar la ruta /:cid para que al traer todos los productos, los traiga completos mediante un “populate”. De esta manera almacenamos sólo el Id, pero al solicitarlo podemos desglosar los productos asociados.
 
 export{router as cartsRouter};

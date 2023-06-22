@@ -1,78 +1,41 @@
-let cartDiv = document.getElementById("cartDiv");
-let productsDiv = document.getElementById("productsDiv");
+//Prueba de sincronización
+console.log("javascript products");
 
-//router.post("/:cid/product/:pid"
-const addToCart = async(cartId, productId)=>{
-    try {
-        if(cartId){
-            if(productId){    
-            const response = await fetch(`http://localhost:8080/${cartId}/product/${productId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({cartId, productId,quantity})
-            });
-            console.log("Se han agregado" `${quantity} "unidades del producto" ${productId}`);
-            res.render("carts", {data:cart})
-            } else {
-                //AGREGAR PRODUCTO AL CARRO DE COMPRA
-                console.log("Se han agregado" `${quantity} "unidades del producto" ${productId}`);
-                res.render("carts", {data:cart})
-            }
-        } else {
-            //CREAR CARRO DE COMPRAS
-        }        
-        }catch (error) {
-        console.log("El producto no se agregó debido al error:", error);
-    }
+const addToCart = async(productId)=>{
+    console.log("Este sera el producto a agregar", productId);
+    fetch("http://localhost:8080/",{
+
+    })
 };
 
 /*
-uter.post("/:cid/product/:pid"
-const addToCart = async(cartId, productId,quantity)=>{
+const addToCart = async(productId)=>{
     try {
-        if(cartId && productId){
-            const response = await fetch(`http://localhost:8080/${cartId}/product/${productId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({cartId, productId,quantity})
-            });
-            console.log("Se han agregado" `${quantity} "unidades del producto" ${productId}`);
-            res.render("carts", {data:cart})
-        } else 
+        //Verifica si existe el Producto y el carrito
+        if (productId && cartId) {
+            //Se genera una solicitud POST al servidor
+            const newProduct = await fetch(
+                `http://localhost:8080/api/carts/${cartId}/product/${productId}`,
+                {
+                    method: "POST",
+                }
+            );
+            //
+            const newCartProduct = await newProduct.json();
+            console.log("resultado", newCartProduct);
 
-        if (response) {
-            console.log("Producto agregado", productId);
-        } else {
-          console.log("Error al agregar el producto al carrito.");
+            if (newCartProduct.status == "success") {
+                const response = await fetch(
+                    `http://localhost:8080/api/carts/${cartId}`,
+                    {
+                        method: "GET",
+                    }
+                );
+                console.log(response);
+            }
         }
-        }catch (error) {
-        console.log("El producto no se agregó debido al error:", error);
+    } catch (error) {
+        console.log("Error al agregar producto al carrito", error.message);
     }
 };
 */
-
-
-//router.delete('/api/carts/:cid'
-const deleteToCart = async(cartId)=>{
-    try {
-        const response = await fetch(`http://localhost:8080/cart/${cartId}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(cartId)
-        });
-
-        if (response) {
-            console.log("Carrito Eliminado", productId);
-        } else {
-          console.log("Error al eliminar el carrito.");
-        }
-        }catch (error) {
-        console.log("El carrito no se eliminó debido al error:", error);
-    }
-};

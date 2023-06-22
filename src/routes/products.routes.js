@@ -75,6 +75,16 @@ router.get("/:pid",async(req,res)=>{
     }
 });
 
+router.post("/",async(req,res)=>{
+    try {
+        const productCreated = await productsService.createProduct(req.body);
+        res.json({status:"success",data:productCreated});
+    } catch (error) {
+        console.log(error.message);
+        res.status(400).json({status:"error", message:error.message});
+    }
+});
+
 router.put("/:id",async(req,res)=>{
     try {
         //const {price}= req.body;

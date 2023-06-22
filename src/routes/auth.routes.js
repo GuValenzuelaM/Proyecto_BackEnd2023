@@ -15,11 +15,11 @@ router.post("/signup", async(req,res)=>{
              if(email == "adminCoder@coder.com" && password =="adminCod3r123"){
                 const userCreated = await userModel.create(userForm);
                 console.log(userCreated)
-                res.send('<div>usuario registrado, <a href="/login">ir al login</a></div>');
                 const newUser = await userModel.findOneAndUpdate({email:userCreated.email}, {rol:"admin"})
-             }else {
                 res.send('<div>usuario registrado, <a href="/login">ir al login</a></div>');
-                console.log(userCreated)
+             }else {
+                 console.log(userCreated)
+                res.send('<div>usuario registrado, <a href="/login">ir al login</a></div>');
              }
         } else {
             res.send('<div>usuario ya registrado, <a href="/signup">intente de nuevo</a></div>');

@@ -1,27 +1,17 @@
 <h1>Productos</h1>
 <br/>
-    <hr/>
-    <button onclick="createCart()" id="newCart">Crear tu carrito de compras</button>
-    <div id="cartDetails" style="display: none;">
-        Id del carrito:
-        <span id="cartDiv"></span>
-        <a id="cartLink" href=""></a>
-    </div>
+<hr />
 
 {{#if totalDocs}}
     <div>
-        <div>
-        {{#each payload}}
+        Listado de productos
         <ul>
-            <li>{{this.title}}</li>
-            <li>Precio: ${{this.price}}</li>
-        </ul>
-            <div>
-                <button onclick="addToCart(`{{this._id}}`)">Agregar</button>
-            </div>
+        {{#each payload}}
+            <li>{{this.title}} - Precio: {{this.price}}</li>
+            <button onclick="addToCart(`{{this._id}}`)">Agregar al carrito</button>
             <hr>
         {{/each}}
-        </div>
+        </ul>
     </div>
     <div>
         {{#if hasPrevPage}}

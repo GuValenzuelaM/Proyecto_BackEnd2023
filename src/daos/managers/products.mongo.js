@@ -14,6 +14,7 @@ import { productsModel } from "../models/products.model.js";
         }
     };
 
+/*
     async getProducts(){
          try {
              const data = await this.model.find();
@@ -22,6 +23,7 @@ import { productsModel } from "../models/products.model.js";
              throw new Error(`Error al obtener productos ${error.message}`);
          }
     };
+*/
 
     async getProductById(id){
         try {
