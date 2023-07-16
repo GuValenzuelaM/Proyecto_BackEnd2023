@@ -1,14 +1,18 @@
 import mongoose from "mongoose";
 
+//objeto users
 const usersCollection = "users";
 
+//propiedades del objeto con sus respectivas restricciones
 const usersSchema = new mongoose.Schema({
     first_name:{type:String,required:true},
-    last_name:{type:String,required:true},
-    age:{type:Number,required:true},
+    last_name:{type:String,required:false},
+    age:{type:Number,required:false},
     email:{type:String,required:true, unique:true},
     password:{type:String, required:true},
-    profileType:{type: String, required:true, default: "user"}
+    profileType:{type: String, required:true, enum:["user", "admin"], default: "user"},
+    cart:{type: mongoose.Schema.Types.ObjectId, ref:"carts"}
+
 });
 
 export const userModel = mongoose.model(usersCollection,usersSchema);

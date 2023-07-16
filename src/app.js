@@ -13,10 +13,15 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import { options } from "./config/options.js";
 import { authRouter } from "./routes/auth.routes.js";
+import passport from "passport";
+import { initializePassport} from "./config/passport.config.js";
+import {config} from "./config/config.js"
+import { sessionsRouter } from "./routes/sessions.routes.js";
 
 const app =express();
 const port = 8080;
 
+app.listen(port,()=>console.log(`Server listening on port ${port}`));
 connectDB();
 
 //MIDLEWARES:
@@ -24,19 +29,24 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname, "/public")));
-
-app.listen(port,()=>console.log(`Server listening on port ${port}`));
+//app.use(cookieParser());
 
 //CONFIGURACIÓN DE SESSION
 app.use(session({
-    store: MongoStore.create({
-        mongoUrl:"mongodb+srv://guvalenzuelam:Coder2023@coderhouse.zqpfl7k.mongodb.net/sessionsDB?retryWrites=true&w=majority",
-        ttl:20 //20 segundos
+    store:MongoStore.create({
+        mongoUrl:config.mongo.url
     }),
-    secret:"claveSecreta",
+    secret:config.server.secretSession,
     resave:true,
-    saveUninitialized:true
+    saveUninitialized:true,
 }));
+
+
+//CONFIGURACIÓN DE PASSPORT
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 //CONFIGURACUÓN HANDLEBARS
 app.engine('.hbs', engine({extname: '.hbs'}));

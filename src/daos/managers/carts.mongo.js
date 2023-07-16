@@ -25,11 +25,11 @@ import {cartsModel} from "../models/carts.model.js";
             const data = JSON.parse(JSON.stringify(result));
             return data;
         } catch (error) {
-            throw new Error(`Error create cart ${error.message}`);
+            throw new Error(`Error get cart ${error.message}`);
         }
     };
 
-    /*
+    
     async getCart(cartId){
         try {
             const cart = await this.model.findOne({_id:cartId});
@@ -45,12 +45,37 @@ import {cartsModel} from "../models/carts.model.js";
             throw new Error(`Error create cart ${error.message}`);
         }
     };
-*/
+
 
 async addProduct(cartId, productId) {
     try {
+      const cart = await this.get(cartId);
+      // Verificar si el producto ya está agregado en el carrito
+      const existingProductIndex = cart.products.findIndex(products => products.productId === productId);
+      if (existingProductIndex >= 0) {
+        // El producto ya está presente en el carrito, sumar 1 a quantity
+        cart.products[existingProductIndex].quantity += 1;
+        //const result = await this.model.findByIdAndUpdate(cartId,cart,{new:true});
+        console.log(`Se ha agregado el producto ${productId} a tu carro ${cartId}`);
+        return result;
+      } else {
+        // El producto no estaba en el carrito, agregarlo con quantity igual a 1
+        cart.products.push({ productId: productId, quantity: 1 });
+        console.log(`Se ha agregado el producto ${productId} a tu carro ${cartId}`);
+        return cart;
+      }  
+    } catch (error) {
+      throw new Error(`Error al agregar producto al carrito ${error.message}`);
+      console.log("error")
+    }
+  }
+
+/*
+async addProduct(cartId, productId) {
+    try {
         const cart = await this.get(cartId);
-        if(!productId){
+        const existingProduct = cart.products.some(prod => prod.productId === productId)
+        if (!existingProduct) {
             cart.products.push({productId:productId, quantity:1});
             console.log(`Se ha agregado una nueva unidad del producto ${productId} a tu carro ${cartId}`);
             res.json({ status: "success", data: cart });
@@ -62,7 +87,7 @@ async addProduct(cartId, productId) {
         throw new Error(`Error al agregar producto al carrito ${error.message}`);
       }
 }
-
+*/
 
     async updateCart(cartId, cart){
         try {

@@ -29,9 +29,11 @@ import { productsModel } from "../models/products.model.js";
         try {
             const data = await this.model.findById(id);
             if(!data){
-                throw new Error("el producto no existe")
+                throw new Error(`el producto ${id} no existe`)
+            } else{
+                return data;
+                console.log(`el producto ${id} existe en el arreglo de productos`)
             }
-            return data;
         } catch (error) {
             throw new Error(`Error al obtener producto ${error.message}`);
         }

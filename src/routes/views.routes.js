@@ -1,7 +1,9 @@
 import { Router } from "express";
 import { ProductsMongo } from "../daos/managers/products.mongo.js";
+import { CartsMongo } from "../daos/managers/carts.mongo.js";
 
 const productsService = new ProductsMongo();
+const cartService = new CartsMongo();
 
 const router = Router();
 
@@ -61,6 +63,17 @@ router.get("/products",async(req,res)=>{
     }
 });
 
+router.get("/carts/:cid",async(req,res)=>{
+    try {
+        const cartId = req.params.cid;
+        const cart = await cartService.get(cartId);
+        console.log(cart);
+        res.render("carts",cart);
+    } catch (error) {
+        res.json({status:"error", message:error.message});
+    }
+})
+
     router.get("/", (req,res)=>{
         res.render("home");
     });
@@ -72,9 +85,26 @@ router.get("/products",async(req,res)=>{
     router.get("/signup", (req,res)=>{
         res.render("registro");
     });
+
+    router.get("/forgot", (req,res)=>{
+        res.render("restaurar");
+    });
     
     router.get("/profile", (req,res)=>{
-        res.render("perfil",{email:req.session.user.email});
+        if(req.user){
+            console.log(req.user)
+            return res.render("perfil",{
+                first_name:req.user.first_name,
+                last_name:req.user.last_name,
+                age:req.user.age,
+                email:req.user.email,
+                profileType:req.user.profileType
+            });
+        } else {
+            res.redirect("/login")
+        }
+    
     });
+    
 
 export {router as viewsRouter};
