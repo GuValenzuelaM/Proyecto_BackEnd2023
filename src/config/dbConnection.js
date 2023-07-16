@@ -8,4 +8,4 @@ export const connectDB = async()=>{
     } catch (error) {
         console.log(`No se logró conectar a la base de datos ${error.message}`);
     }
-}; 
+};
