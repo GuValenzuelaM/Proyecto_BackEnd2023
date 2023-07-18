@@ -66,4 +66,4 @@ import { productsModel } from "../models/products.model.js";
             throw new Error(`Error get all products ${error.message}`);
         }
     };
-};
+}; 

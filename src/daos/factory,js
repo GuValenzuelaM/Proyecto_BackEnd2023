@@ -2,10 +2,11 @@
 import { config } from "../config/config.js";
 
 // Declaración de variables para los DAOs
-let productsDao;
 let cartsDao;
+let productsDao;
 let usersDao;
-let contactsDao;
+let chatDao;
+let ticketsDao;
 
 // Obtiene el tipo de persistencia desde la configuración
 const PERSISTENCE = config.server.persistence;
@@ -14,33 +15,34 @@ const PERSISTENCE = config.server.persistence;
 switch (PERSISTENCE) {
     case "mongo":
         // Si es "mongo", se establece la conexión a la base de datos
-        // Importa la función connectDB para la conexión a la base de datos
+
         const { connectDB } = await import("../config/dbConnection.js");
         connectDB();
+        
+        const {CartsMongo} = await import("./managers/carts.mongo.js");
+        cartsDao = new CartsMongo();
+        
+        const {ProductsMongo} = await import("./managers/products.mongo.js");
+        productsDao = new ProductsMongo();
+        
+        const {UserMongo} = await import("./managers/users.mongo.js");
+        usersDao = new UserMongo();
 
-        // Importa el DAO de ContactsMongo para MongoDB
-        const { ContactsMongo } = await import("./mongo/contacts.mongo.js");
+        const {ChatMongo} = await import("./managers/chat.mongo.js");
+        chatDao = new ChatMongo();        
+        
+        const {Tickets} = await import("./managers/ticket.mongo.js");
+        ticketsDao = new Tickets();
 
-        // Crea una instancia del DAO de ContactsMongo
-        contactsDao = new ContactsMongo();
-        break;
+    break;
 
     case "memory":
-        // Si es "memory", importa el DAO de ContactsMemory para la persistencia en memoria
-        const { ContactsMemory } = await import("./memory/contacts.memory.js");
-
-        // Crea una instancia del DAO de ContactsMemory
-        contactsDao = new ContactsMemory();
-        break;
-
-    case "sql":
-        // Código para el caso de persistencia SQL
-        break;
-
-    case "files":
-        // Código para el caso de persistencia en archivos
-        break;
+        const {CartManager} = await import("./managers/memory/CartManager.js");
+        const {ProductManager} = await import("./managers/memory/ProductManager.js");
+        cartsDao = new CartManager();
+        productsDao = new ProductManager();
+    break;
 }
 
 // Exporta los DAOs correspondientes para su uso en otros módulos
-export { contactsDao, productsDao, cartsDao, usersDao };
+export {cartsDao, productsDao, usersDao, chatDao, ticketsDao};

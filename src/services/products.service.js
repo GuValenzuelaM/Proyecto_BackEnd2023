@@ -1,4 +1,4 @@
-import { productsDao } from "../daos/index.js";
+import { productsDao } from "../daos/index.js"
 
 export class ProductsService{
     static async getProducts(){

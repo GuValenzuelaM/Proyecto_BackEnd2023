@@ -41,12 +41,10 @@ app.use(session({
     saveUninitialized:true,
 }));
 
-
 //CONFIGURACIÓN DE PASSPORT
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 //CONFIGURACUÓN HANDLEBARS
 app.engine('.hbs', engine({extname: '.hbs'}));
