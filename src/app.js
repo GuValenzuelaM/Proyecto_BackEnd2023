@@ -19,7 +19,7 @@ import {config} from "./config/config.js"
 import { sessionsRouter } from "./routes/sessions.routes.js";
 
 const app =express();
-const port = 8080;
+const port = config.server.port; 
 
 app.listen(port,()=>console.log(`Server listening on port ${port}`));
 connectDB();

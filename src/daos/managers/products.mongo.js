@@ -7,31 +7,29 @@ import { productsModel } from "../models/products.model.js";
 
     async createProduct(product){
         try {
-            const data = await this.model.create(product);
-            return data;
+            const newProduct = await this.model.create(product);
+            return newProduct;
         } catch (error) {
             throw new Error(`Error al crear el producto ${error.message}`);
         }
     };
 
-/*
     async getProducts(){
          try {
-             const data = await this.model.find();
-             return data;
+             const products = await this.model.find();
+             return JSON.parse(JSON.stringify(products));
          } catch (error) {
              throw new Error(`Error al obtener productos ${error.message}`);
          }
     };
-*/
 
     async getProductById(id){
         try {
-            const data = await this.model.findById(id);
-            if(!data){
+            const product = await this.model.findById(id);
+            if(!product){
                 throw new Error(`el producto ${id} no existe`)
             } else{
-                return data;
+                return JSON.parse(JSON.stringify(product));
                 console.log(`el producto ${id} existe en el arreglo de productos`)
             }
         } catch (error) {

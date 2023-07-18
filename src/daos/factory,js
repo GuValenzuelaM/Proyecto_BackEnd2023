@@ -1,0 +1,46 @@
+// Importa la configuración desde el archivo de configuración
+import { config } from "../config/config.js";
+
+// Declaración de variables para los DAOs
+let productsDao;
+let cartsDao;
+let usersDao;
+let contactsDao;
+
+// Obtiene el tipo de persistencia desde la configuración
+const PERSISTENCE = config.server.persistence;
+
+// Switch para determinar el tipo de persistencia
+switch (PERSISTENCE) {
+    case "mongo":
+        // Si es "mongo", se establece la conexión a la base de datos
+        // Importa la función connectDB para la conexión a la base de datos
+        const { connectDB } = await import("../config/dbConnection.js");
+        connectDB();
+
+        // Importa el DAO de ContactsMongo para MongoDB
+        const { ContactsMongo } = await import("./mongo/contacts.mongo.js");
+
+        // Crea una instancia del DAO de ContactsMongo
+        contactsDao = new ContactsMongo();
+        break;
+
+    case "memory":
+        // Si es "memory", importa el DAO de ContactsMemory para la persistencia en memoria
+        const { ContactsMemory } = await import("./memory/contacts.memory.js");
+
+        // Crea una instancia del DAO de ContactsMemory
+        contactsDao = new ContactsMemory();
+        break;
+
+    case "sql":
+        // Código para el caso de persistencia SQL
+        break;
+
+    case "files":
+        // Código para el caso de persistencia en archivos
+        break;
+}
+
+// Exporta los DAOs correspondientes para su uso en otros módulos
+export { contactsDao, productsDao, cartsDao, usersDao };

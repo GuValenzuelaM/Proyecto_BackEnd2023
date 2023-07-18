@@ -74,37 +74,40 @@ router.get("/carts/:cid",async(req,res)=>{
     }
 })
 
-    router.get("/", (req,res)=>{
-        res.render("home");
-    });
-    
-    router.get("/login", (req,res)=>{
-        res.render("login");
-    });
-    
-    router.get("/signup", (req,res)=>{
-        res.render("registro");
-    });
+router.get("/", (req,res)=>{
+    res.render("home");
+});
 
-    router.get("/forgot", (req,res)=>{
-        res.render("restaurar");
-    });
-    
-    router.get("/profile", (req,res)=>{
-        if(req.user){
-            console.log(req.user)
-            return res.render("perfil",{
-                first_name:req.user.first_name,
-                last_name:req.user.last_name,
-                age:req.user.age,
-                email:req.user.email,
-                profileType:req.user.profileType
-            });
-        } else {
-            res.redirect("/login")
-        }
-    
-    });
-    
+router.get("/login", (req,res)=>{
+    res.render("login");
+});
 
+router.get("/signup", (req,res)=>{
+    res.render("registro");
+});
+
+router.get("/forgot", (req,res)=>{
+    res.render("restaurar");
+});
+
+router.get("/profile", (req,res)=>{
+    if(req.user){
+        console.log(req.user)
+        return res.render("perfil",{
+            first_name:req.user.first_name,
+            last_name:req.user.last_name,
+            age:req.user.age,
+            email:req.user.email,
+            profileType:req.user.profileType
+        });
+    } else {
+        res.redirect("/login")
+    }        
+});
+
+router.get("/current",(req,res)=>{
+    console.log(req.user);
+    res.render("profile",{user:req.user});
+});
+    
 export {router as viewsRouter};
