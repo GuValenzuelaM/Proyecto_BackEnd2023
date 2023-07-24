@@ -27,7 +27,7 @@ import { productsModel } from "../models/products.model.js";
         try {
             const product = await this.model.findById(id);
             if(!product){
-                throw new Error(`el producto ${id} no existe`)
+                throw new Error(`No se ha encontrado el producto ID ${id}`)
             } else{
                 return JSON.parse(JSON.stringify(product));
                 console.log(`el producto ${id} existe en el arreglo de productos`)
@@ -41,9 +41,11 @@ import { productsModel } from "../models/products.model.js";
         try {
             const data = await this.model.findByIdAndUpdate(id,product,{new:true});
             if(!data){
-                throw new Error("el producto no existe")
+                throw new Error(`Producto no encontrado, ${error.message}`);
+            } else{
+                return data;
+                console.log(data);
             }
-            return data;
         } catch (error) {
             throw new Error(`Error al actualizar el producto ${error.message}`);
         }
@@ -66,4 +68,13 @@ import { productsModel } from "../models/products.model.js";
             throw new Error(`Error get all products ${error.message}`);
         }
     };
-}; 
+};
+
+/*
+createProduct
+getProducts
+getProductById
+updateProduct
+deleteProduct
+getPaginate
+*/

@@ -1,9 +1,9 @@
 //Este archivo permite ubicar y dirigir a las rutas determinadas
 import bcrypt from "bcrypt";
 import path from 'path';
-import { fileURLToPath } from 'url';
 import multer from "multer";
 export const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import { fileURLToPath } from 'url';
 
 //HASH, mantiene la confidencialidad de los datos del usurio
 export const createHash = (password)=>{

@@ -25,8 +25,8 @@ switch (PERSISTENCE) {
         const {ProductsMongo} = await import("./managers/products.mongo.js");
         productsDao = new ProductsMongo();
         
-        const {UserMongo} = await import("./managers/users.mongo.js");
-        usersDao = new UserMongo();
+        const {userMongo} = await import("./managers/users.mongo.js");
+        usersDao = new userMongo();
 
         const {ChatMongo} = await import("./managers/chat.mongo.js");
         chatDao = new ChatMongo();        

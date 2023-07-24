@@ -21,7 +21,7 @@ export class CartFiles{
         return newId;
     }
 
-    /*
+    //
     async addCart(){
         try {
             const cart={
@@ -47,8 +47,8 @@ export class CartFiles{
             throw new Error(error.message);
         }
     }
-    */
 
+    //
     async getCartById(id){
         try {
             const cartId = parseInt(id);
@@ -75,6 +75,7 @@ export class CartFiles{
         }
     }
 
+    //
     async addProductToCart(cartId,productId){
         try {
             if(this.fileExists()){

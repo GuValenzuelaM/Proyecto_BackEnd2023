@@ -1,33 +1,47 @@
 //Importa el DAO de Carts desde el módulo "factory"
-import { cartsDAO } from "../daos/factory.js";
+import {cartsDao} from "../daos/factory.js";
 
 export class CartsService {
     //AGREGA UN CARRITO NUEVO
-    static async addCart(cart) {
-        return cartsDAO.addCart(cart);
+    static async createCart(cart) {
+        return cartsDao.createCart(cart);
     };
     //OBTIENE UN CARRITO POR SU ID
     static async getCartById(id) {
-        return cartsDAO.getCartById(id);
-    };
-    //AGREGA UN PRODUCTO A UN CARRITO
-    static async addProductToCart(cartId, productID) {
-        return cartsDAO.addProductToCart(cartId, productID);
-    };
-    //ELIMINA UN PRODUCTO DE UN CARRITO
-    static async deleteProducts(cartId, productID) {
-        return cartsDAO.deleteProducts(cartId, productID);
+        return cartsDao.getCartById(id);
     };
     //ACTUALIZA UN CARRITO
     static async updateCart(cartId) {
-        return cartsDAO.updateCart(cartId);
+        return cartsDao.updateCart(cartId);
+    };
+    //AGREGA UN PRODUCTO A UN CARRITO
+    static async addProductToCart(cartId, productID) {
+        return cartsDao.addProductToCart(cartId, productID);
+    };
+    //Elimna un producto del carrito
+    static async deleteProductFromCart(cartId, productID) {
+        return cartsDao.deleteProductFromCart(cartId, productID);
+    };
+    //Elimina todo el contenido del carrito
+    static async deleteCartId(cartId) {
+        return cartsDao.deleteCartId(cartId);
     };
     //ACTUALIZA LA CANTIDAD DE UN PRODUCTO EN UN CARRITO
     static async updateQuantity(cartId, productID, quantity) {
-        return cartsDAO.updateQuantity(cartId, productID, quantity);
-    };
-    //ELIMINA UN CARRITO
-    static async deleteCart(cartId) {
-        return cartsDAO.deleteCart(cartId);
+        return cartsDao.updateQuantity(cartId, productID, quantity);
     };
 }
+
+
+/* FUNCIONES CARTS MONGO
+-CARRITOS-
+createCart
+getCartById
+updateCart
+deleteProductFromCart
+
+-PRODUCTOS-
+addProductToCart
+deleteCartId
+updateQuantity
+*/
