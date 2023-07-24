@@ -37,8 +37,8 @@ switch (PERSISTENCE) {
     break;
 
     case "memory":
-        const {CartManager} = await import("./managers/memory/CartManager.js");
-        const {ProductManager} = await import("./managers/memory/ProductManager.js");
+        const {CartManager} = await import("./memory/cart.memory.js");
+        const {ProductManager} = await import("./memory/products.memory.js");
         cartsDao = new CartManager();
         productsDao = new ProductManager();
     break;

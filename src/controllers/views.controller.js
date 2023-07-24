@@ -1,3 +1,6 @@
+import {CartsService} from "../repository/cart.services.js";
+import {ProductsService} from "../repository/products.services.js";
+
 export class ViewsController{
     static renderHome = (req,res)=>{
         res.render("home");
@@ -19,7 +22,7 @@ export class ViewsController{
     //Función para listar productos filtrados ,ordenados y paginados
     static getProducts = async(req,res)=>{
         try {
-            const {limit=10,page=1,sort,category,stock} = req.query;
+            const {limit=10,page=1,sort="asc",category,stock} = req.query;
             if(!["asc","desc"].includes(sort)){
                 res.json({status:"error", message:"ordenamiento no valido, solo puede ser asc o desc"});
             };
@@ -43,7 +46,7 @@ export class ViewsController{
             //baseUrl: http://localhost:8080/api/products
             
             //Define ruta variable del localhost
-            const result = await productsService.getPaginate(query, {
+            const result = await ProductsService.getPaginate(query, {
                 page,
                 limit,
                 sort:{price:sortValue},
