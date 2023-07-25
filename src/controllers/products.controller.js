@@ -5,7 +5,7 @@ export class ProductsController{
     //Función para listar productos filtrados ,ordenados y paginados
     static getProducts = async(req,res)=>{
         try {
-            const {limit=10,page=1,sort="asc",category,stock} = req.query;
+            const {limit=5,page=1,sort="asc",category,stock} = req.query;
             if(!["asc","desc"].includes(sort)){
                 return res.json({status:"error", message:"ordenamiento no valido, solo puede ser asc o desc"})
             };
@@ -48,8 +48,7 @@ export class ProductsController{
                 prevLink: result.hasPrevPage ? `${baseUrl.replace( `page=${result.page}` , `page=${result.prevPage}` )}` : null,
                 nextLink: result.hasNextPage ? `${baseUrl.replace( `page=${result.page}` , `page=${result.nextPage}` )}` : null,
             }
-            console.log("response: ", response);
-            res.render("products",response);
+            res.json(response)
         } catch (error) {
             res.json({status:"error", message:error.message});
         }

@@ -22,7 +22,7 @@ export class ViewsController{
     //Función para listar productos filtrados ,ordenados y paginados
     static getProducts = async(req,res)=>{
         try {
-            const {limit=10,page=1,sort="asc",category,stock} = req.query;
+            const {limit=5,page=1,sort="asc",category,stock} = req.query;
             if(!["asc","desc"].includes(sort)){
                 res.json({status:"error", message:"ordenamiento no valido, solo puede ser asc o desc"});
             };
@@ -57,6 +57,7 @@ export class ViewsController{
                 status:"success",
                 payload:result.docs,
                 totalPages:result.totalPages,
+                totalDocs:result.totalDocs,
                 prevPage: result.prevPage,
                 nextPage: result.nextPage,
                 page:result.page,
@@ -65,8 +66,8 @@ export class ViewsController{
                 prevLink: result.hasPrevPage ? `${baseUrl}?page=${result.prevPage}` : null,
                 nextLink: result.hasNextPage ? `${baseUrl}?page=${result.nextPage}` : null,
             }
-            console.log("response: ", response);
-            res.json(response); 
+            res.render("products",response);
+            console.log("response: ", response.payload);
         } catch (error) {
             res.json({status:"error", message:error.message});
         }

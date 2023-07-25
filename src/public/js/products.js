@@ -1,7 +1,6 @@
 //Prueba de sincronización
 console.log("javascript products");
 
-
 const addToCart = async (productId) => {
 	try {
 		const resp = await fetch(
@@ -12,7 +11,7 @@ const addToCart = async (productId) => {
 		);
 
 		const cartId = await resp.json();
-		//console.log(cartId)
+		console.log(cartId)
 		
 		if (productId && cartId) {
 			const resp = await fetch(
@@ -48,9 +47,7 @@ const cart = async ()=>{
 				method: "GET",
 			}
 		);
-		
 		const cartId = await resp.json();
-
 		const res = await fetch(
 			`http://localhost:8080/carts/${cartId}`,
 			{
@@ -61,4 +58,3 @@ const cart = async ()=>{
 		console.log(error.message)
 	}
 }
-	

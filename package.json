@@ -21,7 +21,7 @@
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.1",
     "mongodb": "^5.5.0",
-    "mongoose": "^7.4.0",
+    "mongoose": "^7.4.1",
     "mongoose-paginate-v2": "^1.7.23",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.4",
@@ -34,6 +34,6 @@
   },
   "devDependencies": {
     "node-sass": "^8.0.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^3.0.1"
   }
 }
