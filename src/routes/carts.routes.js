@@ -10,10 +10,11 @@ router.post("/", CartsController.createCart);
 router.delete("/:cid", CartsController.deleteCart);
 
 //Muestra los productos que se encuentran en el carrito
-router.get("/:cid", CartsController.getCart);
+router.get("/:cid", CartsController.getCartById);
 
 //Agrega productos al carrito
-router.post("/:cid/product/:pid",CartsController.addProduct);
+//router.post("/:cid/product/:pid",CartsController.addProductToCart);
+router.put("/:cid/:pid",CartsController.addProductToCart);
 
 //Elima producto del carrito
 router.delete("/:cid/product/:pid", CartsController.deleteProduct);

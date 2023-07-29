@@ -15,20 +15,20 @@ export class CartsService {
         return cartsDao.updateCart(cartId);
     };
     //AGREGA UN PRODUCTO A UN CARRITO
-    static async addProductToCart(cartId, productID) {
-        return cartsDao.addProductToCart(cartId, productID);
+    static async addProductToCart(cartId, productId) {
+        return cartsDao.addProductToCart(cartId, productId);
     };
     //Elimna un producto del carrito
-    static async deleteProductFromCart(cartId, productID) {
-        return cartsDao.deleteProductFromCart(cartId, productID);
+    static async deleteProductFromCart(cartId, productId) {
+        return cartsDao.deleteProductFromCart(cartId, productId);
     };
     //Elimina todo el contenido del carrito
     static async deleteCartId(cartId) {
         return cartsDao.deleteCartId(cartId);
     };
     //ACTUALIZA LA CANTIDAD DE UN PRODUCTO EN UN CARRITO
-    static async updateQuantity(cartId, productID, quantity) {
-        return cartsDao.updateQuantity(cartId, productID, quantity);
+    static async updateQuantity(cartId, productId, quantity) {
+        return cartsDao.updateQuantity(cartId, productId, quantity);
     };
 }
 

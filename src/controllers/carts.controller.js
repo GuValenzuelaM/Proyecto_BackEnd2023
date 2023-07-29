@@ -27,22 +27,18 @@ export class CartsController{
     };
     
     //Función que obtiene carrito según ID
-    static getCart = async (req, res) => {
+    static getCartById = async (req, res) => {
         try {
-            const id = req.params.cid;
-            if (id) {
-                const cart = await CartsService.getCartById(id);
-                res.json({ status: "success", data: cart });
-            } else {
-                res.status(400).json({ status: "error", data: "Carrito no encontrado" });
-            }
+            const cartId = req.params.cid;
+            const cart = await CartsService.getCartById(cartId);
+            res.json({status:"success", data:cart});
         } catch (error) {
-            res.status(400).json({ status: "error", data: error.message });
+            res.json({status:"error", message:error.message});
         }
     };
 
     //Función que agrega productos al carrito
-    static addProduct = async (req, res) => {
+    static addProductToCart = async (req, res) => {
         try {
             const cartId = req.params.cid;
             const productId = req.params.pid;

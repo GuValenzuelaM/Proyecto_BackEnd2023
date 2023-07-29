@@ -5,7 +5,8 @@ import { Router } from "express";
 const router = Router();
 
 //Inicio
-router.get("/", isLoggedIn, ViewsController.renderHome);
+router.get("/", ViewsController.renderHome);
+//router.get("/", isLoggedIn, ViewsController.renderHome);
 
 //Lista de productos
 router.get("/products", isLoggedIn, ViewsController.getProducts);
@@ -14,7 +15,7 @@ router.get("/products", isLoggedIn, ViewsController.getProducts);
 router.get("/profile", isLoggedIn, ViewsController.renderProfile);
 
 //Carrito del usuario activo
-router.get("/user-cart", isLoggedIn, ViewsController.getCart);
+router.get("/user-cart", isLoggedIn, ViewsController.getCartById);
 //router.get("/carts/:cid"", isLoggedIn, ViewsController.getCart);
 
 //Registro

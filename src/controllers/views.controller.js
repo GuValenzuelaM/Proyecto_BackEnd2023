@@ -3,7 +3,7 @@ import {ProductsService} from "../repository/products.services.js";
 
 export class ViewsController{
     static renderHome = (req,res)=>{
-        res.render("home");
+        res.render("login");
     };
 
     static renderLogin = (req,res)=>{
@@ -76,5 +76,10 @@ export class ViewsController{
     //Entrega carro del usuario activo 
     static getCart = async(req,res)=>{
         res.json(req.user.cart)
+    }
+
+    //PRUEBA
+    static getCartById = async(req,res)=>{
+        res.json(req.user.cart);
     }
 }

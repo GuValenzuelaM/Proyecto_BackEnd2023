@@ -17,18 +17,19 @@ import {cartsModel} from "../models/carts.model.js";
     };
 
     //Obtiene carrito de compras por su ID en la base de datos (mongoose)
-    async getCartById(id){
+    async getCartById(cartId){
         try {
-            const cart = await this.model.findById(id).lean().populate('products.productId');
-            if(cart){
-                return cart;
-            }else{
-                throw new Error(`El carrito con el id ${id} no existe`);
+            const result = await this.model.findOne({_id:cartId});
+            if(!result){
+                throw new Error(`No se encontro el carrito ${error.message}`);
             }
+            //convertir el formato bson a json
+            const data = JSON.parse(JSON.stringify(result));
+            return data;
         } catch (error) {
-            throw new Error(error.message);
+            throw new Error(`Error create cart ${error.message}`);
         }
-    }
+    };
 
     //Actualiza el carrito
     async updateCart(cartId, cart){
@@ -43,21 +44,23 @@ import {cartsModel} from "../models/carts.model.js";
         }
     };
     
-    //Agrega un producto al carrito
     async addProductToCart(cartId, productId) {
         try {
-            const cart = await this.get(cartId);
+            const cart = await this.getCartById(cartId);
             // Verificar si el producto ya está agregado en el carrito
-            const existingProductIndex = cart.products.findIndex(products => products.productId === productId);
+            const existingProductIndex = cart.products.findIndex(products => products.productId._id === productId);
+            console.log(cart)
+            console.log(existingProductIndex)
             if (existingProductIndex >= 0) {
                 // El producto ya está presente en el carrito, sumar 1 a quantity
                 cart.products[existingProductIndex].quantity += 1;
-                //const result = await this.model.findByIdAndUpdate(cartId,cart,{new:true});
+                const result = await this.model.findByIdAndUpdate(cartId,cart,{new:true});
                 console.log(`Se ha agregado el producto ${productId} a tu carro ${cartId}`);
                 return result;
             } else {
                 // El producto no estaba en el carrito, agregarlo con quantity igual a 1
                 cart.products.push({ productId: productId, quantity: 1 });
+                const result = await this.model.findByIdAndUpdate(cartId,cart,{new:true});
                 console.log(`Se ha agregado el producto ${productId} a tu carro ${cartId}`);
                 return cart;
             }  

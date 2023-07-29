@@ -1,6 +1,16 @@
 //Prueba de sincronización
 console.log("javascript products");
 
+const addToCart = async(productId)=>{
+    console.log("Este sera el producto a agregar", productId);
+    fetch("http://localhost:8080/",{
+
+    })
+};
+
+/*
+const API_URL = "http://localhost:8080/api";
+
 const addToCart = async (productId) => {
 	try {
 		const resp = await fetch(
@@ -11,7 +21,7 @@ const addToCart = async (productId) => {
 		);
 
 		const cartId = await resp.json();
-		console.log(cartId)
+		//console.log(cartId)
 		
 		if (productId && cartId) {
 			const resp = await fetch(
@@ -21,7 +31,7 @@ const addToCart = async (productId) => {
 				}
 			);
 			const result = await resp.json();
-			//console.log(result)
+			console.log(result)
 			
 			if (result.status == "success") {
 				const payload = await fetch(
@@ -39,6 +49,7 @@ const addToCart = async (productId) => {
 	}
 }
 
+
 const cart = async ()=>{
 	try {
 		const resp = await fetch(
@@ -47,14 +58,14 @@ const cart = async ()=>{
 				method: "GET",
 			}
 		);
+		console.log(cart);
+
 		const cartId = await resp.json();
-		const res = await fetch(
-			`http://localhost:8080/carts/${cartId}`,
-			{
-				method: "GET",		
-			}
-		);
+		const res = 
+		(window.location.href = `http://localhost:8080/carts/${cartId}`)
 	} catch (error) {
 		console.log(error.message)
 	}
 }
+
+*/
