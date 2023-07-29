@@ -49,8 +49,8 @@ import {cartsModel} from "../models/carts.model.js";
             const cart = await this.getCartById(cartId);
             // Verificar si el producto ya está agregado en el carrito
             const existingProductIndex = cart.products.findIndex(products => products.productId._id === productId);
-            console.log(cart)
-            console.log(existingProductIndex)
+            //console.log(cart)
+            //console.log(existingProductIndex)
             if (existingProductIndex >= 0) {
                 // El producto ya está presente en el carrito, sumar 1 a quantity
                 cart.products[existingProductIndex].quantity += 1;
@@ -71,34 +71,31 @@ import {cartsModel} from "../models/carts.model.js";
     }
 
     //Borra un producto del carrito
-    async deleteProductFromCart(cartId, productID) {
+    async deleteProductFromCart(cartId, productId) {
         try {
-            const cart = await this.model.findById(cartId);
-    
-            if (cart) {
-                const arrayCart = cart.products;
-    
-                const productIds = arrayCart.map((item) => item.productId.toString());
-    
-                const verifyExistance = productIds.includes(productID);
-    
-                // Si el producto existe en el carrito, se elimina
-                if (verifyExistance) {
-                    const data = await this.model.findOneAndUpdate(
-                        { _id: cartId },
-                        { $pull: { products: { productId: productID } } },
-                        { new: true }
-                    );
-                    const updatedCart = await this.model.find({ _id: cartId });
-                    return updatedCart;
-                } else {
-                    throw new Error(`No existe el producto con ID ${productID}`);
+            const cart = await this.getCartById(cartId);
+            const existingProductIndex = cart.products.findIndex(products => products.productId._id === productId);
+            //console.log(cart)
+            //console.log(existingProductIndex)
+            // Si el producto existe en el carrito, se elimina
+            if (existingProductIndex >= 0) {
+                cart.products[existingProductIndex].quantity -= 1;
+                if (cart.products[existingProductIndex].quantity <= 0) {
+                cart.products.splice(existingProductIndex, 1);
                 }
-            }
+                const result = await this.model.findByIdAndUpdate(cartId,cart,{new:true});
+                console.log(`Se ha eliminado una unidad del producto ${productId} a tu carro ${cartId}`);
+                return result;
+            } else {
+                    // El producto no estaba en el carrito
+                    console.log(`El producto ${productId} no se encontró en el carrito ${cartId}`);
+                    return cart;
+            }  
         } catch (error) {
-            throw new Error(error.message);
+            throw new Error(`Error al eliminar producto en carrito ${error.message}`);
+            console.log("error")
         }
-    }
+    }        
     
     //Elimina todo el contenido del carrito
     async deleteCartId(cartId) {
@@ -157,13 +154,13 @@ import {cartsModel} from "../models/carts.model.js";
 
 /* FUNCIONES CARTS MONGO
 -CARRITOS-
-createCart
-getCartById
+createCart  ok
+getCartById ok
 updateCart
-deleteProductFromCart
+deleteProductFromCart ok
 
 -PRODUCTOS-
-addProductToCart
+addProductToCart ok
 deleteCartId
 updateQuantity
 

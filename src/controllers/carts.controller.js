@@ -50,11 +50,11 @@ export class CartsController{
     };
 
     //Función que elimina productos del carrito
-    static deleteProduct = async (req, res) => {
+    static deleteProductFromCart = async (req, res) => {
         try {
             const cartId = req.params.cid;
             const productId = req.params.pid;
-            const result = await CartsService.deleteProducts(cartId, productId);
+            const result = await CartsService.deleteProductFromCart(cartId, productId);
             res.json({ status: "success", mensaje: "Producto eliminado del carrito" });
         } catch (error) {
             res.status(400).json({ status: "error", mensaje: error.message });
