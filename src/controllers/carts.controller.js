@@ -4,6 +4,11 @@ import {CartsService} from "../repository/cart.services.js";
 import {ProductsService} from "../repository/products.services.js";
 import {TicketService} from "../repository/ticket.services.js";
 
+//Estructura standard del error
+import {CustomError} from "../services/error/customError.service.js";
+//Tipos de errores
+import {EError} from "../enums/EError.js"; 
+
 export class CartsController{
     //Crea un carrito usando CartsService
     static createCart = async(req,res)=>{

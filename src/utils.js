@@ -4,6 +4,7 @@ import path from 'path';
 import multer from "multer";
 export const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import { fileURLToPath } from 'url';
+import { Faker, faker, es} from "@faker-js/faker" //https://fakerjs.dev/api/
 
 //HASH, mantiene la confidencialidad de los datos del usurio
 export const createHash = (password)=>{
@@ -13,4 +14,24 @@ export const createHash = (password)=>{
 //COMPARESYNC, validador de contraseña del formulario y contraseña encriptada (TRUE/FALSE)
 export const isValidPassword = (password, user)=>{
     return bcrypt.compareSync(password,user.password);
+};
+
+
+//Generador de productos
+const customFaker = new Faker({
+    locale:[es]
+});
+const {commerce, image, string, datatype} = customFaker;
+
+export const generateProduct = ()=>{
+    return {
+        title:commerce.product(),
+        description:commerce.productAdjective(),
+        price:commerce.price({ min: 10, max: 999 }),
+        code:string.alphanumeric(10),
+        status:datatype.boolean(0.5),
+        thumbnail:image.urlPicsumPhotos(),
+        stock:parseInt(string.numeric(2)),
+        category:commerce.department()
+    }
 };

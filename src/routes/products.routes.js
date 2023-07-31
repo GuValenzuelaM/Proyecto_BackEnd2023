@@ -18,4 +18,7 @@ router.delete("/:pid", ProductsController.deleteProducts);
 //Modificar productos (Administrador)
 router.put("/:pid", ProductsController.updateProducts);
 
+//Mocking (Administrador)
+router.get("/mockingproducts", ProductsController.mockingProducts);
+
 export {router as productsRouter};

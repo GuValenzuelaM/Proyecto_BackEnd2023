@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import { config } from "./config.js"
-//import { config } from "dotenv";
-
+//import { confi } from "dotenv";
 
 // Función de conexión a base de datos MongoDB
 export const connectDB = async()=>{

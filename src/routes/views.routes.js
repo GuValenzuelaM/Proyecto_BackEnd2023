@@ -16,13 +16,15 @@ router.get("/profile", isLoggedIn, ViewsController.renderProfile);
 
 //Carrito del usuario activo
 router.get("/user-cart", isLoggedIn, ViewsController.getCartById);
-//router.get("/carts/:cid"", isLoggedIn, ViewsController.getCart);
 
 //Registro
 router.get("/signup", ViewsController.renderSignup);
 
 //Inicio de Sesión
 router.get("/login", ViewsController.renderLogin);
+
+//Mocking
+router.get("/mockingproducts", ViewsController.mockingProducts);
 
 export {router as viewsRouter};
 

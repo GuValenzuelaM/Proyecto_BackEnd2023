@@ -1,4 +1,10 @@
 import {ProductsService} from "../repository/products.services.js";
+import {generateProduct} from "../utils.js";
+
+//Estructura standard del error
+import {CustomError} from "../services/error/customError.service.js";
+//Tipos de errores
+import {EError} from "../enums/EError.js"; 
 
 export class ProductsController{ 
 
@@ -7,7 +13,13 @@ export class ProductsController{
         try {
             const {limit=5,page=1,sort="asc",category,stock} = req.query;
             if(!["asc","desc"].includes(sort)){
-                return res.json({status:"error", message:"ordenamiento no valido, solo puede ser asc o desc"})
+                CustomError.createError({
+                    name: "Error al obtener productos",
+                    cause: "Error",
+                    message: "Ordenamiento no válido, solo puede ser asc o desc",
+                    errorCode: EError.INVALID_PARAMS
+                });
+                //return res.json({status:"error", message:"ordenamiento no valido, solo puede ser asc o desc"})
             };
             const sortValue = sort === "asc" ? 1 : -1;
             const stockValue = stock === 0 ? undefined : parseInt(stock);
@@ -50,7 +62,26 @@ export class ProductsController{
             }
             res.json(response)
         } catch (error) {
-            res.json({status:"error", message:error.message});
+            //res.json({status:"error", message:error.message});
+            switch (error.code) {
+                case EError.ROUTING_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.DATABASE_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.AUTH_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.INVALID_JSON:
+                    res.json({status:"error",message:error.message});
+                break;
+                case EError.INVALID_PARAMS:
+                    res.json({status:"error", message: error.message});
+                break;
+                default:
+            break; 
+            }
         }
     };
     
@@ -63,10 +94,35 @@ export class ProductsController{
                 const productId = await ProductsService.getProductById(id);
                 res.json({status:"success", data: productId});
             }else{
-                res.status(400).json({status: "error", data: "el id no es un numero"});
+                //res.status(400).json({status: "error", data: "el id no es un numero"});
+                CustomError.createError({
+                    name: "Error al obtener el producto",
+                    cause: "Error",
+                    message: "El id no es un numero",
+                    errorCode: EError.INVALID_PARAMS
+                });
             } 
         }catch(error){
-            res.status(400).json({status: "error", data: error.message});
+            //res.status(400).json({status: "error", data: error.message});
+            switch (error.code) {
+                case EError.ROUTING_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.DATABASE_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.AUTH_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.INVALID_JSON:
+                    res.json({status:"error",message:error.message});
+                break;
+                case EError.INVALID_PARAMS:
+                    res.json({status:"error", message: error.message});
+                break;
+                default:
+            break;
+            }
         } 
     };
 
@@ -77,7 +133,26 @@ export class ProductsController{
             const productCreated = await ProductsService.createProduct(productInfo);
             res.json({status:"success", data:productCreated});
         } catch (error) {
-            res.json({status:"error", message:error.message});
+            //res.json({status:"error", message:error.message});
+            switch (error.code) {
+                case EError.ROUTING_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.DATABASE_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.AUTH_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.INVALID_JSON:
+                    res.json({status:"error",message:error.message});
+                break;
+                case EError.INVALID_PARAMS:
+                    res.json({status:"error", message: error.message});
+                break;
+                default:
+            break;
+            }
         }
     };
 
@@ -89,11 +164,35 @@ export class ProductsController{
                 const deleteProduct = await ProductsService.deleteProducts(id);
                 res.json({status: "success", data: "Se ha eliminado el producto con el id: " + deleteProduct})
             }else{
-                res.status(400).json("Error, el id no es un número");
+                //res.status(400).json("Error, el id no es un número");
+                CustomError.createError({
+                    name: "Error al actualizar el producto",
+                    cause: "Error",
+                    message: "Error, el id no es un número",
+                    errorCode: EError.INVALID_PARAMS
+                });
             } 
         }catch(error){
-            res.status(400).json({status: "error", data: error.message});
-        }
+            //res.status(400).json({status: "error", data: error.message});
+            switch (error.code) {
+                case EError.ROUTING_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.DATABASE_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.AUTH_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.INVALID_JSON:
+                    res.json({status:"error",message:error.message});
+                break;
+                case EError.INVALID_PARAMS:
+                    res.json({status:"error", message: error.message});
+                break;
+                default:
+            break;
+        }}
     };
     
     //Función para actualizar un producto
@@ -105,11 +204,68 @@ export class ProductsController{
                 const update = await ProductsService.updateProduct(id, product);
                 res.json({status: "success", data: update})
             }else{
-                res.status(400).json("Error, ID del producto no ha sido encontrado");
+                //res.status(400).json("Error, ID del producto no ha sido encontrado");
+                CustomError.createError({
+                    name: "Error al actualizar el producto",
+                    cause: "Error",
+                    message: "El id no es valido",
+                    errorCode: EError.INVALID_PARAMS
+                });
             } 
         }catch(error){
-            res.status(400).json({status: "error", data: error.message});
+            //res.status(400).json({status: "error", data: error.message});
+            switch (error.code) {
+                case EError.ROUTING_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.DATABASE_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.AUTH_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.INVALID_JSON:
+                    res.json({status:"error",message:error.message});
+                break;
+                case EError.INVALID_PARAMS:
+                    res.json({status:"error", message: error.message});
+                break;
+                default:
+            break;
+            }
         }
-    
     };
+    
+    //Mocking
+    static mockingProducts = async(req, res)=>{
+        try {
+            let Products = []
+            for(let i=0;i<101;i++){
+                const randomProducts = generateProduct();
+                Products.push(randomProducts);
+            }
+            res.json({status:"success", data:Products});
+        } catch (error) {
+            //res.json({status:"error", data: error.message});
+            switch (error.code) {
+                case EError.ROUTING_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.DATABASE_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.AUTH_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.INVALID_JSON:
+                    res.json({status:"error",message:error.message});
+                break;
+                case EError.INVALID_PARAMS:
+                    res.json({status:"error", message: error.message});
+                break;
+                default:
+            break;
+            }
+        }
+    }
 };

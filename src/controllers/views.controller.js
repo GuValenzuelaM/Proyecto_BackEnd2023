@@ -1,5 +1,6 @@
 import {CartsService} from "../repository/cart.services.js";
 import {ProductsService} from "../repository/products.services.js";
+import {generateProduct} from "../utils.js";
 
 export class ViewsController{
     static renderHome = (req,res)=>{
@@ -82,4 +83,21 @@ export class ViewsController{
     static getCartById = async(req,res)=>{
         res.json(req.user.cart);
     }
+
+    //Mocking
+    static mockingProducts = async (req, res) => {
+        try {
+            let Products = [];
+            for (let i = 0; i < 101; i++) {
+                const randomProduct = generateProduct();
+                Products.push(randomProduct);
+            }
+    
+            // Renderizar la plantilla "mocking.hbs" con la variable 'Products'
+            res.render("mocking", { Products });
+        } catch (error) {
+            res.json({ status: "error", data: error.message });
+        }
+    };
+    
 }
