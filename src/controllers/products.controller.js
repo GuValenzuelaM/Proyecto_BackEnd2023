@@ -5,6 +5,7 @@ import {generateProduct} from "../utils.js";
 import {CustomError} from "../services/error/customError.service.js";
 //Tipos de errores
 import {EError} from "../enums/EError.js"; 
+import {ErrorServices} from "../services/error/errorInfo.service.js";
 
 export class ProductsController{ 
 
@@ -13,13 +14,13 @@ export class ProductsController{
         try {
             const {limit=5,page=1,sort="asc",category,stock} = req.query;
             if(!["asc","desc"].includes(sort)){
+                //return res.json({status:"error", message:"ordenamiento no valido, solo puede ser asc o desc"})
                 CustomError.createError({
                     name: "Error al obtener productos",
-                    cause: "Error",
+                    cause: ErrorServices.orderError(sort),
                     message: "Ordenamiento no válido, solo puede ser asc o desc",
                     errorCode: EError.INVALID_PARAMS
                 });
-                //return res.json({status:"error", message:"ordenamiento no valido, solo puede ser asc o desc"})
             };
             const sortValue = sort === "asc" ? 1 : -1;
             const stockValue = stock === 0 ? undefined : parseInt(stock);
@@ -97,8 +98,8 @@ export class ProductsController{
                 //res.status(400).json({status: "error", data: "el id no es un numero"});
                 CustomError.createError({
                     name: "Error al obtener el producto",
-                    cause: "Error",
-                    message: "El id no es un numero",
+                    cause: ErrorServices.productIdError(id),
+                    message: "el id no es un numero",
                     errorCode: EError.INVALID_PARAMS
                 });
             } 
@@ -167,8 +168,8 @@ export class ProductsController{
                 //res.status(400).json("Error, el id no es un número");
                 CustomError.createError({
                     name: "Error al actualizar el producto",
-                    cause: "Error",
-                    message: "Error, el id no es un número",
+                    cause: ErrorServices.productIdError(id),
+                    message: "el id no es un numero",
                     errorCode: EError.INVALID_PARAMS
                 });
             } 
@@ -207,8 +208,8 @@ export class ProductsController{
                 //res.status(400).json("Error, ID del producto no ha sido encontrado");
                 CustomError.createError({
                     name: "Error al actualizar el producto",
-                    cause: "Error",
-                    message: "El id no es valido",
+                    cause: ErrorServices.productIdError(id),
+                    message: "el id no es un numero",
                     errorCode: EError.INVALID_PARAMS
                 });
             } 

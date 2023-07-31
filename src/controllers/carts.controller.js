@@ -27,7 +27,13 @@ export class CartsController{
             const result = await CartsService.deleteCart(cartId);
             res.json({ status: "success", mensaje: "Carrito eliminado" });
         } catch (error) {
-            res.status(400).json({ status: "error", mensaje: error.message });
+            //res.status(400).json({ status: "error", mensaje: error.message });
+            CustomError.createError({
+                name: "Error al actualizar el producto",
+                cause: ErrorServices.cartIdError(cartId),
+                message: "Id del carrito no valido",
+                errorCode: EError.INVALID_PARAMS
+            });
         }
     };
     
@@ -38,7 +44,13 @@ export class CartsController{
             const cart = await CartsService.getCartById(cartId);
             res.json({status:"success", data:cart});
         } catch (error) {
-            res.json({status:"error", message:error.message});
+            //res.json({status:"error", message:error.message});
+            CustomError.createError({
+                name: "Error al actualizar el producto",
+                cause: ErrorServices.cartIdError(cartId),
+                message: "Id del carrito no valido",
+                errorCode: EError.INVALID_PARAMS
+            });
         }
     };
 
@@ -50,7 +62,13 @@ export class CartsController{
             const result = await CartsService.addProductToCart(cartId, productId);
             res.json({ status: "success", mensaje: "Producto agregado al carrito" });
         } catch (error) {
-            res.status(400).json({ status: "error", mensaje: error.message });
+            //res.status(400).json({ status: "error", mensaje: error.message });
+            CustomError.createError({
+                name: "Error al actualizar el producto",
+                cause: ErrorServices.addProductIdError(cartId,productId),
+                message: "No se pudo agregar el producto",
+                errorCode: EError.INVALID_PARAMS
+            });
         }
     };
 
@@ -62,7 +80,13 @@ export class CartsController{
             const result = await CartsService.deleteProductFromCart(cartId, productId);
             res.json({ status: "success", mensaje: "Producto eliminado del carrito" });
         } catch (error) {
-            res.status(400).json({ status: "error", mensaje: error.message });
+            //res.status(400).json({ status: "error", mensaje: error.message });
+            CustomError.createError({
+                name: "Error al actualizar el producto",
+                cause: ErrorServices.deleteProductIdError(cartId,productId),
+                message: "No se pudo agregar el producto",
+                errorCode: EError.INVALID_PARAMS
+            });
         }
     };
 
@@ -73,7 +97,13 @@ export class CartsController{
             const result = await CartsService.updateCart(cartId);
             res.json({ status: "success", mensaje: "Carrito actualizado", data: result });
         } catch (error) {
-            res.status(400).json({ status: "error", message: error.message });
+            //res.status(400).json({ status: "error", message: error.message });
+            CustomError.createError({
+                name: "Error al actualizar el producto",
+                cause: ErrorServices.updateCartIdError(cartId),
+                message: "No se pudo agregar el producto",
+                errorCode: EError.INVALID_PARAMS
+            });
         }
     };
 
@@ -86,7 +116,13 @@ export class CartsController{
             const result = await CartsService.updateQuantity(cartId, productId, quantity);
             res.json({ status: "success", mensaje: "Cantidad del producto actualizada" });
         } catch (error) {
-            res.status(400).json({ status: "error", mensaje: error.message });
+            //res.status(400).json({ status: "error", mensaje: error.message });
+            CustomError.createError({
+                name: "Error al actualizar la cantidad del producto",
+                cause: ErrorServices.updateQuantityError(cartId,productId,quantity),
+                message: "No se pudo moficar la cantidad del producto",
+                errorCode: EError.INVALID_PARAMS
+            });
         }
     };
     

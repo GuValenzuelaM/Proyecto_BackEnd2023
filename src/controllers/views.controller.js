@@ -1,6 +1,11 @@
 import {CartsService} from "../repository/cart.services.js";
 import {ProductsService} from "../repository/products.services.js";
 import {generateProduct} from "../utils.js";
+//Estructura standard del error
+import {CustomError} from "../services/error/customError.service.js";
+//Tipos de errores
+import {EError} from "../enums/EError.js"; 
+import {ErrorServices} from "../services/error/errorInfo.service.js";
 
 export class ViewsController{
     static renderHome = (req,res)=>{
@@ -25,7 +30,13 @@ export class ViewsController{
         try {
             const {limit=5,page=1,sort="asc",category,stock} = req.query;
             if(!["asc","desc"].includes(sort)){
-                res.json({status:"error", message:"ordenamiento no valido, solo puede ser asc o desc"});
+                //return res.json({status:"error", message:"ordenamiento no valido, solo puede ser asc o desc"})
+                CustomError.createError({
+                    name: "Error al obtener productos",
+                    cause: ErrorServices.orderError(sort),
+                    message: "ordenamiento no valido, solo puede ser asc o desc",
+                    errorCode: EError.INVALID_PARAMS
+                });
             };
             const sortValue = sort === "asc" ? 1 : -1;
             const stockValue = stock === 0 ? undefined : parseInt(stock);
@@ -70,7 +81,26 @@ export class ViewsController{
             res.render("products",response);
             console.log("response: ", response.payload);
         } catch (error) {
-            res.json({status:"error", message:error.message});
+            //res.json({status:"error", message:error.message});
+            switch (error.code) {
+                case EError.ROUTING_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.DATABASE_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.AUTH_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.INVALID_JSON:
+                    res.json({status:"error",message:error.message});
+                break;
+                case EError.INVALID_PARAMS:
+                    res.json({status:"error", message: error.message});
+                break;
+                default:
+            break; 
+            }
         }
     };
 
@@ -96,8 +126,26 @@ export class ViewsController{
             // Renderizar la plantilla "mocking.hbs" con la variable 'Products'
             res.render("mocking", { Products });
         } catch (error) {
-            res.json({ status: "error", data: error.message });
+            //res.json({ status: "error", data: error.message });
+            switch (error.code) {
+                case EError.ROUTING_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.DATABASE_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.AUTH_ERROR:
+                    res.json({status:"error", message:error.message});
+                break;
+                case EError.INVALID_JSON:
+                    res.json({status:"error",message:error.message});
+                break;
+                case EError.INVALID_PARAMS:
+                    res.json({status:"error", message: error.message});
+                break;
+                default:
+            break; 
+            }
         }
-    };
-    
+    };    
 }
