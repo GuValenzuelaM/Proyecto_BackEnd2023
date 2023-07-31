@@ -7,8 +7,12 @@ export class CartsService {
         return cartsDao.createCart(cart);
     };
     //OBTIENE UN CARRITO POR SU ID
-    static async getCartById(id) {
-        return cartsDao.getCartById(id);
+    static async getCartById(cartId) {
+        return cartsDao.getCartById(cartId);
+    };
+    //OBTIENE LOS PRODUCTOS DENTRO DE UN CARRITO
+    static async getProductsFromCart(cartId) {
+        return cartsDao.getProductsFromCart(cartId);
     };
     //ACTUALIZA UN CARRITO
     static async updateCart(cartId) {

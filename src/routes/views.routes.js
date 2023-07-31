@@ -15,7 +15,10 @@ router.get("/products", isLoggedIn, ViewsController.getProducts);
 router.get("/profile", isLoggedIn, ViewsController.renderProfile);
 
 //Carrito del usuario activo
-router.get("/user-cart", isLoggedIn, ViewsController.getCartById);
+//router.get("/user-cart", isLoggedIn, ViewsController.getCartById);
+
+//PRUEBA
+router.get("/cart", isLoggedIn, ViewsController.getCart);
 
 //Registro
 router.get("/signup", ViewsController.renderSignup);

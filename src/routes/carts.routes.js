@@ -1,5 +1,6 @@
 import {CartsController} from "../controllers/carts.controller.js"
 import {Router} from "express";
+import {verifyUserCart} from "../middlewares/auth.js"
 
 const router = Router();
 
@@ -7,25 +8,25 @@ const router = Router();
 router.post("/", CartsController.createCart);
 
 //Elima producto del carrito
-router.delete("/:cid", CartsController.deleteCart);
+router.delete("/:cid", verifyUserCart, CartsController.deleteCart);
 
 //Muestra los productos que se encuentran en el carrito
 router.get("/:cid", CartsController.getCartById);
 
 //Agrega productos al carrito
-//router.post("/:cid/product/:pid",CartsController.addProductToCart);
-router.put("/:cid/:pid",CartsController.addProductToCart);
+//router.post("/:cid/product/:pid",verifyUserCart, CartsController.addProductToCart);
+router.put("/:cid/:pid", verifyUserCart, CartsController.addProductToCart);
 
 //Elima producto del carrito
-router.delete("/:cid/:pid", CartsController.deleteProductFromCart);
+router.delete("/:cid/:pid", verifyUserCart, CartsController.deleteProductFromCart);
 
 //Actualiza carrito
-router.put("/:cid", CartsController.updateCart);
+router.put("/:cid", verifyUserCart, CartsController.updateCart);
 
 //Actualiza cantidad de un producto
-router.put("/:cid/product/:pid", CartsController.updateQuantity);
+router.put("/:cid/product/:pid", verifyUserCart, CartsController.updateQuantity);
 
 //Elima producto del carrito
-router.post("/:cid/purchase", CartsController.processPurchase)
+router.post("/:cid/purchase", verifyUserCart, CartsController.processPurchase)
 
 export{router as cartsRouter};

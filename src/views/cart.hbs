@@ -1,27 +1,18 @@
-
-<div>   
-        <div>
-            <a href="/">Inicio</a>
-            <a href="/products?page=1">Productos</a></a>
-            <a href="/profile">Perfil</a>
-        </div>
-    {{#if _id}}
-        <h1>Carrito</h1>
-        {{#if products}}
-            <h2>Lista de productos</h2>
-            {{#each products}}
-                <div>
-                    <p>{{this.productId.title}}</p>
-                    <li>id: {{this._id}}</li>
-                    <li>Cantidad: {{this.quantity}}</li>
-                    <li>Price: {{this.productId.price}}</li>
-                </div>
-            {{/each}}
-        {{else}}
-            No hay productos en el carrito
-        {{/if}}
-    {{else}}
-        <p>El carrito no existe</p>
-    {{/if}}
+<div>
+    <a href="/">Inicio</a>
+    <a href="/profile">Perfil</a>
+    <a href="/products?page=1">Productos</a></a>
+</div>
+<br/>
+<h1>Carrito</h1>
+<br/>
+{{#if _id}}
+    <h2>Productos del carrito</h2>
+    {{#each products}}
+        <p>{{this.productId.title}}</p>
+    {{/each}}
+{{else}}
+    <p>Este carrito no existe</p>
+{{/if}}
 
 <script src="js/carts.js"></script>

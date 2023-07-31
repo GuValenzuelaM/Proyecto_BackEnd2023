@@ -106,13 +106,21 @@ export class ViewsController{
 
     //Entrega carro del usuario activo 
     static getCart = async(req,res)=>{
-        res.json(req.user.cart)
-    }
+        try {
+            const id = req.params.cid;
+            const cart = await CartsService.getCartById(id);
+            const products = cart.products;
+            res.render("cart", {products});
+        } catch (error) {
+            res.status(400).json({status: "error", data: error.message});
+        }  
+    };
 
-    //PRUEBA
+    /*
     static getCartById = async(req,res)=>{
         res.json(req.user.cart);
     }
+    */
 
     //Mocking
     static mockingProducts = async (req, res) => {

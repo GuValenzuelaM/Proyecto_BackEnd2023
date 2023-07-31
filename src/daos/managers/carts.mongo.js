@@ -19,7 +19,8 @@ import {cartsModel} from "../models/carts.model.js";
     //Obtiene carrito de compras por su ID en la base de datos (mongoose)
     async getCartById(cartId){
         try {
-            const result = await this.model.findOne({_id:cartId});
+            const result = await this.model.findOne({cartId});
+            console.log(result);
             if(!result){
                 throw new Error(`No se encontro el carrito ${error.message}`);
             }
@@ -28,6 +29,18 @@ import {cartsModel} from "../models/carts.model.js";
             return data;
         } catch (error) {
             throw new Error(`Error create cart ${error.message}`);
+        }
+    };
+
+    //Obtiene carrito de compras con sus productos
+    async getProductsFromCart(cartId){
+        try {
+            const cartId = req.params.cid;
+            const cart = await cartsService.get(cartId);
+            console.log(cart);
+            res.render("cart",cart);
+        } catch (error) {
+            res.json({status:"error", message:error.message});
         }
     };
 

@@ -27,7 +27,7 @@ const verifyUserCart = (req, res, next) => {
     if (userRole === "user" && userCart === requestedCart) {
         next(); // El usuario es dueño del carrito, pasamos al siguiente middleware o ruta
     } else {
-        res.send('No tienes permisos para modificar el carrito. <a href="/home">Volver a inicio</a>');
+        res.send('No cuentas con los permisos para realizar esta acción. <a href="/home">Volver a inicio</a>');
     }
 };
 

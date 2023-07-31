@@ -1,5 +1,4 @@
 //Controller de carritos
-
 import {CartsService} from "../repository/cart.services.js";
 import {ProductsService} from "../repository/products.services.js";
 import {TicketService} from "../repository/ticket.services.js";
@@ -129,74 +128,73 @@ export class CartsController{
     //Proceso de compra para un carrito
     static processPurchase = async (req, res) => {
         try {
-          //Busca el carrito de compras según ID
-          const cartId = req.params.cid;
-          //Obtiene el carrito de compras por su ID
-          const cart = await CartsService.getCartById(cartId);
+        //Busca el carrito de compras según ID
+        const cartId = req.params.cid;
+        //Obtiene el carrito de compras por su ID
+        const cart = await CartsService.getCartById(cartId);
+
+        //Verificación del carrito, rectifica que tenga productos
+        if (cart.products.length === 0) {
+        //Respuesta de error en caso que el carro este vacío
+        res.status(400).json({ status: "error", message: "El carrito está vacío." });
+        return;
+        }
       
-          //Verificación del carrito, rectifica que tenga productos
-          if (cart.products.length === 0) {
-            //Respuesta de error en caso que el carro este vacío
-            res.status(400).json({ status: "error", message: "El carrito está vacío." });
-            return;
-          }
+        const productsApproved = [];
+        const productsRejected = [];
       
-          const productsApproved = [];
-          const productsRejected = [];
+        //Recorre los productos del carrito
+        for (const productItem of cart.products) {
+        const productId = productItem.productId;
+        const productQ = productItem.quantity;
       
-          //Recorre los productos del carrito
-          for (const productItem of cart.products) {
-            const productId = productItem.productId;
-            const productQ = productItem.quantity;
+        //Busca la información del producto según el ID
+        const product = await ProductsService.getProductById(productId);
+        if (!product) {
+            //Agrega el producto rechazado si no esta en la BD
+            productsRejected.push(productId);
+            continue;
+        }
       
-            //Busca la información del producto según el ID
-            const product = await ProductsService.getProductById(productId);
-            if (!product) {
-              //Agrega el producto rechazado si no esta en la BD
-              productsRejected.push(productId);
-              continue;
-            }
-      
-            if (product.stock >= productQ) {
-              //Actualiza el stock de cada producto
-              await ProductsService.updateProductStock(productId, product.stock - productQ);
-              //Agrega precio total del producto a todos los aprobados
-              productsApproved.push(product.price * productQ);
+            if(product.stock >= productQ) {
+                //Actualiza el stock de cada producto
+                await ProductsService.updateProductStock(productId, product.stock - productQ);
+                //Agrega precio total del producto a todos los aprobados
+                productsApproved.push(product.price * productQ);
             } else {
-              //Agrega el producto rechazado si el stock es insuficiente
-              productsRejected.push(productId);
+                //Agrega el producto rechazado si el stock es insuficiente
+                productsRejected.push(productId);
             }
-          }
+        }
       
-          if (productsApproved.length === 0) {
+        if (productsApproved.length === 0) {
             //Responde con un error en caso de no procesar la compra de ningún producto
             res.json({ status: "error", message: "No se pudo procesar ningún producto." });
             return;
-          }
+        }
       
-          const today = new Date();
-          const totalAmount = productsApproved.reduce((a, b) => a + b, 0);
+        const today = new Date();
+        const totalAmount = productsApproved.reduce((a, b) => a + b, 0);
       
-          const ticket = { code: "x", purchaseDatetime: today, amount: totalAmount };
-          //Creación de ticket de compra
-          const createdTicket = await TicketService.createTicket(ticket);
+        const ticket = { code: "x", purchaseDatetime: today, amount: totalAmount };
+        //Creación de ticket de compra
+        const createdTicket = await TicketService.createTicket(ticket);
       
-          if (productsRejected.length > 0) {
-            //Responde con mensaje de compra exitosa y productos rechazados
+        if (productsRejected.length > 0) {
+        //Responde con mensaje de compra exitosa y productos rechazados
             res.json({
-              status: "success",
-              message: `Compra parcialmente exitosa. Ticket: ${createdTicket}. Algunos productos no pudieron ser procesados.`,
+            status: "success",
+            message: `Compra parcialmente exitosa. Ticket: ${createdTicket}. Algunos productos no pudieron ser procesados.`,
             });
-          } else {
+        } else {
             //Respuesta de compra exitosa
             res.json({ status: "success", message: `Compra exitosa. Ticket: ${createdTicket}` });
-          }
-        } catch (error) {
-          //Respuesta de error
-          res.status(400).json({ status: "error", message: error.message });
         }
-    };
-    
+        } catch (error) {
+            //Respuesta de error
+            res.status(400).json({ status: "error", message: error.message });
+        }
+    };   
 }
 
 /*
