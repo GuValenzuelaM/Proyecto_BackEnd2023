@@ -1,4 +1,6 @@
-console.log("Archivo JS RealTimeProducts");
+import {logger} from "../../utils/logger.js";
+
+logger.debug("Archivo JS RealTimeProducts");
 const socketClient = io();
 
 //DATOS DE CADA PRODUCTO
@@ -37,7 +39,7 @@ deleteProduct.addEventListener("click", (e)=>{
 });
 
 socketClient.on("totalProductsMessage", (data)=>{
-    console.log(data);
+    logger.info(data);
     
     getProducts.innerHTML = "";
     data.forEach(element => {

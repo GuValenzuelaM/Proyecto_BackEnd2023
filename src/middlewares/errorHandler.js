@@ -1,7 +1,8 @@
 import {EError} from "../enums/EError.js";
+import {logger} from "../utils/logger.js";
 
 export const errorHandler = (error,req,res,next)=>{
-    console.log("Code Error: ", error.code);
+    logger.error("Code Error: ", error.code);
     switch (error.code) {
         case EError.ROUTING_ERROR:
             res.json({status:"error",message:error.message});

@@ -6,6 +6,7 @@ import {CustomError} from "../services/error/customError.service.js";
 //Tipos de errores
 import {EError} from "../enums/EError.js"; 
 import {ErrorServices} from "../services/error/errorInfo.service.js";
+import {logger} from "../utils/logger.js";
 
 export class ViewsController{
     static renderHome = (req,res)=>{
@@ -40,7 +41,7 @@ export class ViewsController{
             };
             const sortValue = sort === "asc" ? 1 : -1;
             const stockValue = stock === 0 ? undefined : parseInt(stock);
-            console.log("limit: ", limit, "page: ", page, "sortValue: ", sortValue, "category: ", category, "stock: ", stock);
+            logger.info("limit: ", limit, "page: ", page, "sortValue: ", sortValue, "category: ", category, "stock: ", stock);
             let query = {};
             if(category && stockValue){
                 query = {category: category, stock:stockValue}
@@ -79,7 +80,7 @@ export class ViewsController{
                 nextLink: result.hasNextPage ? `${baseUrl}?page=${result.nextPage}` : null,
             }
             res.render("products",response);
-            console.log("response: ", response.payload);
+            logger.info("response: ", response.payload);
         } catch (error) {
             //res.json({status:"error", message:error.message});
             switch (error.code) {
@@ -155,5 +156,17 @@ export class ViewsController{
             break; 
             }
         }
-    };    
+    };   
+    
+    //Logger
+    static logger =  async(req,res)=>{
+        logger.debug("Nivel Debug");
+        logger.http("Nivel Http");
+        logger.info("Nivel informativo");
+        logger.warning("Nivel Warning");
+        logger.error("Nivel Error")
+        logger.fatal("Nivel Fatal")
+        res.send("Logger Activo");
+    }
+
 }

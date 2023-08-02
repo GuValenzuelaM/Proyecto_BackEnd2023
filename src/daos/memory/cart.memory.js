@@ -1,6 +1,7 @@
 import {__dirname} from "../../utils.js";
 import {options} from "../../config/options.js";
 import path from "path";
+import {logger} from "../../utils/logger.js";
 
 export class CartFiles{
     constructor(){
@@ -85,7 +86,7 @@ export class CartFiles{
                 if (existingCart) {
                     // Si el carrito existe
                     const productIndex = existingCart.products.findIndex(prod => prod.product === parseInt(productId));
-                    console.log(productId, productIndex);
+                    logger.debug(productId, productIndex);
                     if (productIndex >= 0) {
                         existingCart.products[productIndex].quantity++;
                     } else {

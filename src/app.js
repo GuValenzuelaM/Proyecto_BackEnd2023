@@ -17,11 +17,13 @@ import passport from "passport";
 import { initializePassport} from "./config/passport.config.js";
 import {config} from "./config/config.js"
 import { sessionsRouter } from "./routes/sessions.routes.js";
+import cors from "cors";
+import {logger} from "./utils/logger.js";
 
 const app =express();
 const port = config.server.port; 
 
-app.listen(port,()=>console.log(`Server listening on port ${port}`));
+app.listen(port,()=>logger.info(`Server listening on port ${port}`));
 connectDB();
 
 //MIDLEWARES:

@@ -1,4 +1,5 @@
 import {cartsModel} from "../models/carts.model.js";
+import {logger} from "../../utils/logger.js"
 
  export class CartsMongo{
     constructor(){
@@ -20,7 +21,7 @@ import {cartsModel} from "../models/carts.model.js";
     async getCartById(cartId){
         try {
             const result = await this.model.findOne({cartId});
-            console.log(result);
+            logger.debug(result);
             if(!result){
                 throw new Error(`No se encontro el carrito ${error.message}`);
             }
@@ -37,7 +38,7 @@ import {cartsModel} from "../models/carts.model.js";
         try {
             const cartId = req.params.cid;
             const cart = await cartsService.get(cartId);
-            console.log(cart);
+            logger.debug(cart);
             res.render("cart",cart);
         } catch (error) {
             res.json({status:"error", message:error.message});
@@ -68,18 +69,18 @@ import {cartsModel} from "../models/carts.model.js";
                 // El producto ya está presente en el carrito, sumar 1 a quantity
                 cart.products[existingProductIndex].quantity += 1;
                 const result = await this.model.findByIdAndUpdate(cartId,cart,{new:true});
-                console.log(`Se ha agregado el producto ${productId} a tu carro ${cartId}`);
+                logger.debug(`Se ha agregado el producto ${productId} a tu carro ${cartId}`);
                 return result;
             } else {
                 // El producto no estaba en el carrito, agregarlo con quantity igual a 1
                 cart.products.push({ productId: productId, quantity: 1 });
                 const result = await this.model.findByIdAndUpdate(cartId,cart,{new:true});
-                console.log(`Se ha agregado el producto ${productId} a tu carro ${cartId}`);
+                logger.debug(`Se ha agregado el producto ${productId} a tu carro ${cartId}`);
                 return cart;
             }  
         } catch (error) {
             throw new Error(`Error al agregar producto al carrito ${error.message}`);
-            console.log("error")
+            logger.error("error")
         }
     }
 
@@ -97,16 +98,16 @@ import {cartsModel} from "../models/carts.model.js";
                 cart.products.splice(existingProductIndex, 1);
                 }
                 const result = await this.model.findByIdAndUpdate(cartId,cart,{new:true});
-                console.log(`Se ha eliminado una unidad del producto ${productId} a tu carro ${cartId}`);
+                logger.debug(`Se ha eliminado una unidad del producto ${productId} a tu carro ${cartId}`);
                 return result;
             } else {
                     // El producto no estaba en el carrito
-                    console.log(`El producto ${productId} no se encontró en el carrito ${cartId}`);
+                    logger.debug(`El producto ${productId} no se encontró en el carrito ${cartId}`);
                     return cart;
             }  
         } catch (error) {
             throw new Error(`Error al eliminar producto en carrito ${error.message}`);
-            console.log("error")
+            logger.error(error.message)
         }
     }        
     
@@ -134,7 +135,7 @@ import {cartsModel} from "../models/carts.model.js";
             //Incrementar/Disminuye la cantidad del producto usando $inc en arreglo "products".
             { $inc: { "products.$.quantity": quantity } },
             { new: true });
-            console.log(updatedCart)
+            logger.debug(updatedCart)
           // Buscar y retornar el carrito actualizado con la información de los productos.
           const cartWithProductsInfo = await this.model.findById(cartId).populate('products.productId');
           return cartWithProductsInfo;
@@ -151,16 +152,16 @@ import {cartsModel} from "../models/carts.model.js";
             // Si el carrito no existe entrega mensaje de error
             if (!carrito) {
                 throw new Error("El carrito no existe");
-                console.log("El carrito no existe");
+                logger.debug("El carrito no existe");
             } else{
                 //Caso contrario devuelve el carro con la inforamción de los productos
                 return carrito;
-                console.log(carrito);
+                logger.debug(carrito);
             }
         } catch (error) {
             //Si el código falla, enterga mensaje de error
             throw new Error(`Error al obtener carrito ${error.message}`);
-            console.log("Error al obtener carrito");
+            logger.error("Error al obtener carrito");
         }
     };
 } 

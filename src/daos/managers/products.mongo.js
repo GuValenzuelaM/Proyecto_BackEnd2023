@@ -1,4 +1,5 @@
 import {productsModel} from "../models/products.model.js";
+import {logger} from "../../utils/logger.js";
 
  export class ProductsMongo{
     constructor(){
@@ -30,7 +31,7 @@ import {productsModel} from "../models/products.model.js";
                 throw new Error(`No se ha encontrado el producto ID ${id}`)
             } else{
                 return JSON.parse(JSON.stringify(product));
-                console.log(`el producto ${id} existe en el arreglo de productos`)
+                logger.debug(`el producto ${id} existe en el arreglo de productos`)
             }
         } catch (error) {
             throw new Error(`Error al obtener producto ${error.message}`);
@@ -44,7 +45,7 @@ import {productsModel} from "../models/products.model.js";
                 throw new Error(`Producto no encontrado, ${error.message}`);
             } else{
                 return data;
-                console.log(data);
+                logger.debug(data);
             }
         } catch (error) {
             throw new Error(`Error al actualizar el producto ${error.message}`);

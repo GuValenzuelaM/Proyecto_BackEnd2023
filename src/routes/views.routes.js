@@ -29,6 +29,9 @@ router.get("/login", ViewsController.renderLogin);
 //Mocking
 router.get("/mockingproducts", ViewsController.mockingProducts);
 
+//Logger
+router.get("/loggerTest", ViewsController.logger);
+
 export {router as viewsRouter};
 
 

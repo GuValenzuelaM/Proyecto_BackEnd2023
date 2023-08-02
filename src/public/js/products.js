@@ -1,8 +1,10 @@
+import {logger} from "../../utils/logger.js";
+
 //Prueba de sincronización
-console.log("javascript products");
+logger.debug("javascript products");
 
 const addToCart = async(productId)=>{
-    console.log("Este sera el producto a agregar", productId);
+    logger.info("Este sera el producto a agregar", productId);
     fetch("http://localhost:8080/",{
 
     })

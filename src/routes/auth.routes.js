@@ -2,6 +2,7 @@ import {Router} from "express";
 import passport from "passport";
 import {createHash, isValidPassword} from "../utils.js";
 import {SessionsController} from "../controllers/sessions.controller.js";
+import {logger} from "../utils/logger.js";
 
 const router = Router(); 
 
@@ -38,7 +39,7 @@ router.get("/github-callback",
 router.post("/forgot", async(req,res)=>{
     try {
         const {email, newPassword} = req.body;
-        console.log("newPassword",newPassword)
+        logger.debug("newPassword",newPassword)
         const userDB = await userModel.findOne({email:email});
         if(userDB){
             //si el usuario esta registrado, restauramos la contraseña
@@ -49,7 +50,7 @@ router.post("/forgot", async(req,res)=>{
             res.send('<div>usuario no registrado, <a href="/signup">registrarse</a> o <a href="/forgot">intente de nuevo</a></div>');
         }
     } catch (error) {
-        console.log(error.message)
+        logger.error(error.message)
         res.send('<div>Hubo un error al restaurar la contraseña, <a href="/forgot">intente de nuevo</a></div>')
     }
 })

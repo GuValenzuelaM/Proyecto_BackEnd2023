@@ -5,6 +5,7 @@ import {userModel} from "../daos/models/users.model.js";
 import {userMongo} from "../daos/managers/users.mongo.js";
 import {CartsMongo} from "../daos/managers/carts.mongo.js"
 import { createHash, isValidPassword } from "../utils.js";
+import {logger} from "../utils/logger.js";
 
 const usersService = new userMongo();
 const cartService = new CartsMongo();
@@ -81,7 +82,7 @@ export const initializePassport = ()=>{
         },
         async(accesstoken,refreshtoken,profile,done)=>{
             try {
-                console.log("profile", profile);
+                logger.debug("profile", profile);
                 const user = await userModel.findOne({email:profile.username});
                 if(!user){
                     //Tipo de rol por defecto será "user"

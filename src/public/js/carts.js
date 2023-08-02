@@ -1,4 +1,6 @@
-console.log("carts");
+import {logger} from "../../utils/logger.js";
+
+logger.debug("carts");
 
 /*
 const addToCart = async(cartsId)=>{

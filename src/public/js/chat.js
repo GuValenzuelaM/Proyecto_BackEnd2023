@@ -1,4 +1,5 @@
 const socketClient = io();
+import {logger} from "../../utils/logger.js";
 
 const chatEmail = document.getElementById("chatEmail");
 const chatInput = document.getElementById("chatInput");
@@ -28,7 +29,7 @@ btn_sendMessage.addEventListener("click", ()=>{
 
 //historial de mensajes
 socketClient.on("MessageHistory", (data)=>{
-    console.log(data);
+    logger.info(data);
     
     getMessages.innerHTML = "";
     data.forEach(element => {

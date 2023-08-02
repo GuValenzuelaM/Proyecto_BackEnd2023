@@ -6,6 +6,7 @@ import {CustomError} from "../services/error/customError.service.js";
 //Tipos de errores
 import {EError} from "../enums/EError.js"; 
 import {ErrorServices} from "../services/error/errorInfo.service.js";
+import {logger} from "../utils/logger.js"
 
 export class ProductsController{ 
 
@@ -39,7 +40,7 @@ export class ProductsController{
             }
             // console.log("query: ", query)
             const baseUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
-            console.log("baseUrl", baseUrl);
+            logger.info("baseUrl", baseUrl);
             //baseUrl: http://localhost:8080/api/products
             const result = await ProductsService.getPaginate(query, {
                 page,

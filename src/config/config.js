@@ -13,7 +13,8 @@ export const config = {
     server:{
         port: process.env.PORT || 8080,
         secretSession: process.env.SECRET_SESION,
-        persistence: process.env.PERSISTENCE
+        persistence: process.env.PERSISTENCE,
+        appEnv: process.env.NODE_ENV || "development"
     },
     mongo:{
         // URL BD MongoDB

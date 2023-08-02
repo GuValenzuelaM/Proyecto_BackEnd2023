@@ -1,6 +1,7 @@
 import {__dirname} from "../../utils.js";
 import {options} from "../../config/options.js";
 import path from "path";
+import {logger} from "../../utils/logger.js";
 
 export class ProductsFiles{
     constructor(){
@@ -8,7 +9,7 @@ export class ProductsFiles{
     };
 
     fileExists(){
-       console.log(this.path)
+       logger.debug(this.path)
        return fs.existsSync(this.path);
    }
 
