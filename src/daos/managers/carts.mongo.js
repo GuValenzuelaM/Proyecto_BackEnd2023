@@ -20,16 +20,16 @@ import {logger} from "../../utils/logger.js"
     //Obtiene carrito de compras por su ID en la base de datos (mongoose)
     async getCartById(cartId){
         try {
-            const result = await this.model.findOne({cartId});
-            logger.debug(result);
+            const result = await this.model.findOne({_id:cartId});
             if(!result){
                 throw new Error(`No se encontro el carrito ${error.message}`);
             }
             //convertir el formato bson a json
-            const data = JSON.parse(JSON.stringify(result));
-            return data;
+            //const data = JSON.parse(JSON.stringify(result));
+            //return data;
+            return result;
         } catch (error) {
-            throw new Error(`Error create cart ${error.message}`);
+            throw new Error(`Error getCartById ${error.message}`);
         }
     };
 

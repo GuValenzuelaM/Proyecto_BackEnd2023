@@ -105,24 +105,24 @@ export class ViewsController{
         }
     };
 
+    
     //Entrega carro del usuario activo 
-    static getCart = async(req,res)=>{
+    static getCartById = async(req,res)=>{
+        const id = req.params.cid;
         try {
-            const id = req.params.cid;
-            const cart = await CartsService.getCartById(id);
-            const products = cart.products;
+            const cartId = await CartsService.getCartById(id);
+            const products = cartId.products;
             res.render("cart", {products});
         } catch (error) {
+            //logger.Error(error.message)
             res.status(400).json({status: "error", data: error.message});
         }  
     };
-
-    /*
-    static getCartById = async(req,res)=>{
+    
+    static getCartById2 = async(req,res)=>{
         res.json(req.user.cart);
     }
-    */
-
+    
     //Mocking
     static mockingProducts = async (req, res) => {
         try {

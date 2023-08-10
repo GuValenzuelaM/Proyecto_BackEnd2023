@@ -7,6 +7,7 @@ import {TicketService} from "../repository/ticket.services.js";
 import {CustomError} from "../services/error/customError.service.js";
 //Tipos de errores
 import {EError} from "../enums/EError.js"; 
+import {ErrorServices} from "../services/error/errorInfo.service.js"; 
 
 export class CartsController{
     //Crea un carrito usando CartsService
@@ -39,14 +40,14 @@ export class CartsController{
     //Función que obtiene carrito según ID
     static getCartById = async (req, res) => {
         try {
-            const cartId = req.params.cid;
-            const cart = await CartsService.getCartById(cartId);
-            res.json({status:"success", data:cart});
+            const cart = req.params.cid;
+            const cartId = await CartsService.getCartById(cart);
+            res.json({status:"success", data:cartId});
         } catch (error) {
             //res.json({status:"error", message:error.message});
             CustomError.createError({
                 name: "Error al actualizar el producto",
-                cause: ErrorServices.cartIdError(cartId),
+                cause: "Error",
                 message: "Id del carrito no valido",
                 errorCode: EError.INVALID_PARAMS
             });

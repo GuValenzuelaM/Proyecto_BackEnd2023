@@ -31,7 +31,7 @@ export const initializePassport = ()=>{
                             role="admin";
                         }
                         //Si no existe el usuario, lo registramos
-                        const cartUser = await cartService.addCart
+                        const cartUser = await cartService.createCart();
                         const newUser = {
                             first_name:userSignupForm.first_name,
                             last_name: userSignupForm.last_name,

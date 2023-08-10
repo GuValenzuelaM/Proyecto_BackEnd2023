@@ -16,7 +16,6 @@ export const isValidPassword = (password, user)=>{
     return bcrypt.compareSync(password,user.password);
 };
 
-
 //Generador de productos
 const customFaker = new Faker({
     locale:[es]

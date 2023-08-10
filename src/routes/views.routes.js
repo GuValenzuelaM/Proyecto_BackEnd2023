@@ -18,7 +18,8 @@ router.get("/profile", isLoggedIn, ViewsController.renderProfile);
 //router.get("/user-cart", isLoggedIn, ViewsController.getCartById);
 
 //PRUEBA
-router.get("/cart", isLoggedIn, ViewsController.getCart);
+router.get("/cart", isLoggedIn, ViewsController.getCartById);
+
 
 //Registro
 router.get("/signup", ViewsController.renderSignup);

@@ -49,7 +49,6 @@ const prodLogger = winston.createLogger({
     ]
 });
 
-
 let logger;
 if(config.server.appEnv === "development"){
     logger = devLogger;
