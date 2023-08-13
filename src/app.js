@@ -55,6 +55,7 @@ app.set('views', path.join(__dirname,"/views"));
 
 //ROUTES PARA PRODUCTOS Y CARRITOS
 app.use(viewsRouter); //ruta por defecto
+app.use("/api/sessions", sessionsRouter);
 app.use("/api/products",productsRouter);
 app.use("/api/carts",cartsRouter);
-app.use("/api/sessions", authRouter);
+app.use("/api/users",authRouter);

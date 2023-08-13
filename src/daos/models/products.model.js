@@ -12,6 +12,10 @@ const productsSchema = new mongoose.Schema({
         type:String,
         required:true,
         enum: ["Ropa","Tecnologia","Deportes"],
+    },
+    owner:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"users"
     }
 });
 productsSchema.plugin(mongoosePaginate);

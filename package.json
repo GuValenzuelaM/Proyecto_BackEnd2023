@@ -23,7 +23,7 @@
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.1",
     "mongodb": "^5.5.0",
-    "mongoose": "^7.4.2",
+    "mongoose": "^7.4.3",
     "mongoose-paginate-v2": "^1.7.31",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.4",
@@ -34,7 +34,7 @@
     "socket.io": "^4.7.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "twilio": "^4.14.1",
+    "twilio": "^4.15.0",
     "winston": "^3.10.0"
   },
   "devDependencies": {

@@ -9,7 +9,7 @@ export class userMongo{
     async getUserByEmail(emailUser){
         try {
             const user = await this.model.findOne({email:emailUser});
-            return user;
+            return JSON.parse(JSON.stringify(user));
         } catch (error) {
             throw error;
         }
@@ -33,6 +33,18 @@ export class userMongo{
         try {
             const userCreated = await this.model.create(user);
             return userCreated;
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    async updateUser(userId,newInfo){
+        try {
+            const userUpdated = await this.model.findByIdAndUpdate(userId,newInfo,{new:true});
+            if(!userUpdated){
+                throw new Error("usuario no encontrado");
+            }
+            return userUpdated;
         } catch (error) {
             throw error;
         }

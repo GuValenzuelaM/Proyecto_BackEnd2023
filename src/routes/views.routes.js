@@ -1,43 +1,23 @@
 import {ViewsController} from "../controllers/views.controller.js"
-import {isLoggedIn, isAdmin} from "../middlewares/auth.js"
+import {isLoggedIn, isAdmin, checkUserAuthenticatedView, showAuthView } from "../middlewares/auth.js";
 import { Router } from "express";
+//import {isLoggedIn, isAdmin} from "../middlewares/auth.js"
 
 const router = Router();
 
-//Inicio
 router.get("/", ViewsController.renderHome);
-//router.get("/", isLoggedIn, ViewsController.renderHome);
-
-//Lista de productos
+router.get("/signup", showAuthView, ViewsController.renderSignup);
+router.get("/login", showAuthView, ViewsController.renderLogin);
 router.get("/products", isLoggedIn, ViewsController.getProducts);
-
-//Perfil del usuario
 router.get("/profile", isLoggedIn, ViewsController.renderProfile);
-
-//Carrito del usuario activo
-//router.get("/user-cart", isLoggedIn, ViewsController.getCartById);
-
-//PRUEBA
-router.get("/cart", isLoggedIn, ViewsController.getCartById);
-
-
-//Registro
-router.get("/signup", ViewsController.renderSignup);
-
-//Inicio de Sesión
-router.get("/login", ViewsController.renderLogin);
-
-//Mocking
+router.get("/current", checkUserAuthenticatedView, ViewsController.renderProfile);
+router.get("/forgot-password",ViewsController.forgotPass);
+router.get("/reset-password", ViewsController.resetPassword);
 router.get("/mockingproducts", ViewsController.mockingProducts);
-
-//Logger
 router.get("/loggerTest", ViewsController.logger);
 
+router.get("/cart", isLoggedIn, ViewsController.getCartById);
+//router.get("/", isLoggedIn, ViewsController.renderHome);
+//router.get("/user-cart", isLoggedIn, ViewsController.getCartById);
+
 export {router as viewsRouter};
-
-
-/*
-router.get("/forgot", (req,res)=>{
-    res.render("restaurar");
-});
-*/  

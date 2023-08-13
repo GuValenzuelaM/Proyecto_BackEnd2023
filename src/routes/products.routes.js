@@ -1,5 +1,7 @@
 import { ProductsController } from "../controllers/products.controller.js";
 import { Router } from "express";
+import {checkUserAuthenticatedView,checkRoles} from "../middlewares/auth.js";
+import {UsersController} from "../controllers/users.controller.js"
 
 const router = Router();
 
@@ -10,7 +12,7 @@ router.get("/", ProductsController.getProducts);
 router.get("/:pid", ProductsController.getProductById);
 
 //Agregar productos (Administrador)
-router.post("/", ProductsController.createProduct);
+router.post("/", checkUserAuthenticatedView, checkRoles(["admin","premium"]), ProductsController.createProduct);
 
 //Eliminar productos (Administrador)
 router.delete("/:pid", ProductsController.deleteProducts);

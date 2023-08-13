@@ -1,4 +1,4 @@
-import { usersDao } from "../daos/index.js";
+import { usersDao } from "../daos/factory.js";
 
 export class UsersService{
     static async getUserByEmail(email){
@@ -11,5 +11,9 @@ export class UsersService{
 
     static async saveUser(userInfo){
         return usersDao.saveUser(userInfo);
+    };
+    
+    static async updateUser(userId,newInfo){
+        return usersDao.updateUser(userId,newInfo);
     };
 }

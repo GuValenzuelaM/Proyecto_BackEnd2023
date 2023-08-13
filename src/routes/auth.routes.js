@@ -3,6 +3,8 @@ import passport from "passport";
 import {createHash, isValidPassword} from "../utils.js";
 import {SessionsController} from "../controllers/sessions.controller.js";
 import {logger} from "../utils/logger.js";
+import {checkUserAuthenticatedView,checkRoles} from "../middlewares/auth.js";
+import {UsersController} from "../controllers/users.controller.js"
 
 const router = Router(); 
 
@@ -16,8 +18,8 @@ router.get("/failed-signup",SessionsController.failSignup);
 
 //Inicio de sesión (exitoso/fallido)
 router.post("/login", passport.authenticate("loginStrategy",{
-    failureRedirect:"/api/sessions/login-failed"
-}) , SessionsController.loginUsers);
+    failureRedirect:"/api/sessions/failed-login"
+}), SessionsController.loginUsers);
 
 //Inicio de sesión fallido
 router.get("/login-failed",SessionsController.failLogin);
@@ -62,5 +64,7 @@ router.get("/logout",(req,res)=>{
         res.redirect("/login")
     });
 });
+
+router.put("/premium/:uid", checkUserAuthenticatedView, checkRoles(["admin"]) , UsersController.modifyRole);
 
 export { router as authRouter};
