@@ -1,3 +1,5 @@
+import { ProductsService } from "../repository/products.services.js";
+
 //Verificación inicio de session
 const isLoggedIn = (req, res, next) => {
     if (req.user) {
@@ -17,17 +19,57 @@ const isAdmin = (req, res, next) => {
     }
 };
 
-//Verificación de usurio y carrito
-const verifyUserCart = (req, res, next) => {
-    const userRole = req.user.rol;
-    const userCart = req.user.cart;
-    const requestedCart = req.params.cid;
-
-    // Verificamos si el usuario es "user" y si su carrito es igual al carrito solicitado
-    if (userRole === "user" && userCart === requestedCart) {
-        next(); // El usuario es dueño del carrito, pasamos al siguiente middleware o ruta
+const canAddProducts = (req, res, next) => {
+    const userRole = req.user.role;
+    const allowedRoles = ["admin", "premium"];
+    if (allowedRoles.includes(userRole)) {
+        next();
     } else {
-        res.send('No cuentas con los permisos para realizar esta acción. <a href="/home">Volver a inicio</a>');
+        res.send('No tienes autorización para agregar los productos <a href="/home">Volver al home</a></div>');
+    }
+};
+
+const canEditProducts = async (req, res, next) => {
+    const userId = req.user._id;
+    const userRole = req.user.role;
+    const productId = req.params.pid;
+    try {
+        const product = await ProductsService.getProductById(productId);
+        const productOwner = JSON.parse(JSON.stringify(product.owner));
+        if (productOwner === userId || userRole === "admin") {
+            next();
+        } else {
+            res.send('No tienes autorización para editar los productos<a href="/home">Volver al home</a></div>');
+        }
+    } catch (error) {
+        res.send('Error al verificar los permisos');
+    }
+};
+
+const addOwnProduct = async (req, res, next) => {
+    const userId = req.user._id;
+    const productId = req.params.pid;
+    try {
+        const product = await ProductsService.getProductById(productId);
+        const productOwner = JSON.parse(JSON.stringify(product.owner));
+        if (userId == productOwner) {
+            res.send('Acción no válida, solo puedes editar tu carro<a href="/home">Volver al home</a></div>');
+        } else {
+            next();
+        }
+    } catch (error) {
+        res.send('Error al verificar el producto');
+    }
+};
+
+const verifyUserCart = (req, res, next)=>{
+    const userRole = req.user.role;
+    const userCart = req.user.cart;
+    const cartId = req.params.cid;
+    if (userRole === "user" && userCart == cartId) {
+        next();
+    } else {
+        res.send('No tienes autorización para editar el carrito <a href="/home">Volver al home</a></div>');
     }
 };
 
@@ -61,4 +103,4 @@ const checkRoles = (urlRoles)=>{
     }
 };
 
-export {isLoggedIn, isAdmin, verifyUserCart, checkUserAuthenticatedView, showAuthView, checkRoles}
+export {isLoggedIn,isAdmin,canAddProducts,canEditProducts,addOwnProduct,verifyUserCart,checkUserAuthenticatedView,showAuthView,checkRoles}

@@ -1,5 +1,5 @@
 import {ViewsController} from "../controllers/views.controller.js"
-import {isLoggedIn, isAdmin, checkUserAuthenticatedView, showAuthView } from "../middlewares/auth.js";
+import {isLoggedIn, isAdmin, checkUserAuthenticatedView, showAuthView} from "../middlewares/auth.js";
 import { Router } from "express";
 //import {isLoggedIn, isAdmin} from "../middlewares/auth.js"
 
@@ -15,6 +15,8 @@ router.get("/forgot-password",ViewsController.forgotPass);
 router.get("/reset-password", ViewsController.resetPassword);
 router.get("/mockingproducts", ViewsController.mockingProducts);
 router.get("/loggerTest", ViewsController.logger);
+router.get("/userid", isLoggedIn, ViewsController.getUserId);
+router.get("/userrol", isLoggedIn, ViewsController.getUserRole);
 
 router.get("/cart", isLoggedIn, ViewsController.getCartById);
 //router.get("/", isLoggedIn, ViewsController.renderHome);

@@ -66,7 +66,7 @@ export class SessionsController{
             //una vez validado el token, ahora validamos que el usuario exista en db
             const user = await UsersService.getUserByEmail(userEmail);
             //si el usuario existe, validar que la nueva contraseña no sea igual a a la anterior contraseña
-            if(validPassword(newPassword,user)){
+            if(isValidPassword(newPassword,user)){
                 return res.render("resetPass",{error:"La contraseña no puede ser la misma",token})
             }
             //si las contraseñas no son iguales, actualizamos el usuario con la nueva contraseña

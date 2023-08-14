@@ -1,5 +1,6 @@
 import {CartsService} from "../repository/cart.services.js";
 import {ProductsService} from "../repository/products.services.js";
+import {TicketService} from "../repository/ticket.services.js";
 import {generateProduct} from "../utils.js";
 //Estructura standard del error
 import {CustomError} from "../services/error/customError.service.js";
@@ -178,4 +179,23 @@ export class ViewsController{
         res.send("Logger Activo");
     }
 
+    static getUserId = async(req,res)=>{
+        res.json(req.user._id);
+    }
+
+    static getUserRole = async(req,res)=>{
+        res.json(req.user.role);
+    }
+
+    static getTicket = async(req,res)=>{
+        try {
+           const email = req.user.email;
+           const ticket = await TicketService.getTicket(email);
+           res.render("ticket", {ticket})
+       } catch (error) {
+           logger.error(error.message)
+           res.status(400).json({status: "error", data: error.message});
+       }
+   }
+   
 }

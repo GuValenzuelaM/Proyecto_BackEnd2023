@@ -1,6 +1,6 @@
 import { ProductsController } from "../controllers/products.controller.js";
 import { Router } from "express";
-import {checkUserAuthenticatedView,checkRoles} from "../middlewares/auth.js";
+import {checkUserAuthenticatedView, checkRoles, canAddProducts, canEditProducts} from "../middlewares/auth.js";
 import {UsersController} from "../controllers/users.controller.js"
 
 const router = Router();
@@ -12,13 +12,13 @@ router.get("/", ProductsController.getProducts);
 router.get("/:pid", ProductsController.getProductById);
 
 //Agregar productos (Administrador)
-router.post("/", checkUserAuthenticatedView, checkRoles(["admin","premium"]), ProductsController.createProduct);
+router.post("/", checkUserAuthenticatedView, canAddProducts, ProductsController.createProduct);
 
 //Eliminar productos (Administrador)
-router.delete("/:pid", ProductsController.deleteProducts);
+router.delete("/:pid", canEditProducts, ProductsController.deleteProducts);
 
 //Modificar productos (Administrador)
-router.put("/:pid", ProductsController.updateProducts);
+router.put("/:pid", canEditProducts, ProductsController.updateProducts);
 
 //Mocking (Administrador)
 router.get("/mockingproducts", ProductsController.mockingProducts);
