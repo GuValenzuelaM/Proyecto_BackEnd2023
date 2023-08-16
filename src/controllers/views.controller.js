@@ -33,7 +33,7 @@ export class ViewsController{
 
     static resetPassword = (req,res)=>{
         const token = req.query.token;
-        res.render("resetPass",{token});
+        res.render("reset-password",{token});
     }
 
     //Función para listar productos filtrados ,ordenados y paginados

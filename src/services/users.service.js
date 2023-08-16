@@ -1,4 +1,4 @@
-import { usersDao } from "../daos/factory.js";
+import {usersDao} from "../daos/factory.js";
 
 export class UsersService{
     static async getUserByEmail(email){

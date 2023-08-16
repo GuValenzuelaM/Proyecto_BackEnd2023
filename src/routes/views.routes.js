@@ -7,6 +7,7 @@ const router = Router();
 
 router.get("/", ViewsController.renderHome);
 router.get("/signup", showAuthView, ViewsController.renderSignup);
+router.get("/logout", showAuthView, ViewsController.renderSignup);
 router.get("/login", showAuthView, ViewsController.renderLogin);
 router.get("/products", isLoggedIn, ViewsController.getProducts);
 router.get("/profile", isLoggedIn, ViewsController.renderProfile);

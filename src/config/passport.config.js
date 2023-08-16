@@ -24,13 +24,10 @@ export const initializePassport = ()=>{
                     if(user){
                         return done(null,false);
                     }
-                        //Tipo de rol por defecto será "user"
                         let role = "user";
-                        //Si el correo con el cual se registra termina en "@coder.com" el rol será "admin"
                         if(username.endsWith("@coder.com")){
                             role="admin";
                         }
-                        //Si no existe el usuario, lo registramos
                         const cartUser = await cartService.createCart();
                         const newUser = {
                             first_name:userSignupForm.first_name,

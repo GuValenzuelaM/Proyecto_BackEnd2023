@@ -14,7 +14,8 @@ export const config = {
         port: process.env.PORT || 8080,
         secretSession: process.env.SECRET_SESION,
         persistence: process.env.PERSISTENCE,
-        appEnv: process.env.NODE_ENV || "development"
+        appEnv: process.env.NODE_ENV || "development",
+        secretToken: process.env.SECRET_TOKEN,
     },
     mongo:{
         // URL BD MongoDB
@@ -22,7 +23,7 @@ export const config = {
         url:process.env.MONGO_URL
     },
     gmail:{
-        adminEmail:process.env.ADMIN_GMAIL,
-        adminPass:process.env.ADMIN_PASS
+        adminEmail: process.env.ADMIN_EMAIL,
+        adminPass: process.env.ADMIN_PASS
     }
 }

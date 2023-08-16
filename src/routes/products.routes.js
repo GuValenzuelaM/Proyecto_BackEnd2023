@@ -15,7 +15,7 @@ router.get("/:pid", ProductsController.getProductById);
 router.post("/", checkUserAuthenticatedView, canAddProducts, ProductsController.createProduct);
 
 //Eliminar productos (Administrador)
-router.delete("/:pid", canEditProducts, ProductsController.deleteProducts);
+router.delete("/:pid", canEditProducts, ProductsController.deleteProduct);
 
 //Modificar productos (Administrador)
 router.put("/:pid", canEditProducts, ProductsController.updateProducts);

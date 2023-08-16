@@ -1,0 +1,10 @@
+<div>
+</div>
+<br/>
+<h1>Pagina para restaurar Contraseña</h1>
+
+<form method="post" action="/api/sessions/reset-password?token={{token}}">
+    <input type="password" placeholder="Ingresa tu nueva contraseña" name="newPassword"/>
+    <br/><br/>
+    <button type="submit">Restaurar</button>
+</form>

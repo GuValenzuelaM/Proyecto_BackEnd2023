@@ -1,4 +1,4 @@
-import { config } from "../config/config.js";
+import {config} from "../config/config.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 
@@ -30,7 +30,7 @@ export const sendRecoveryEmail = async(userEmail,token)=>{
     //enviar correo
     await transporter.sendMail({
         //estructura del correo
-        from:"Ecommerce pepito",
+        from:"Ecommerce Proyecto BackEnd 2023",
         to:userEmail,
         subject:"Restablecer contraseña",
         html:`

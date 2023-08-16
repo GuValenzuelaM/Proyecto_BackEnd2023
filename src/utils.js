@@ -1,12 +1,12 @@
-//Este archivo permite ubicar y dirigir a las rutas determinadas
-import bcrypt from "bcrypt";
 import path from 'path';
-//import multer from "multer";
+import { fileURLToPath } from 'url';
+import bcrypt from "bcrypt";
 export const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import jwt from "jsonwebtoken";
-import { fileURLToPath } from 'url';
-import { Faker, faker, es} from "@faker-js/faker" //https://fakerjs.dev/api/
 import { config } from "./config/config.js";
+import { Faker, faker, es} from "@faker-js/faker" //https://fakerjs.dev/api/
+
+//import multer from "multer";
 
 //HASH, mantiene la confidencialidad de los datos del usurio
 export const createHash = (password)=>{

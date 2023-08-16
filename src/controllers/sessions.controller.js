@@ -6,8 +6,8 @@ export class SessionsController{
 
     //Registro de usuario éxitoso
     static signupUsers = (req,res)=>{
-        res.send('<div>usuario registrado correctamente, <a href="/login">ir al login</a></div>');
-    }
+        res.render("login",{message:"Usuario registrado correctamente"});
+    };
 
     //Registro de usuario fallido
     static failSignup = (req,res)=>{
@@ -16,7 +16,8 @@ export class SessionsController{
 
     //Inicio de sesión éxitoso
     static loginUsers = (req,res)=>{
-        res.redirect("/profile");
+        res.send("login exitoso;")
+        //res.redirect("/profile");
     };
 
     //Inicio de sesión fallido
@@ -67,7 +68,7 @@ export class SessionsController{
             const user = await UsersService.getUserByEmail(userEmail);
             //si el usuario existe, validar que la nueva contraseña no sea igual a a la anterior contraseña
             if(isValidPassword(newPassword,user)){
-                return res.render("resetPass",{error:"La contraseña no puede ser la misma",token})
+                return res.render("reset-password",{error:"La contraseña no puede ser la misma",token})
             }
             //si las contraseñas no son iguales, actualizamos el usuario con la nueva contraseña
             const newUser = {

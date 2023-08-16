@@ -9,7 +9,11 @@ export class userMongo{
     async getUserByEmail(emailUser){
         try {
             const user = await this.model.findOne({email:emailUser});
-            return JSON.parse(JSON.stringify(user));
+            if(user){
+                return JSON.parse(JSON.stringify(user));
+            } else{
+                return null;
+            }
         } catch (error) {
             throw error;
         }
@@ -20,7 +24,8 @@ export class userMongo{
         try {
             const user = await this.model.findById(userId);
             if(!user){
-                throw new Error("El usuario no existe");
+                return null;
+                //throw new Error("El usuario no existe");
             }
             return JSON.parse(JSON.stringify(user));
         } catch (error) {

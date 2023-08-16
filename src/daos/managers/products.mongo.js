@@ -55,7 +55,7 @@ import {logger} from "../../utils/logger.js";
     async deleteProduct(id){
         try {
             await this.model.findByIdAndDelete(id);
-            return {message: `producto eliminado ${id}`};
+            return {message: `Producto eliminado ${id}`};
         } catch (error) {
             throw new Error(`Error al eliminar el producto ${error.message}`);
         }

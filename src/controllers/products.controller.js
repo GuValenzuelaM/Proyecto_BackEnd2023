@@ -132,6 +132,7 @@ export class ProductsController{
     static createProduct = async(req,res)=>{
         try {
             const productInfo = req.body;
+            productInfo.owner = req.user._id;
             const productCreated = await ProductsService.createProduct(productInfo);
             res.json({status:"success", data:productCreated});
         } catch (error) {
@@ -159,18 +160,20 @@ export class ProductsController{
     };
 
     //Función para eliminar un producto
-    static deleteProducts = async(req, res)=>{
-        try{
-            const id = req.params.pid;
-            if(id){
-                const deleteProduct = await ProductsService.deleteProducts(id);
-                res.json({status: "success", data: "Se ha eliminado el producto con el id: " + deleteProduct})
+    static deleteProduct = async(req,res)=>{
+        try {
+            const productId = req.params.pid;
+            const product = await ProductsService.getProductById(productId);
+            //validamos si el usuario que esta borrando el producto es premium.
+            if(req.user.role === "premium" && product.owner == req.user._id || req.user.role === "admin"){
+                const result = await ProductsService.deleteProduct(productId);
+                res.json({status:"success", message:result});
             }else{
                 //res.status(400).json("Error, el id no es un número");
                 CustomError.createError({
-                    name: "Error al actualizar el producto",
+                    name: "No tienes permisos",
                     cause: ErrorServices.productIdError(id),
-                    message: "el id no es un numero",
+                    message: "No tienes permisos",
                     errorCode: EError.INVALID_PARAMS
                 });
             } 

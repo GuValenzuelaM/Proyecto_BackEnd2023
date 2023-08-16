@@ -39,7 +39,7 @@ const canEditProducts = async (req, res, next) => {
         if (productOwner === userId || userRole === "admin") {
             next();
         } else {
-            res.send('No tienes autorización para editar los productos<a href="/home">Volver al home</a></div>');
+            res.send('No tienes autorización para hacer esta acción<a href="/home">Volver al home</a></div>');
         }
     } catch (error) {
         res.send('Error al verificar los permisos');
