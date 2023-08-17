@@ -9,6 +9,9 @@ import { initializePassport} from "./config/passport.config.js";
 import {config} from "./config/config.js"
 import cors from "cors";
 import {logger} from "./utils/logger.js";
+import swaggerUI from "swagger-ui-express";
+import {swaggerSpecs} from "./config/swaggerConfig.js";
+
 
 import {viewsRouter} from "./routes/views.routes.js";
 import {sessionsRouter} from "./routes/sessions.routes.js";
@@ -32,6 +35,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname, "/public")));
 //app.use(cookieParser());
+
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
 
 //CONFIGURACUÓN HANDLEBARS
 app.engine('.hbs', engine({extname: '.hbs'}));
