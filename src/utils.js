@@ -1,12 +1,12 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from "bcrypt";
-export const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import jwt from "jsonwebtoken";
 import { config } from "./config/config.js";
 import { Faker, faker, es} from "@faker-js/faker" //https://fakerjs.dev/api/
-
 //import multer from "multer";
+
+export const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 //HASH, mantiene la confidencialidad de los datos del usurio
 export const createHash = (password)=>{

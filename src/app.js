@@ -1,15 +1,16 @@
 import express from "express";
 import {engine} from "express-handlebars";
-import {__dirname} from "./utils.js";
 import path from "path";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
-import { initializePassport} from "./config/passport.config.js";
-import {config} from "./config/config.js"
 import cors from "cors";
-import {logger} from "./utils/logger.js";
 import swaggerUI from "swagger-ui-express";
+
+import {__dirname} from "./utils.js";
+import {initializePassport} from "./config/passport.config.js";
+import {config} from "./config/config.js"
+import {logger} from "./utils/logger.js";
 import {swaggerSpecs} from "./config/swaggerConfig.js";
 
 
@@ -17,11 +18,11 @@ import {viewsRouter} from "./routes/views.routes.js";
 import {sessionsRouter} from "./routes/sessions.routes.js";
 import {productsRouter} from "./routes/products.routes.js";
 import {cartsRouter} from "./routes/carts.routes.js";
-import { authRouter } from "./routes/auth.routes.js";
+import {authRouter} from "./routes/auth.routes.js";
 
-import { connectDB } from "./config/dbConnection.js";
-import { cartsModel } from "./daos/models/carts.model.js";
-import { options } from "./config/options.js";
+import {connectDB} from "./config/dbConnection.js";
+import {cartsModel} from "./daos/models/carts.model.js";
+import {options} from "./config/options.js";
 
 const app =express();
 const port = config.server.port;
@@ -35,8 +36,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname, "/public")));
 //app.use(cookieParser());
-
-app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
 
 //CONFIGURACUÓN HANDLEBARS
 app.engine('.hbs', engine({extname: '.hbs'}));
@@ -65,3 +64,4 @@ app.use("/api/sessions", sessionsRouter);
 app.use("/api/products",productsRouter);
 app.use("/api/carts",cartsRouter);
 app.use("/api/users",authRouter);
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));

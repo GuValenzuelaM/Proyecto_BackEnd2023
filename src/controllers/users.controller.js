@@ -5,16 +5,20 @@ export class UsersController{
         try {
             const userId = req.params.uid;
             const user = await UsersService.getUserById(userId);
-            const userRole = user.role;
-            if(userRole === "user"){
-                user.role = "premium";
-            } else if(userRole === "premium"){
-                user.role = "user";
+            if(!user){
+                return res.send("El usuario no existe, <a href='/singup'>Registrarse</a>");
             } else{
-                res.send("No es posible cambiar el role del usuario")
-            };
-            const result = await UsersService.updateUser(userId,user);
-            res.send("Rol del usuario modificado");
+                const userRole = user.role;
+                if(userRole === "user"){
+                    user.role = "premium";
+                } else if(userRole === "premium"){
+                    user.role = "user";
+                } else{
+                    res.send("No es posible cambiar el role del usuario")
+                };
+                const result = await UsersService.updateUser(userId,user);
+                res.send("Rol del usuario modificado");
+            }
         } catch (error) {
             res.send(error.message);
         }
