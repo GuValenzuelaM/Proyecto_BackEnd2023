@@ -1,0 +1,229 @@
+paths: 
+  /api/carts/:
+   post: 
+      summary: Agregar un carrito
+      tags:
+        - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateCart"
+      responses:
+        "200":
+          description: Carrito correctamente creado
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/SuccessUpdate'
+        "500":
+          description: Error del servidor 
+  /api/carts/{cid}:
+    get:
+      summary: Obtener carrito por id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito que se desea solicitar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Carrito correctamente obtenido
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Carts'
+        "500":
+          description: Error del servidor
+    put:
+      summary: Actualizar carrito según id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito que se desea actualizar
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/UpdateCart'
+      responses:
+        "200":
+          description: Carrito actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/SuccessUpdate'
+        "500":
+          description: Error del servidor 
+    delete:
+      summary: Eliminar carrito según id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito que se desea eliminar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Carrito correctamente eliminado
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/SuccessUpdate'
+        "500":
+          description: Error del servidor 
+  api/carts/{cid}/products/{pid}:
+    post: 
+      summary: Agregar producto al carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito que se desea solicitar
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: id del producto que se desea solicitar
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateCart"
+      responses:
+        "200":
+          description: Carrito correctamente actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/SuccessUpdate'
+        "500":
+          description: Error del servidor 
+    delete:
+      summary: Eliminar producto según su id del carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito que se desea eliminar
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: id del producto que se desea solicitar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Producto correctamente eliminado del carrito
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/SuccessUpdate'
+        "500":
+          description: Error del servidor 
+    put:
+      summary: Actualizar producto según su id del carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito que se desea actualizar
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: id del producto que se desea solicitar
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/UpdateCart'
+      responses:
+        "200":
+          description: Carrito actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/SuccessUpdate'
+        "500":
+          description: Error del servidor 
+          
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: id unico autogenerado por la base de datos
+        products:
+          type: object
+          productId:
+              type: ObjectId
+          quantity:
+              type: Number
+      example:
+        _id: ObjectId("21f484ce5a31e7c9d3c5f81d")
+        products: {
+          productId: ObjectId("64bt2bb11e34f4ee6417a112"),
+          quantity: 10
+        }
+    SuccessUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+      example:
+        status: success
+        message: product updated
+  requestBodies:
+    UpdateCart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: id unico autogenerado por la base de datos
+        products:
+          type: object
+          productId:
+              type: ObjectId
+          quantity:
+              type: Number
+      example:
+        _id: ObjectId("21f484ce5a31e7c9d3c5f81d")
+        products: {
+          productId: ObjectId("64bt2bb11e34f4ee6417a112"),
+          quantity: 1
+        }

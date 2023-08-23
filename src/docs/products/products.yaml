@@ -1,0 +1,197 @@
+paths:
+  /api/products/:
+    get:
+      summary: Ruta para obtener todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos se obtuvieron correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Products'
+        "500":
+          description: Error interno del servidor
+    post: 
+      summary: Ruta para agregar un producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/UpdateProduct"
+      responses:
+        "200":
+          description: El producto se añadió correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/SuccessUpdate'
+        "500":
+          description: Error interno del servidor
+  /api/products/{pid}:
+    get:
+      summary: Obtener usuario por id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id del producto que se desea solicitar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Productos correctamente obtenidos
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Products'
+        "500":
+          description: Error interno del servidor
+    put:
+      summary: Actualizar producto según id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id del producto que se desea actualizar
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/UpdateProduct'
+      responses:
+        "200":
+          description: Producto actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/SuccessUpdate'
+        "500":
+          description: Error del servidor 
+    delete:
+      summary: Eliminar producto según id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id del producto que se desea actualizar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Producto eliminado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/SuccessUpdate'
+        "500":
+          description: Error del servidor 
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: id unico autogenerado por la base de datos
+        title:
+          type: string
+          description: Nombre producto
+        description:
+          type: string
+          description: Descripción producto
+        price:
+          type: number
+          description: Precio producto
+        code:
+          type: string
+          description: Código único producto
+        status:
+          type: boolean
+          description: Disponibilidad producto
+        thumbnail:
+          type: string
+          description: Imagen producto
+        stock:
+          type: number
+          description: Unidades disponibles del producto
+        category:
+          type: string
+          description: Categoría producto
+        owner:
+          type: ObjectId
+          description: Id dueño del producto
+      example:
+        _id: ObjectId("53a4sdaf124fa")
+        title: Short
+        description: Verde
+        price: 1500
+        code: A123
+        status: true
+        thumbnail: "imagen12.jpg"
+        stock: 3
+        category: Deporte
+        owner: ObjectId("64d3a1b3e11a194d3e23a4e0")
+    SuccessUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+      example:
+        status: success
+        message: product updated
+  requestBodies:
+    UpdateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre producto
+        description:
+          type: string
+          description: Descripción producto
+        price:
+          type: number
+          description: Precio producto
+        code:
+          type: string
+          description: Código único producto
+        status:
+          type: boolean
+          description: Disponibilidad producto
+        stock:
+          type: number
+          description: Unidades disponibles del producto
+        category:
+          type: string
+          description: Categoría producto
+        owner:
+          type: ObjectId
+          description: Id dueño del producto
+      example:
+        title: Short
+        description: Verde
+        price: 1500
+        code: A123
+        status: true
+        stock: 3
+        category: Deporte
+        owner: ObjectId("64d3a1b3e11a194d3e23a4e0")

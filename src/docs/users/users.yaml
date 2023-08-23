@@ -18,7 +18,7 @@ paths:
  
   /api/users/{uid}:
     get:
-      summary: Obtener un usuario por id
+      summary: Obtener usuario por id
       tags:
         - Usuarios
       parameters:
@@ -30,7 +30,7 @@ paths:
             $type: string
       responses:
         "200":
-          description: Usuario obtenido correctamente
+          description: Usuario correctamente obtenido
           content:
             application/json:
               schema:
