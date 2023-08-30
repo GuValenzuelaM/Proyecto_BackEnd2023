@@ -23,4 +23,17 @@ export class UsersController{
             res.send(error.message);
         }
     }
+
+    static deleteUser = async(req,res)=>{
+        try{ 
+            const userId = req.params.uid
+
+            const user = await UsersService.deleteUser(userId);
+            res.send(user)
+
+        } catch (error) {
+            logger.error(error.message)
+            res.status(400).json({status:"error", message:error.message});
+        }
+    }
 }

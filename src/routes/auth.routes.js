@@ -67,4 +67,6 @@ router.get("/logout",(req,res)=>{
 
 router.put("/premium/:uid", checkUserAuthenticatedView, checkRoles(["admin"]) , UsersController.modifyRole);
 
+router.delete("/delete-user",UsersController.deleteUser);
+
 export { router as authRouter};

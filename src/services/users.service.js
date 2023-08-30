@@ -6,7 +6,7 @@ export class UsersService{
     };
 
     static async getUserById(id){
-        return usersDao.getUserById(id);
+        return usersDao.getUserById(id); 
     };
 
     static async saveUser(userInfo){
@@ -16,4 +16,8 @@ export class UsersService{
     static async updateUser(userId,newInfo){
         return usersDao.updateUser(userId,newInfo);
     };
+
+    static async deleteUser(userId){
+        return usersDao.deleteUser(userId);
+    }
 }

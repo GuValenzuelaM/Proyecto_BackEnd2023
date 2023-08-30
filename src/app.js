@@ -65,3 +65,5 @@ app.use("/api/products",productsRouter);
 app.use("/api/carts",cartsRouter);
 app.use("/api/users",authRouter);
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
+
+export {app}

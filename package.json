@@ -6,7 +6,10 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app.js"
+    "start": "nodemon src/app.js",
+    "testc": "mocha test/carts.test.js",
+    "testp": "mocha test/products.test.js",
+    "tests": "mocha test/sessions.test.js"
   },
   "keywords": [],
   "author": "",
@@ -38,8 +41,11 @@
     "winston": "^3.10.0"
   },
   "devDependencies": {
+    "chai": "^4.3.7",
     "express-sessions": "^1.0.1",
+    "mocha": "^10.2.0",
     "node-sass": "^8.0.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
   }
 }
