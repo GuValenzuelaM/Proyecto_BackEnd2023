@@ -8,7 +8,7 @@ const expect = chai.expect
 
 describe("Testing para carts DAO", ()=>{
     before(async function(){
-        await mongoose.connect("mongodb+srv://guvalenzuelam:Coder2023@coderhouse.zqpfl7k.mongodb.net/Entrega2?retryWrites=true&w=majority");
+        await mongoose.connect("mongodb+srv://guvalenzuelam:Coder2023@coderhouse.zqpfl7k.mongodb.net/test?retryWrites=true&w=majority");
         this.cartsMongo = new CartsMongo();
         this.productsMongo = new ProductsMongo();
     });
