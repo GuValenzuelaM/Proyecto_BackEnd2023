@@ -6,7 +6,8 @@ export class SessionsController{
 
     //Registro de usuario éxitoso
     static signupUsers = (req,res)=>{
-        res.render("login",{message:"Usuario registrado correctamente"});
+        //res.render("login",{message:"Usuario registrado correctamente"});
+        res.send("Usuario registrado correctamente");
     };
 
     //Registro de usuario fallido
@@ -16,7 +17,7 @@ export class SessionsController{
 
     //Inicio de sesión éxitoso
     static loginUsers = (req,res)=>{
-        res.send("login exitoso;")
+        res.send("login exitoso")
         //res.redirect("/profile");
     };
 

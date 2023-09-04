@@ -10,11 +10,10 @@ describe("Testing carts DAO", ()=>{
         await mongoose.connect("mongodb+srv://guvalenzuelam:Coder2023@coderhouse.zqpfl7k.mongodb.net/test?retryWrites=true&w=majority");
         this.productsMongo = new ProductsMongo();
     });
-/*
     beforeEach(async function(){
         await productsModel.deleteMany({});
     });
-*/
+
     it("Se debe agregar producto a la base de datos", async function(){
         const mockProd ={
             title: "Polera",
