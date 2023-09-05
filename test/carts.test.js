@@ -37,7 +37,8 @@ describe("Testing para carts DAO", ()=>{
         const productId = newProduct._id.toString();
 
         const result = await this.cartsMongo.addProductToCart(cartId, productId)
-        expect(result).to.be.an("array").to.have.any.key("_id","products");
+        //expect(result).to.be.an("array").to.have.any.key("_id","products");
+        expect(result._doc).to.be.an("object").to.have.any.key("_id", "products");
     })
 /*
     it("Se debe eliminar un producto del carrito en base de datos", async function(){
