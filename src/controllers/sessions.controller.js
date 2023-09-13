@@ -1,4 +1,4 @@
-import { UsersService } from "../services/users.service.js";
+import { UsersService } from "../repository/users.services.js";
 import { generateEmailToken, sendRecoveryEmail } from "../utils/message.js";
 import { verifyEmailToken, isValidPassword, createHash } from "../utils.js";
 
@@ -6,8 +6,7 @@ export class SessionsController{
 
     //Registro de usuario éxitoso
     static signupUsers = (req,res)=>{
-        //res.render("login",{message:"Usuario registrado correctamente"});
-        res.send("Usuario registrado correctamente");
+        res.render("login",{message:"Usuario registrado correctamente"});
     };
 
     //Registro de usuario fallido
@@ -17,8 +16,8 @@ export class SessionsController{
 
     //Inicio de sesión éxitoso
     static loginUsers = (req,res)=>{
-        res.send("login exitoso")
         //res.redirect("/profile");
+        res.send("login exitoso;")
     };
 
     //Inicio de sesión fallido
@@ -31,7 +30,7 @@ export class SessionsController{
     static logoutUser = (req,res)=>{
         req.session.destroy((err)=>{
             if(err) return res.send('<p>No fue posible cerrar sesion <a>intente de nuevo</a></p>');
-            res.redirect("/");
+            res.redirect("/login");
         });
     };
 

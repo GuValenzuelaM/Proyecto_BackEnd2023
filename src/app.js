@@ -18,7 +18,8 @@ import {viewsRouter} from "./routes/views.routes.js";
 import {sessionsRouter} from "./routes/sessions.routes.js";
 import {productsRouter} from "./routes/products.routes.js";
 import {cartsRouter} from "./routes/carts.routes.js";
-import {authRouter} from "./routes/auth.routes.js";
+import {usersRouter} from "./routes/users.routes.js";
+//import {authRouter} from "./routes/auth.routes.js";
 
 import {connectDB} from "./config/dbConnection.js";
 import {cartsModel} from "./daos/models/carts.model.js";
@@ -35,6 +36,7 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname, "/public")));
+app.use(cors());
 //app.use(cookieParser());
 
 //CONFIGURACUÓN HANDLEBARS
@@ -63,7 +65,8 @@ app.use(viewsRouter);
 app.use("/api/sessions", sessionsRouter);
 app.use("/api/products",productsRouter);
 app.use("/api/carts",cartsRouter);
-app.use("/api/users",authRouter);
+app.use("/api/users",usersRouter);
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
+//app.use("/api/users",authRouter);
 
 export {app}

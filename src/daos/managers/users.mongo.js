@@ -54,4 +54,17 @@ export class userMongo{
             throw error;
         }
     };
+
+    async deleteUser(userId) {
+    try {
+        const result = await this.model.deleteOne({ "_id": userId });
+        if (result.deletedCount === 1) {
+            return { message: "Usuario eliminado correctamente" };
+        } else {
+            return { message: "Usuario no encontrado" };
+        }
+    } catch (error) {
+        return { message: `Error al eliminar el usuario: ${error.message}` };
+    }
+}
 }

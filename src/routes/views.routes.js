@@ -18,8 +18,8 @@ router.get("/mockingproducts", ViewsController.mockingProducts);
 router.get("/loggerTest", ViewsController.logger);
 router.get("/userid", isLoggedIn, ViewsController.getUserId);
 router.get("/userrol", isLoggedIn, ViewsController.getUserRole);
-
 router.get("/cart", isLoggedIn, ViewsController.getCartById);
+
 //router.get("/", isLoggedIn, ViewsController.renderHome);
 //router.get("/user-cart", isLoggedIn, ViewsController.getCartById);
 

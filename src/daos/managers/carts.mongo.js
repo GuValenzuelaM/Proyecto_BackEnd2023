@@ -17,6 +17,20 @@ import {logger} from "../../utils/logger.js"
         }
     };
 
+    async getCartById(cartId){
+        try {
+            const cart = await this.model.findById(cartId);
+            if(!cartsModel){
+                throw new Error("el carrito no existe")
+            }
+            const result = JSON.parse(JSON.stringify(cart));
+            return result;
+        } catch (error) {
+            throw new Error(`Error al obtener carrito ${error.message}`);
+        }        
+    };
+
+/*
     //Obtiene carrito de compras por su ID en la base de datos (mongoose)
     async getCartById(cartId){
         try {
@@ -32,6 +46,7 @@ import {logger} from "../../utils/logger.js"
             throw new Error(`Error getCartById ${error.message}`);
         }
     };
+*/
 
     //Obtiene carrito de compras con sus productos
     async getProductsFromCart(cartId){
@@ -77,7 +92,7 @@ import {logger} from "../../utils/logger.js"
                 const result = await this.model.findByIdAndUpdate(cartId,cart,{new:true});
                 logger.debug(`Se ha agregado el producto ${productId} a tu carro ${cartId}`);
                 return cart;
-            }  
+            }
         } catch (error) {
             throw new Error(`Error al agregar producto al carrito ${error.message}`);
             logger.error("error")

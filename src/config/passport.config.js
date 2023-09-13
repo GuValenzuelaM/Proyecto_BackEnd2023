@@ -19,6 +19,7 @@ export const initializePassport = ()=>{
         },
         async(req, username, password, done)=>{
             try {
+                console.log("req.file",req.file);
                 const userSignupForm = req.body;
                 const user = await usersService.getUserByEmail(username);
                     if(user){
@@ -28,6 +29,12 @@ export const initializePassport = ()=>{
                         if(username.endsWith("@coder.com")){
                             role="admin";
                         }
+
+                        let file
+                        if (req.file !== undefined){
+                            file = req.file.filename;
+                        } else file = "";
+
                         const cartUser = await cartService.createCart();
                         const newUser = {
                             first_name:userSignupForm.first_name,
@@ -37,6 +44,7 @@ export const initializePassport = ()=>{
                             password:createHash(password),
                             cart: cartUser,
                             role,
+                            avatar: file
                         };
                         const userCreated = await usersService.saveUser(newUser);
                         return done(null, userCreated);
@@ -63,6 +71,8 @@ export const initializePassport = ()=>{
                 if(!isValidPassword(password,user)){
                     return done(null,false);
                 }
+                user.last_connection = new Date()
+                await usersService.updateUser(user._id, user)
                 return done(null,user);
             } catch (error) {
                 return done(error);

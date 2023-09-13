@@ -5,14 +5,14 @@ export class UsersService{
         return usersDao.getUserByEmail(email);
     };
 
-    static async getUserById(id){
-        return usersDao.getUserById(id); 
+    static async getUserById(userId){
+        return usersDao.getUserById(userId);
     };
 
-    static async saveUser(userInfo){
-        return usersDao.saveUser(userInfo);
+    static async saveUser(user){
+        return usersDao.saveUser(user);
     };
-    
+
     static async updateUser(userId,newInfo){
         return usersDao.updateUser(userId,newInfo);
     };

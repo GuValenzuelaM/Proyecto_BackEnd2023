@@ -2,14 +2,15 @@ import {Router} from "express";
 import passport from "passport";
 import {createHash, isValidPassword} from "../utils.js";
 import {SessionsController} from "../controllers/sessions.controller.js";
-import {logger} from "../utils/logger.js";
-import {checkUserAuthenticatedView,checkRoles} from "../middlewares/auth.js";
 import {UsersController} from "../controllers/users.controller.js"
+import {logger} from "../utils/logger.js";
+import {isLoggedIn,checkUserAuthenticatedView,checkRoles} from "../middlewares/auth.js";
+import {uploadUserDoc,uploadProfile} from "../utils.js";
 
 const router = Router(); 
 
 //Registro de usuario (exitoso/fallido)
-router.post("/signup", passport.authenticate("signupStrategy",{
+router.post("/signup",uploadProfile.single("avatar"),passport.authenticate("signupStrategy",{
     failureRedirect:"/api/sessions/failed-signup"
 }),SessionsController.signupUsers);
 
@@ -37,6 +38,17 @@ router.get("/github-callback",
     }
 );
 
+//Ruta cerrar sesion
+router.get("/logout",(req,res)=>{
+    req.session.destroy(err=>{
+        if(err) return res.send('no se pudo cerrar sesion, <a href="/profile">ir al perfil</a>');
+        res.redirect("/login")
+    });
+});
+
+export { router as authRouter};
+
+/*
 //Ruta para restaurar la contraseña del usuario
 router.post("/forgot", async(req,res)=>{
     try {
@@ -56,17 +68,4 @@ router.post("/forgot", async(req,res)=>{
         res.send('<div>Hubo un error al restaurar la contraseña, <a href="/forgot">intente de nuevo</a></div>')
     }
 })
-
-//Ruta cerrar sesion
-router.get("/logout",(req,res)=>{
-    req.session.destroy(err=>{
-        if(err) return res.send('no se pudo cerrar sesion, <a href="/profile">ir al perfil</a>');
-        res.redirect("/login")
-    });
-});
-
-router.put("/premium/:uid", checkUserAuthenticatedView, checkRoles(["admin"]) , UsersController.modifyRole);
-
-router.delete("/delete-user",UsersController.deleteUser);
-
-export { router as authRouter};
+*/
