@@ -37,7 +37,7 @@ export class CartsController{
             });
         }
     };
-    
+        
     //Función que obtiene ID del carrito
     static getCartById = async (req, res) => {
         try {
@@ -56,7 +56,7 @@ export class CartsController{
             });
         }
     };
-    
+
     //Función que agrega productos al carrito
     static addProductToCart = async (req, res) => {
         try {

@@ -118,17 +118,18 @@ export class ViewsController{
 
     //Entrega carro del usuario activo 
     static getCartById = async(req,res)=>{
-        const id = req.params.cid;
         try {
-            const cartId = await CartsService.getCartById(id);
-            const products = cartId.products;
-            res.render("cart", {products});
+            const id = req.params.cid;
+            const cart = await CartsService.getCartById(id);
+            const products = cart.products;
+            console.log(cart);
+            res.render("cart", cart);
         } catch (error) {
-            //logger.Error(error.message)
+            logger.error(error.message)
             res.status(400).json({status: "error", data: error.message});
         }  
     };
-    
+
     static activeCart = async(req,res)=>{
         res.json(req.user.cart);
     }

@@ -1,15 +1,20 @@
 <div>
     <a href="/">Inicio</a>
-    <a href="/profile">Perfil</a>
     <a href="/products?page=1">Productos</a></a>
+    <a href="/profile">Perfil</a>
 </div>
 <br/>
-<h1>Carrito</h1>
+<h1>Carrito</h1> 
 <br/>
 {{#if _id}}
     <h2>Productos del carrito</h2>
     {{#each products}}
-        <p>{{this.productId.title}}</p>
+    <h3>{{this.productId.title}}</h3>
+        <p>Precio: {{this.productId.price}}</p>
+        <p>Cantidad: {{this.quantity}}</p>
+        <p>Código: {{this.productId.code}}</p>
+        <p>Cateogría: {{this.productId.category}}</p>
+        <p>{{this.productId.thumbnail}}</p>
     {{/each}}
 {{else}}
     <p>Este carrito no existe</p>

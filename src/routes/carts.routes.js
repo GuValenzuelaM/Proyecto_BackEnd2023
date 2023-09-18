@@ -12,7 +12,7 @@ router.post("/:cid/product/:pid", verifyUserCart, addOwnProduct, CartsController
 router.post("/:cid/purchase", verifyUserCart, CartsController.processPurchase)
 
 //Muestra los productos que se encuentran en el carrito
-router.get("/:cid", CartsController.getCartById);
+router.get("/:cid", verifyUserCart, CartsController.getCartById);
 
 //Actualiza carrito
 router.put("/:cid", verifyUserCart, addOwnProduct, CartsController.updateCart);

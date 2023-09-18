@@ -28,7 +28,7 @@ const addToCart = async (productId) => {
                     }
                     );
                     const cart = await payload.json();
-				    console.log("cart", cart.data);
+                    console.log("cart", cart.data);
                 }
             }
     } catch (error) {
@@ -42,8 +42,9 @@ const redirectToCart = async () => {
             method: "GET",
         });
         const cartId = await resp.json();
-        if (cartId) {            
-            window.location.href = `http://localhost:8080/api/carts/${cartId}`; 
+        if (cartId) {
+            //window.location.href = `http://localhost:8080/api/carts/${cartId}`;
+            window.location.href = `http://localhost:8080/cart/${cartId}`;  
         } else {
             console.log("El carrito no existe");
         }

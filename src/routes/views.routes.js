@@ -19,4 +19,7 @@ router.get("/userid", isLoggedIn, ViewsController.getUserId);
 router.get("/userrol", isLoggedIn, ViewsController.getUserRole);
 router.get("/cart", isLoggedIn, ViewsController.activeCart);
 
+router.get("/cart/:cid", isLoggedIn, ViewsController.getCartById);
+
+
 export {router as viewsRouter};
