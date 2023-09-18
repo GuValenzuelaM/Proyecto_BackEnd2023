@@ -1,11 +1,12 @@
 <div>
     <a href="/products?page=1">Productos</a>
     <a href="/profile">Perfil</a>
-    <a href="/api/carts/{{user.cart}}">Carrito</a>
 
 </div>
 <br/>
 <h1>Productos</h1>
+<br/>
+<button id="cart" onclick="redirectToCart()">Ver carrito</button>
 <br/>
 {{#if totalDocs}}
         {{#each payload}}

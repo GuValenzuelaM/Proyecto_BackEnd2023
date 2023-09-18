@@ -129,7 +129,7 @@ export class ViewsController{
         }  
     };
     
-    static getCartById2 = async(req,res)=>{
+    static activeCart = async(req,res)=>{
         res.json(req.user.cart);
     }
     

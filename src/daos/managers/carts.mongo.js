@@ -19,7 +19,8 @@ import {logger} from "../../utils/logger.js"
 
     async getCartById(cartId){
         try {
-            const cart = await this.model.findById(cartId);
+            //const cart = await this.model.findById(cartId);
+            const cart = await this.model.findById(cartId).lean().populate('products.productId');
             if(!cartsModel){
                 throw new Error("el carrito no existe")
             }

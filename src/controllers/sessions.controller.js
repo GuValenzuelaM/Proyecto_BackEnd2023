@@ -16,8 +16,8 @@ export class SessionsController{
 
     //Inicio de sesión éxitoso
     static loginUsers = (req,res)=>{
-        //res.redirect("/profile");
-        res.send("login exitoso;")
+        res.redirect("/profile");
+        //res.send("login exitoso;")
     };
 
     //Inicio de sesión fallido
