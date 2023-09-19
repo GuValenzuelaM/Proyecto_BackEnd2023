@@ -7,14 +7,14 @@
 <h1>Carrito</h1> 
 <br/>
 {{#if _id}}
-    <h2>Productos del carrito</h2>
     {{#each products}}
-    <h3>{{this.productId.title}}</h3>
+    <h2>{{this.productId.title}}</h2>
         <p>Precio: {{this.productId.price}}</p>
         <p>Cantidad: {{this.quantity}}</p>
         <p>Código: {{this.productId.code}}</p>
         <p>Cateogría: {{this.productId.category}}</p>
         <p>{{this.productId.thumbnail}}</p>
+        <br/>
     {{/each}}
 {{else}}
     <p>Este carrito no existe</p>

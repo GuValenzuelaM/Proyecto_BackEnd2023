@@ -66,7 +66,7 @@ const verifyUserCart = (req, res, next)=>{
     const userRole = req.user.role;
     const userCart = req.user.cart;
     const cartId = req.params.cid;
-    if (userRole === "user" && userCart == cartId) {
+    if (userRole === "user" || userRole === "admin" && userCart == cartId) {
         next();
     } else {
         res.send('No tienes autorización para editar el carrito <a href="/home">Volver al home</a></div>');

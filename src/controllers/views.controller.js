@@ -18,9 +18,17 @@ export class ViewsController{
     static renderLogin = (req,res)=>{
         res.render("login");
     };
-
+    
+    static failLogin = (req,res)=>{
+        res.send('<div>Hubo un error al registrar el usuario, <a href="/singup">intente de nuevo</a></div>');
+    }
+    
     static renderSignup = (req,res)=>{
         res.render("signup");
+    };
+    
+    static failSignup = (req,res)=>{
+        res.send('<p>Hubo un error al registrar al usuario <a href="/signup">Intente de nuevo</a></p>');
     };
 
     static renderProfile = (req,res)=>{
@@ -34,7 +42,8 @@ export class ViewsController{
 
     static resetPassword = (req,res)=>{
         const token = req.query.token;
-        res.render("reset-password",{token});
+        res.render("resetPass",{token});
+        //res.render("reset-password",{token});
     }
 
     //Función para listar productos filtrados ,ordenados y paginados

@@ -15,7 +15,7 @@ router.post("/login", passport.authenticate("loginStrategy",{
     failureRedirect:"/api/sessions/failed-login"
 }), SessionsController.loginUsers);
 
-router.get("/login-failed",SessionsController.failLogin);
+router.get("/failed-login",SessionsController.failLogin);
 
 //Ruta registro con github
 router.get("/github",passport.authenticate("githubSignup"));

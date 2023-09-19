@@ -22,8 +22,7 @@ export class SessionsController{
 
     //Inicio de sesión fallido
     static failLogin = (req,res)=>{
-        res.send('<div>usuario registrado correctamente, <a href="/singup">ir al login</a></div>');
-        //res.send('<div>Hubo un error al registrar el usuario, <a href="/singup">intente de nuevo</a></div>');
+    res.send('<div>Hubo un error al registrar el usuario, <a href="/login">intente de nuevo</a></div>');
     }
     
     //Cerrar sesión de usuario
