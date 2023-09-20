@@ -1,0 +1,58 @@
+<div>
+    <a href="/">Inicio</a>
+    <a href="/products?page=1">Productos</a>
+    <a href="/profile">Perfil</a>
+    <hr>
+    
+    <h1>Vista administrador</h1>
+    
+    <a href="http://localhost:8080/totalUsers">Lista de Usuarios</a>
+    <br>
+    <a href="http://localhost:8080/api/users/inactive-users">Usuarios Inactivos</a>
+    <br>
+    <a href="http://localhost:8080/api/users/update-users">Actualización de Usuarios</a>
+    
+</div>
+<div>
+    {{#each totalUsers}}
+        <hr>
+        <ul>
+                    <a>Nombre Completo: {{this.nombre_apellido}}</a>
+                    <br>
+                    <a>Role: {{this.role}}</a>
+                    <br>
+                    <a>Correo: {{this.email}}</a>
+        </ul>
+    {{/each}}
+</div>
+
+<script>
+    console.log("vista administrador Update Users");
+
+    const ModifyRole = async (req, res) => {
+        const userRole = this.role;
+        const userId = this.id;
+        
+        const resp = await fetch(
+            `http://localhost:8080/api/users/update-user/${userId}/${userRole}`,
+            {
+                method: "put",
+            }
+        );
+        const res = await resp.json();
+        const reload = (window.location.href = `http://localhost:8080/api/users/update-user/`)
+    }
+
+    const deleteUser = async (id)=>{
+        const resp = await fetch(
+            `http://localhost:8080/api/users/delete-a-user/${id}`,
+            {
+                method: "delete",
+            }
+        );
+        const res2 = await resp.json();
+        const reload = 
+        (window.location.href = `http://localhost:8080/update-users`)
+    }
+    
+</script>

@@ -53,18 +53,28 @@ export class userMongo{
         } catch (error) {
             throw error;
         }
-    };
-
-    async deleteUser(userId) {
-    try {
-        const result = await this.model.deleteOne({ "_id": userId });
-        if (result.deletedCount === 1) {
-            return { message: "Usuario eliminado correctamente" };
-        } else {
-            return { message: "Usuario no encontrado" };
+    };    
+    
+    async deleteUser(userId){
+        try {
+            const result = await this.model.deleteOne({ "_id": userId });
+            if (result.deletedCount === 1) {
+                return { message: "Usuario eliminado correctamente" };
+            } else {
+                return { message: "Usuario no encontrado" };
+            }
+        } catch (error) {
+            return { message: `Error al eliminar el usuario: ${error.message}` };
         }
-    } catch (error) {
-        return { message: `Error al eliminar el usuario: ${error.message}` };
     }
-}
+
+    async totalUsers(){
+        try {
+            const data = await this.model.find().lean();
+            return data
+        } catch (error) {
+            return { message: `Error al obtener los usuarios: ${error.message}` };
+        }
+    }
+    
 }

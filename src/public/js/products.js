@@ -5,7 +5,7 @@ const addToCart = async (productId) => {
         const userCart = await fetch(
 			`http://localhost:8080/cart`,
 			{
-				method: "get",
+				method: "GET",
 			}
 		);
 		const cartId = await userCart.json();

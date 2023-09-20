@@ -14,10 +14,11 @@ export class UsersService{
     };
 
     static async updateUser(userId,newInfo){
-        return usersDao.updateUser(userId,newInfo);
+        return usersDao.updateUser(userId,newInfo); 
     };
-
-    static async deleteUser(userId){
-        return usersDao.deleteUser(userId);
+    
+    static async totalUsers(userId){
+        return usersDao.totalUsers(userId);
     }
+    
 }

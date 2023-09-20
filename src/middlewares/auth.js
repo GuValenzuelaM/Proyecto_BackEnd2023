@@ -11,7 +11,7 @@ const isLoggedIn = (req, res, next) => {
 
 //Verificación de rol admin
 const isAdmin = (req, res, next) => {
-    const userRole = req.user.rol;
+    const userRole = req.user.role;
     if (userRole === "admin") {
         next();
     } else {

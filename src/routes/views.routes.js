@@ -21,5 +21,7 @@ router.get("/mockingproducts", ViewsController.mockingProducts);
 router.get("/loggerTest", ViewsController.logger);
 router.get("/userid", isLoggedIn, ViewsController.getUserId);
 router.get("/userrol", isLoggedIn, ViewsController.getUserRole);
+router.get("/admin", isAdmin, ViewsController.renderAdmin);
+router.get("/totalUsers", isAdmin, ViewsController.totalUsers);
 
 export {router as viewsRouter};

@@ -9,6 +9,7 @@ import {CustomError} from "../services/error/customError.service.js";
 import {EError} from "../enums/EError.js"; 
 import {ErrorServices} from "../services/error/errorInfo.service.js";
 import {logger} from "../utils/logger.js";
+import {UsersDto} from "../daos/dto/user.dto.js";
 
 export class ViewsController{
     static renderHome = (req,res)=>{
@@ -207,5 +208,19 @@ export class ViewsController{
            res.status(400).json({status: "error", data: error.message});
        }
    }
-   
+
+    static renderAdmin = (req,res)=>{
+    res.render("admin");    
+    };
+
+    static totalUsers = async(req,res)=>{
+        try {
+            const users = await UsersService.totalUsers();
+            const totalUsers = users.map(user => new UsersDto(user));
+            res.render("totalUsers", {totalUsers});
+        } catch (error) {
+            res.json({status:"error", message:error.message});
+        }
+    };
+
 }

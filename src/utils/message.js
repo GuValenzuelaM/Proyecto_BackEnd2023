@@ -44,3 +44,21 @@ export const sendRecoveryEmail = async(userEmail,token)=>{
         `
     })
 }
+
+
+/*
+export const inactiveUsersEmail = async(userEmail)=>{
+    await transporter.sendMail({
+        from:"Ecommerce Proyecto BackEnd 2023",
+        to:userEmail,
+        subject:"Eliminación de cuenta por inactividad",
+        html:`
+            <div>
+                <h2>Hola!</h2>
+                <p>Por tu inactividad y para mantener tu seguridad se ha eliminado la cuenta</p>
+            </div>
+        `
+    })
+}
+
+*/

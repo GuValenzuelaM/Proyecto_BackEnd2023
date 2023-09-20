@@ -1,0 +1,32 @@
+<div>
+    <a href="/">Inicio</a>
+    <a href="/products?page=1">Productos</a>
+    <a href="/profile">Perfil</a>
+    <hr>
+    
+    <h1>Vista administrador</h1>
+    
+    <a href="http://localhost:8080/api/users/update-users">Actualización de Usuarios</a>
+    <br>
+    <a href="http://localhost:8080/api/users/total-users">Lista de Usuarios</a>
+    <br>
+    <a href="http://localhost:8080/api/users/inactive-users">Usuarios Inactivos</a>
+    
+</div>
+<div>
+        {{#each Users}}
+        <hr>
+        <li>
+                <h2>{{this.first_name}} {{this.last_name}}</h2>
+            <ul>
+                <li>Email: {{this.email}}</li>
+                <li>Rol: {{this.role}}</li>
+            </ul>
+        </li>
+        <button onclick="ModifyRole(`{{this._id}}`)">Cambiar rol</button>
+        <button onclick="deleteUser('{{this._id}}')">Eliminar</button>
+        
+    {{/each}}
+</div>
+
+<script src="/js/updateUsers.js"></script>
