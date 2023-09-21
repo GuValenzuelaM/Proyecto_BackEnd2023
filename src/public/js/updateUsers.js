@@ -17,17 +17,22 @@ const ModifyRole = async (id) => {
         console.log("Error al modificar el rol del usuario", error.message);
     }
 }
-/*
 
-    const deleteUser = async (id)=>{
+const deleteUser = async (id)=>{
+    const userId = id;
+    console.log(userId)
+    try {
         const resp = await fetch(
-            `http://localhost:8080/api/users/delete-a-user/${id}`,
+            `http://localhost:8080/api/users/delete-user/${id}`,
             {
-                method: "delete",
+                method: "DELETE",
             }
         );
         const result = await resp.json();
         const reload = 
-        (window.location.href = `http://localhost:8080/update-users`)
+        (window.location.href = `http://localhost:8080/api/users/updateUsers`)
+        
+    } catch (error) {
+        console.log("Error al borrar el usuario", error.message);
     }
-*/
+}

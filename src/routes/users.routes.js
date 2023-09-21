@@ -11,21 +11,23 @@ const router = Router();
 
 router.put("/premium/:uid", checkUserAuthenticatedView, checkRoles(["admin"]) , UsersController.modifyRole );
 
-router.delete("/delete-user", UsersController.deleteUser);
+//¿BORRAR?
+//router.delete("/delete-user", UsersController.deleteUser);
 
 router.post("/:uid/documents", checkUserAuthenticatedView, uploadUserDoc.fields([{name:"identificacion",maxCount:1},{name:"domicilio",maxCount:1}, {name:"estadoDeCuenta",maxCount:1}]) , UsersController.uploadDocuments )
 
 router.get("/total-users", checkRoles(["admin"]) , UsersController.totalUsers);
 
-//PENDIENTE
-//router.get("/inactive-users", UsersController.deleteInactiveUsers);
-
-//PENDIENTE
 router.get("/updateUsers", UsersController.updateUsers);
 
 router.put("/update-role/:uid/", isAdmin, UsersController.modifyRole)
 
-router.delete("/update-users/:uid", isAdmin, UsersController.deleteUser)
+//PENDIENTE
+router.delete("/delete-user/:uid", isAdmin, UsersController.deleteUser)
+//router.delete("/delete-user/:uid", isAdmin, UsersController.deleteUserFinal)
+
+//PENDIENTE
+//router.get("/inactive-users", UsersController.deleteInactiveUsers);
 
 //BORRAR - PRUEBAS
 //router.get("/prueba", checkRoles(["admin"]) , UsersController.prueba);

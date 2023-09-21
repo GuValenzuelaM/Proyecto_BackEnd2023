@@ -73,6 +73,33 @@ export class UsersController{
             res.status(400).json({status:"error", message:error.message});
         }
     }
+    
+    static deleteUserFinal = async (req, res) => {
+        const userId = req.params.uid
+        console.log(userId);
+        try {
+            const fullUser = await UsersService.getUserById(userId);
+            console.log(fullUser)
+            if (fullUser.cart) {
+                const cartId = await CartsService.deleteUser(fullUser.cart);
+                console.log(cartId)
+                if(fullUser){
+                const userId = await UsersService.deleteUser(userId);
+                console.log(fullUser)
+                } else{
+                    res.json({ status: "error", message: "No se pudo eliminar el usuario"});
+                }
+            } else{
+                res.json({ status: "error", message: "No se pudo eliminar el carrito"});
+            }
+            res.json({status:"success", message:"Usuario eliminado correctamente"});
+        } catch (error) {
+            logger.error(error.message);
+            res.json({ status: "error", message: "No se pudo eliminar el usuario"});
+        }
+      }
+
+
 
     static totalUsers = async(req,res)=>{
         try {
@@ -94,6 +121,35 @@ export class UsersController{
         }
     }
 }
+
+/* RESPALDO
+
+    static deleteUser = async (req, res) => {
+        const userId = req.params.uid
+        try {
+            const fullUser = await UsersService.getUserById(userId);
+            console.log(fullUser)
+            if (fullUser.cart) {
+                const cartId = await CartsService.deleteUser(fullUser.cart);
+                console.log(cartId)
+                if(fullUser){
+                const userId = await UsersService.deleteUser(userId);
+                console.log(fullUser)
+                } else{
+                    res.json({ status: "error", message: "No se pudo eliminar el usuario"});
+                }
+            } else{
+                res.json({ status: "error", message: "No se pudo eliminar el carrito"});
+            }
+            res.json({status:"success", message:"Usuario eliminado correctamente"});
+        } catch (error) {
+            logger.error(error.message);
+            res.json({ status: "error", message: "No se pudo eliminar el usuario"});
+        }
+      }
+
+
+    */
 
 
 /*

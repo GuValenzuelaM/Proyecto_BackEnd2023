@@ -21,4 +21,7 @@ export class UsersService{
         return usersDao.totalUsers(userId);
     }
     
+    static async deleteUser(userId){
+        return usersDao.deleteUser(userId);
+    }
 }
