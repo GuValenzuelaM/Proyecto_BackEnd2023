@@ -2,6 +2,7 @@ import {UsersService} from "../repository/users.services.js";
 import {CartsService} from "../repository/cart.services.js";
 import {userModel} from "../daos/models/users.model.js";
 import {UsersDto} from "../daos/dto/user.dto.js";
+import {inactiveUsersEmail} from "../utils/message.js";
 import {logger} from "../utils/logger.js";
 import {stringify} from "uuid";
 
@@ -117,7 +118,107 @@ export class UsersController{
             res.status(400).json({status: "error", data: error.message});
         }
     }
+
+    static inactiveUsers =async(req,res)=>{
+        try{
+            const inactiveUsers = await UsersService.inactiveUsers();
+            const totalInactiveUsers = inactiveUsers.map(user => new UsersDto(user));
+            console.log("inactiveUsers",totalInactiveUsers)
+            res.render("inactiveUsers", {totalInactiveUsers});
+        }catch (error) {
+            logger.error(error.message)
+            res.status(400).json({status: "error", data: error.message});
+        }
+    }
+
+    static deleteInactiveUsers =async(req,res)=>{
+        try{
+            const totalInactiveUsers = await UsersService.inactiveUsers();
+            if(totalInactiveUsers.length <= 0){
+                return res.json(`No se ha eliminado ningun usuario por inactividad`);
+            }
+            for(let i = 0; i < totalInactiveUsers.length; i++ ){
+                const user = totalInactiveUsers[i];
+                const inactiveUser = UsersService.deleteUser(user.id);
+                await inactiveUsersEmail(user.email);    
+            }
+            res.json({status:"success", message:"Correo enviado por inactividad"});
+        }catch (error) {
+            logger.error(error.message)
+            res.status(400).json({status: "error", data: error.message});
+        }
+    }
+
 }
+
+/*
+
+    static deleteUsers = async(req,res)=>{
+        try {
+            const users = await UsersService.getUsers();
+
+            let deleteUsers = [];
+            for(let i = 0; i < users.length; i++ ){
+                const user = users[i];
+
+                const last_connection = user.last_connection
+                const today = new Date()
+
+                function sumarDias(fecha){
+                    fecha.setDate(fecha.getDate() + 2);
+                    return fecha;
+                  }
+                const connection = sumarDias(last_connection);
+
+                if(connection < today){
+                    deleteUsers.push(user)
+                }
+            }
+            console.log(deleteUsers)
+
+            if(deleteUsers.length <= 0){
+                return res.json(`No se ha eliminado ningun usuario por inactividad`);
+            }
+            for(let i = 0; i < deleteUsers.length; i++ ){
+                const user = deleteUsers[i];
+                const id = JSON.stringify(user._id).replace('"', '').replace('"', '')
+
+                const cartId = JSON.stringify(user.cart).replace('"', '').replace('"', '')
+                const deletedcart = CartsService.deleteCart(cartId)
+                const deleted = UsersService.deleteUserId(id);
+                console.log(deleted, deletedcart)
+                await sendInactivityEmail(user.email);    
+            }
+            res.json(`Se ha enviado un enlace a los correos para informarles sobre su inactividad.`)
+            
+        } catch (error) {
+            logger.error(error.message)
+            res.status(400).json({status:"error", message:error.message});
+        }
+    }
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* RESPALDO
 

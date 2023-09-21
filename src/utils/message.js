@@ -45,8 +45,6 @@ export const sendRecoveryEmail = async(userEmail,token)=>{
     })
 }
 
-
-/*
 export const inactiveUsersEmail = async(userEmail)=>{
     await transporter.sendMail({
         from:"Ecommerce Proyecto BackEnd 2023",
@@ -61,4 +59,16 @@ export const inactiveUsersEmail = async(userEmail)=>{
     })
 }
 
-*/
+export const DeletedProductEmail = async(userEmail)=>{
+    await transporter.sendMail({
+        from:"Ecommerce Proyecto BackEnd 2023",
+        to: userEmail,
+        subject:"Notificación de eliminación de producto",
+        html:`
+            <div>
+            <h2>Hola!</h2>
+            <p>Se ha eliminado un producto de tu autoria</p>
+            </div>
+        `
+    })
+}

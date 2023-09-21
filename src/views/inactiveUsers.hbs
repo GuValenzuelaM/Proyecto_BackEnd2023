@@ -1,0 +1,34 @@
+<div>
+    <a href="/">Inicio</a>
+    <a href="/products?page=1">Productos</a>
+    <a href="/profile">Perfil</a>
+    <hr>
+    
+    <h1>Vista administrador</h1>
+    <a href="http://localhost:8080/api/users/total-users">Lista de Usuarios</a>
+    <br>
+    <a href="http://localhost:8080/api/users/updateUsers">Actualización de Usuarios</a>
+
+    
+</div>
+<div>
+    <br>
+        <button id="A" onclick="simularClicEnB()">Borrar Todos</button>
+        {{#each totalInactiveUsers}}
+        <hr>
+        <ul>
+            <a>Nombre Completo: {{this.nombre_apellido}}</a>
+            <br>
+            <a>Id: {{this.id}}</a>
+            <br>
+            <a>Role: {{this.role}}</a>
+            <br>
+            <a>Correo: {{this.email}}</a>
+            <br>
+            <a>Última Conexión: {{this.last_connection}}</a>
+        </ul>
+        <button id="B" onclick="InactiveUsers(`{{this.id}}`)">Borrar</button>
+    {{/each}}
+</div>
+
+<script src="/js/inactiveUsers.js"></script>

@@ -11,9 +11,6 @@ const router = Router();
 
 router.put("/premium/:uid", checkUserAuthenticatedView, checkRoles(["admin"]) , UsersController.modifyRole );
 
-//¿BORRAR?
-//router.delete("/delete-user", UsersController.deleteUser);
-
 router.post("/:uid/documents", checkUserAuthenticatedView, uploadUserDoc.fields([{name:"identificacion",maxCount:1},{name:"domicilio",maxCount:1}, {name:"estadoDeCuenta",maxCount:1}]) , UsersController.uploadDocuments )
 
 router.get("/total-users", checkRoles(["admin"]) , UsersController.totalUsers);
@@ -26,11 +23,12 @@ router.put("/update-roleAdmin/:uid/", isAdmin, UsersController.modifyRoleAdmin)
 
 router.delete("/delete-user/:uid", isAdmin, UsersController.deleteUser)
 
-
 //PENDIENTE
-//router.get("/inactive-users", UsersController.deleteInactiveUsers);
+router.get("/inactiveUsers", isAdmin, UsersController.inactiveUsers)
 
-//BORRAR - PRUEBAS
-//router.get("/prueba", checkRoles(["admin"]) , UsersController.prueba);
+router.delete("/inactiveUsers/:uid", isAdmin, UsersController.deleteInactiveUsers)
 
 export {router as usersRouter};
+
+//¿BORRAR?
+//router.delete("/delete-user", UsersController.deleteUser);

@@ -77,4 +77,17 @@ export class userMongo{
         }
     }
     
+    async inactiveUsers(){
+        try {
+            const inactivity = 2 * 24 * 60 * 60 * 1000 //milisegundos
+            const date = new Date(Date.now() - inactivity);
+            const inactiveUsers = await userModel.find({
+                last_connection: { $lt: date },
+            });
+            return inactiveUsers;
+        } catch (error) {
+            return { message: `Error al obtener los usuarios: ${error.message}` };
+        }
+    }
+
 }

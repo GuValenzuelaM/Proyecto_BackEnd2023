@@ -5,7 +5,7 @@
     <hr>
     
     <h1>Vista administrador</h1>
-    <a href="http://localhost:8080/api/users/inactive-users">Usuarios Inactivos</a>
+    <a href="http://localhost:8080/api/users/inactiveUsers">Usuarios Inactivos</a>
     <br>
     <a href="http://localhost:8080/api/users/updateUsers">Actualización de Usuarios</a>
     
@@ -22,34 +22,3 @@
         </ul>
     {{/each}}
 </div>
-
-<script>
-    console.log("vista administrador Update Users");
-
-    const ModifyRole = async (req, res) => {
-        const userRole = this.role;
-        const userId = this.id;
-        
-        const resp = await fetch(
-            `http://localhost:8080/api/users/update-user/${userId}/${userRole}`,
-            {
-                method: "put",
-            }
-        );
-        const res = await resp.json();
-        const reload = (window.location.href = `http://localhost:8080/api/users/update-user/`)
-    }
-
-    const deleteUser = async (id)=>{
-        const resp = await fetch(
-            `http://localhost:8080/api/users/delete-a-user/${id}`,
-            {
-                method: "delete",
-            }
-        );
-        const res2 = await resp.json();
-        const reload = 
-        (window.location.href = `http://localhost:8080/update-users`)
-    }
-    
-</script>
