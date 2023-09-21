@@ -8,7 +8,7 @@ import {CustomError} from "../services/error/customError.service.js";
 import {EError} from "../enums/EError.js"; 
 import {ErrorServices} from "../services/error/errorInfo.service.js";
 import {logger} from "../utils/logger.js"
-import {DeletedProductEmail} from "../utils/message.js"
+import {deletedProductEmail} from "../utils/message.js"
 
 export class ProductsController{ 
 
@@ -166,21 +166,22 @@ export class ProductsController{
     static deleteProduct = async(req,res)=>{
         try {
             const productId = req.params.pid;
-            console.log("productId:",productId)
+            //console.log("productId:",productId)
             const product = await ProductsService.getProductById(productId);
             //console.log("product:",product)
-            console.log("product.owner:",product.owner)
+            //console.log("product.owner:",product.owner)
             const userId = await UsersService.getUserById(product.owner);
-            console.log("userId",userId)
+            //console.log("userId",userId)
             //console.log("userId.role",userId.role)
             //console.log("userId.email",userId.email)
             //validamos si el usuario que esta borrando el producto es premium.
             if(userId.role === "premium" || productId.owner === "admin"){
                 const result = await ProductsService.deleteProduct(productId);
-                console.log("userId.role:",userId.role)
+                //console.log("userId.role:",userId.role)
+                //console.log("userId.email:",userId.email)
                 //const product = await ProductsService.getProductById(productId);
-                if(product.owner === "premium"){
-                await inactiveUsersEmail(userIdOwner.email);
+                if(userId.role  === "premium"){
+                    await deletedProductEmail(userId.email);
                 }
                 res.json({status:"success", message:result});
             }else{

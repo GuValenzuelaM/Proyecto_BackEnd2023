@@ -59,7 +59,7 @@ export const inactiveUsersEmail = async(userEmail)=>{
     })
 }
 
-export const DeletedProductEmail = async(userEmail)=>{
+export const deletedProductEmail = async(userEmail)=>{
     await transporter.sendMail({
         from:"Ecommerce Proyecto BackEnd 2023",
         to: userEmail,
