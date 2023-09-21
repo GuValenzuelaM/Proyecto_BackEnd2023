@@ -5,9 +5,6 @@
     <hr>
     
     <h1>Vista administrador</h1>
-    
-    <a href="http://localhost:8080/api/users/update-users">Actualización de Usuarios</a>
-    <br>
     <a href="http://localhost:8080/api/users/total-users">Lista de Usuarios</a>
     <br>
     <a href="http://localhost:8080/api/users/inactive-users">Usuarios Inactivos</a>
@@ -23,8 +20,9 @@
                 <li>Rol: {{this.role}}</li>
             </ul>
         </li>
+        <button onclick="ModifyRoleAdmin(`{{this._id}}`)">Perfil Administrador</button>
         <button onclick="ModifyRole(`{{this._id}}`)">Cambiar rol</button>
-        <button onclick="deleteUser('{{this._id}}')">Eliminar</button>
+        <button onclick="deleteUser(`{{this._id}}`)">Eliminar</button>
         
     {{/each}}
 </div>

@@ -2,6 +2,8 @@ import {UsersService} from "../repository/users.services.js";
 import {CartsService} from "../repository/cart.services.js";
 import {userModel} from "../daos/models/users.model.js";
 import {UsersDto} from "../daos/dto/user.dto.js";
+import {logger} from "../utils/logger.js";
+import {stringify} from "uuid";
 
 export class UsersController{
     static modifyRole = async(req,res)=>{
@@ -12,15 +14,36 @@ export class UsersController{
                 return res.send("El usuario no existe, <a href='/singup'>Registrarse</a>");
             } else{
                 const userRole = user.role;
-                if(userRole === "user"){
+                if(userRole === "user" || userRole === "admin"){
                     user.role = "premium";
-                } else if(userRole === "premium"){
+                } else if(userRole === "premium" || userRole === "admin"){
                     user.role = "user";
+                    } else{
+                    res.send("No es posible cambiar el role del usuario")
+                    };
+                const result = await UsersService.updateUser(userId,user);
+                //res.send("Rol del usuario modificado");
+                res.json(result)
+            }
+        } catch (error) {
+            res.send(error.message);
+        }
+    }
+
+    static modifyRoleAdmin = async(req,res)=>{
+        try {
+            const userId = req.params.uid;
+            const user = await UsersService.getUserById(userId);
+            if(!user){
+                return res.send("El usuario no existe, <a href='/singup'>Registrarse</a>");
+            } else{
+                const userRole = user.role;
+                if(userRole === "user" || userRole === "premium"){
+                    user.role = "admin";
                 } else{
                     res.send("No es posible cambiar el role del usuario")
                 };
                 const result = await UsersService.updateUser(userId,user);
-                //res.send("Rol del usuario modificado");
                 res.json(result)
             }
         } catch (error) {
@@ -73,39 +96,13 @@ export class UsersController{
             res.status(400).json({status:"error", message:error.message});
         }
     }
-    
-    static deleteUserFinal = async (req, res) => {
-        const userId = req.params.uid
-        console.log(userId);
-        try {
-            const fullUser = await UsersService.getUserById(userId);
-            console.log(fullUser)
-            if (fullUser.cart) {
-                const cartId = await CartsService.deleteUser(fullUser.cart);
-                console.log(cartId)
-                if(fullUser){
-                const userId = await UsersService.deleteUser(userId);
-                console.log(fullUser)
-                } else{
-                    res.json({ status: "error", message: "No se pudo eliminar el usuario"});
-                }
-            } else{
-                res.json({ status: "error", message: "No se pudo eliminar el carrito"});
-            }
-            res.json({status:"success", message:"Usuario eliminado correctamente"});
-        } catch (error) {
-            logger.error(error.message);
-            res.json({ status: "error", message: "No se pudo eliminar el usuario"});
-        }
-      }
-
-
 
     static totalUsers = async(req,res)=>{
         try {
             const users = await UsersService.totalUsers();
             const totalUsers = users.map(user => new UsersDto(user));
-            res.json({status:"success", data:totalUsers});
+            //res.json({status:"success", data:totalUsers});
+            res.render("totalUsers", {totalUsers});
         } catch (error) {
             res.json({status:"error", message:error.message});
         }
@@ -124,32 +121,27 @@ export class UsersController{
 
 /* RESPALDO
 
-    static deleteUser = async (req, res) => {
-        const userId = req.params.uid
-        try {
+    static deleteUserRespaldo = async(req,res)=>{
+        try{ 
+            const userId = req.params.uid
             const fullUser = await UsersService.getUserById(userId);
-            console.log(fullUser)
-            if (fullUser.cart) {
-                const cartId = await CartsService.deleteUser(fullUser.cart);
-                console.log(cartId)
-                if(fullUser){
-                const userId = await UsersService.deleteUser(userId);
-                console.log(fullUser)
-                } else{
-                    res.json({ status: "error", message: "No se pudo eliminar el usuario"});
-                }
-            } else{
-                res.json({ status: "error", message: "No se pudo eliminar el carrito"});
+            //const cartId = JSON.stringify(fullUser.cart).replace('"', '').replace('"', '')
+            if (!fullUser) {
+                return res.status(404).json({ status: "error", message: "Usuario no encontrado" });
             }
-            res.json({status:"success", message:"Usuario eliminado correctamente"});
+            //console.log("user:",fullUser);
+            console.log("userId:",userId);
+            //console.log("cartId:",cartId);
+            //console.log("cartId:",fullUser.cart);
+            //const cart = await CartsService.deleteCartId(cartId);
+            const user = await UsersService.deleteUser(userId);
+            res.send(userId)
         } catch (error) {
-            logger.error(error.message);
-            res.json({ status: "error", message: "No se pudo eliminar el usuario"});
+            logger.error(error.message)
+            res.status(400).json({status:"error", message:error.message});
         }
-      }
-
-
-    */
+    }
+*/
 
 
 /*

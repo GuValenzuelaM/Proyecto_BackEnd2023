@@ -22,9 +22,10 @@ router.get("/updateUsers", UsersController.updateUsers);
 
 router.put("/update-role/:uid/", isAdmin, UsersController.modifyRole)
 
-//PENDIENTE
+router.put("/update-roleAdmin/:uid/", isAdmin, UsersController.modifyRoleAdmin)
+
 router.delete("/delete-user/:uid", isAdmin, UsersController.deleteUser)
-//router.delete("/delete-user/:uid", isAdmin, UsersController.deleteUserFinal)
+
 
 //PENDIENTE
 //router.get("/inactive-users", UsersController.deleteInactiveUsers);
