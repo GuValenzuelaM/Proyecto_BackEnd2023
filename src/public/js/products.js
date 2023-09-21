@@ -52,3 +52,24 @@ const redirectToCart = async () => {
         console.log("Error: obtener el carrito", error.message);
     }
 };
+
+//router.delete("/:pid", canEditProducts, ProductsController.deleteProduct);
+
+const deleteProducts = async (pid) => {
+    const productId = pid;
+    console.log(productId)
+    try {
+        if (productId) {
+        const resp = await fetch(`http://localhost:8080/api/products/${productId}`, {
+            method: "DELETE",
+        });
+        const result = await resp.json();
+        const reload = (window.location.href = `http://localhost:8080/totalProducts`);
+        console.log("producto eliminado:",productId)
+        } else {
+            console.log("El producto no existe");
+        }
+    } catch (error) {
+        console.log("Error: no se puede borrar el producto", error.message);
+    }
+};

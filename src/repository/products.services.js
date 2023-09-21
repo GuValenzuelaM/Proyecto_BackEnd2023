@@ -29,6 +29,7 @@ export class ProductsService {
     static async deleteProduct(id) {
         return productsDao.deleteProduct(id);
     };
+
 };
 
 /*

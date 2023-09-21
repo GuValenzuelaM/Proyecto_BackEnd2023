@@ -223,4 +223,12 @@ export class ViewsController{
         }
     };
 
+    static totalProducts = async(req,res)=>{
+        try {
+            const totalProducts = await ProductsService.getProducts();
+            res.render("totalProducts", {totalProducts});
+        } catch (error) {
+            res.json({status:"error", message:error.message});
+        }
+    };
 }

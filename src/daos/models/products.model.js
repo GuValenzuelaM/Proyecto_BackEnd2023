@@ -18,7 +18,7 @@ const productsSchema = new mongoose.Schema({
     owner:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"users",
-        default: "64d3a1b3e49a194d3e23a4e4"
+        default: "650c8f17f20e708b877a9b70" //guvalenzuelam@gmail.com
     }
 });
 productsSchema.plugin(mongoosePaginate);

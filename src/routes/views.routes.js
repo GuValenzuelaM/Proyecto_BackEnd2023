@@ -1,5 +1,5 @@
 import {ViewsController} from "../controllers/views.controller.js"
-import {isLoggedIn, isAdmin, checkUserAuthenticatedView, showAuthView} from "../middlewares/auth.js";
+import {isLoggedIn, isAdmin, checkUserAuthenticatedView, showAuthView, checkRoles} from "../middlewares/auth.js";
 import { Router } from "express";
 
 const router = Router();
@@ -23,5 +23,6 @@ router.get("/userid", isLoggedIn, ViewsController.getUserId);
 router.get("/userrol", isLoggedIn, ViewsController.getUserRole);
 router.get("/admin", isAdmin, ViewsController.renderAdmin);
 router.get("/totalUsers", isAdmin, ViewsController.totalUsers);
+router.get("/totalProducts", checkRoles(["admin"]), ViewsController.totalProducts);
 
 export {router as viewsRouter};

@@ -1,0 +1,33 @@
+<div>
+    <a href="/products?page=1">Productos</a>
+    <a href="/profile">Perfil</a>
+
+</div>
+<br/>
+<h1>Administrador de Productos</h1>
+    <a href="http://localhost:8080/api/users/inactiveUsers">Usuarios Inactivos</a>
+    <br>
+    <a href="http://localhost:8080/api/users/updateUsers">Actualización de Usuarios</a>
+    <br>
+    <a href="http://localhost:8080/api/users/total-users">Lista de Usuarios</a>
+
+<div>
+    {{#each totalProducts}}
+        <hr>
+            <h2>Nombre Producto: {{this.title}}</h2>
+        <ul>
+            
+            <a>Categoría: {{this.category}}</a>
+            <br>
+            <a>Código: {{this.code}}</a>
+            <br>
+            <a>Precio: {{this.email}}</a>
+            <br>
+            <a>Stock: {{this.stock}}</a>    
+        </ul>
+            <button onclick="deleteProducts(`{{this._id}}`)">Eliminar Producto</button>
+    {{/each}}
+
+</div>
+
+<script src="js/products.js"></script>
