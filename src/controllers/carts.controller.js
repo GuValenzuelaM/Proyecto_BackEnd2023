@@ -3,15 +3,12 @@ import {UsersService} from "../repository/users.services.js";
 import {CartsService} from "../repository/cart.services.js";
 import {ProductsService} from "../repository/products.services.js";
 import {TicketService} from "../repository/ticket.services.js";
-
-//Estructura standard del error
 import {CustomError} from "../services/error/customError.service.js";
-//Tipos de errores
 import {EError} from "../enums/EError.js"; 
-import {ErrorServices} from "../services/error/errorInfo.service.js"; 
+import {ErrorServices} from "../services/error/errorInfo.service.js";
+import {v4 as uuidv4} from 'uuid';
 
 export class CartsController{
-    //Crea un carrito usando CartsService
     static createCart = async(req,res)=>{
         try {
             const cartCreated = await CartsService.createCart();
@@ -21,7 +18,6 @@ export class CartsController{
         }
     };
 
-    //Elimina un carrito usando el ID
     static deleteCart = async (req, res) => {
         try {
             const cartId = req.params.cid;
@@ -45,7 +41,8 @@ export class CartsController{
             const cartId = await CartsService.getCartById(cart);
             const products = cartId.products;
             //res.render("cart", {products});
-            res.json({status:"success", data:cartId});
+            res.render("cart", cartId);
+            //res.json({status:"success", data:cartId});
         } catch (error) {
             //res.json({status:"error", message:error.message});
             CustomError.createError({
@@ -117,7 +114,7 @@ export class CartsController{
             const productId = req.params.pid;
             const quantity = req.params.quantity;
             const result = await CartsService.updateQuantity(cartId, productId, quantity);
-            res.json({ status: "success", mensaje: "Cantidad del producto actualizada" });
+            res.json({ status: "success", mensaje: "Cantidad del producto actualizada", data: result});
         } catch (error) {
             //res.status(400).json({ status: "error", mensaje: error.message });
             CustomError.createError({
@@ -128,87 +125,124 @@ export class CartsController{
             });
         }
     };
-    
-    //Proceso de compra para un carrito
-    static processPurchase = async (req, res) => {
-        try {
-        //Busca el carrito de compras según ID
-        const cartId = req.params.cid;
-        //Obtiene el carrito de compras por su ID
-        const cart = await CartsService.getCartById(cartId);
 
-        //Verificación del carrito, rectifica que tenga productos
-        if (cart.products.length === 0) {
-        //Respuesta de error en caso que el carro este vacío
-        res.status(400).json({ status: "error", message: "El carrito está vacío." });
-        return;
+    static purchaseCart = async(req, res)=>{
+        try {
+            const cartId = req.params.cid;
+            console.log("1 cartId:",cartId)
+            if(cartId || cart.products.length>0){
+                const cart = await CartsService.getCartById(cartId);
+                console.log("2 cart:",cart)
+                let productsWithStock =[];
+                let productsWithOutStock =[];
+                for(let i=0; i<cart.products.length; i++){
+                    let productList = cart.products[i]
+                    console.log("3 productList:",productList)
+                    let productIidentifier = cart.products[i].productId._id
+                    console.log("4 productIidentifier:",productIidentifier)
+                    console.log("5 Stock:",cart.products[i].productId.stock)
+                    console.log("6 Cantidad Compra:",cart.products[i].quantity)
+                    let stockCheck = (cart.products[i].productId.stock - cart.products[i].quantity)
+                    console.log("7 stockCheck:",stockCheck)
+                        if(stockCheck>=0){
+
+                            productsWithStock.push(productList);
+                            } else{
+                            productsWithOutStock.push(productList);
+                        }
+                        console.log("8 productsWithStock:",productsWithStock)
+                        console.log("9 productsWithOutStock:",productsWithOutStock)
+                    }
+                    console.log("8 productsWithStock:",productsWithStock)
+                    //res.json({ status: "success", data: {productsWithStock}});
+                    
+                    const code = uuidv4();
+                    let today = new Date();
+                    let amount = productsWithStock.reduce((total, product) =>
+                        total + (product.quantity * product.productId.price), 0);
+                    console.log("10 amount:",amount)
+                    const user = await UsersService.userByCardId(cartId);
+                    console.log("11 user:",user)
+                    const email= user.email
+                    console.log("12 email:",email)
+                    const ticket = {code: code, purchase_datetime: today, amount: amount, purchaser: email}
+                    console.log("13 ticket:",ticket)
+                    const createTicket  = await TicketService.createTicket(ticket);
+                    console.log("14 createTicket:",createTicket)
+                    
+                    res.render("ticket", {createTicket});
+                } else{
+                res.status(400).json({status:"error", message:"el carrito no tiene productos"});
+                }
+            } catch (error) {
+            res.status(400).json({status:"error", message:error.message});
         }
-      
-        const productsApproved = [];
-        const productsRejected = [];
-      
-        //Recorre los productos del carrito
-        for (const productItem of cart.products) {
-        const productId = productItem.productId;
-        const productQ = productItem.quantity;
-      
-        //Busca la información del producto según el ID
-        const product = await ProductsService.getProductById(productId);
-        if (!product) {
-            //Agrega el producto rechazado si no esta en la BD
-            productsRejected.push(productId);
-            continue;
-        }
-      
-            if(product.stock >= productQ) {
-                //Actualiza el stock de cada producto
-                await ProductsService.updateProductStock(productId, product.stock - productQ);
-                //Agrega precio total del producto a todos los aprobados
-                productsApproved.push(product.price * productQ);
-            } else {
-                //Agrega el producto rechazado si el stock es insuficiente
-                productsRejected.push(productId);
-            }
-        }
-      
-        if (productsApproved.length === 0) {
-            //Responde con un error en caso de no procesar la compra de ningún producto
-            res.json({ status: "error", message: "No se pudo procesar ningún producto." });
-            return;
-        }
-      
-        const today = new Date();
-        const totalAmount = productsApproved.reduce((a, b) => a + b, 0);
-      
-        const ticket = { code: "x", purchaseDatetime: today, amount: totalAmount };
-        //Creación de ticket de compra
-        const createdTicket = await TicketService.createTicket(ticket);
-      
-        if (productsRejected.length > 0) {
-        //Responde con mensaje de compra exitosa y productos rechazados
-            res.json({
-            status: "success",
-            message: `Compra parcialmente exitosa. Ticket: ${createdTicket}. Algunos productos no pudieron ser procesados.`,
-            });
-        } else {
-            //Respuesta de compra exitosa
-            res.json({ status: "success", message: `Compra exitosa. Ticket: ${createdTicket}` });
-        }
-        } catch (error) {
-            //Respuesta de error
-            res.status(400).json({ status: "error", message: error.message });
-        }
-    };   
+    }
 }
 
+
+
+
 /*
-createCart
-deleteCart
-getCart
-addProduct
-deleteProduct
-updateCart
-updateQuantity
-processPurchase
+
+    static purchaseCart = async(req, res)=>{
+        try {
+            const cartId = req.params.cid;
+            //console.log("1 cartId:",cartId)
+            if(!cartId){
+                res.json({status:"error", message:Error.message});
+            } else{
+                const cart = await CartsService.getCartById(cartId);
+                //console.log("2 cart:",cart)
+                if(cart.products.length<=0){
+                    res.json({status:"error", message:Error.message});
+                } else{
+                    let productsWithStock =[];
+                    let productsWithOutStock =[];
+                    for(let i=0; i<=cart.products.length; i++){
+                        let productList = cart.products[i]
+                        console.log("3 productList:",productList)
+                        let productIidentifier = cart.products[i].productId._id
+                        console.log("4 productIidentifier:",productIidentifier)
+                        
+                        console.log("5 Stock:",cart.products[i].productId.stock)
+                        console.log("6 Cantidad Compra:",cart.products[i].quantity)
+                        let stockCheck = (cart.products[i].productId.stock - cart.products[i].quantity)
+                        console.log("7 stockCheck:",stockCheck)
+                        if(stockCheck>=0){
+                            productsWithStock.push(productList);
+                            } else{
+                            productsWithOutStock.push(productList);
+                        }
+                        console.log("8 productsWithStock:",productsWithStock)
+                        console.log("9 productsWithOutStock:",productsWithOutStock)
+                    }
+                    console.log("8 productsWithStock:",productsWithStock)
+                    //res.render("ticket", {productList});
+                    res.render("ticket", {productsWithStock});
+                }
+            }
+        } catch (error) {
+            res.status(400).json({status: "error", data: error.message});
+        }
+    }
+
 */
-     
+
+
+
+
+
+/*
+
+    //BORRAR?
+    static productsFromCart = async(req,res)=>{
+        try {
+            const totalProducts = await CartsService.getProducts();
+            console.log("totalProducts:",totalProducts)
+            res.render("productsFromCart", {totalProducts});
+        } catch (error) {
+            res.json({status:"error", message:error.message});
+        }
+    };
+*/

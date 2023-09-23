@@ -149,156 +149,17 @@ export class UsersController{
         }
     }
 
-}
-
-/*
-
-    static deleteUsers = async(req,res)=>{
-        try {
-            const users = await UsersService.getUsers();
-
-            let deleteUsers = [];
-            for(let i = 0; i < users.length; i++ ){
-                const user = users[i];
-
-                const last_connection = user.last_connection
-                const today = new Date()
-
-                function sumarDias(fecha){
-                    fecha.setDate(fecha.getDate() + 2);
-                    return fecha;
-                  }
-                const connection = sumarDias(last_connection);
-
-                if(connection < today){
-                    deleteUsers.push(user)
-                }
-            }
-            console.log(deleteUsers)
-
-            if(deleteUsers.length <= 0){
-                return res.json(`No se ha eliminado ningun usuario por inactividad`);
-            }
-            for(let i = 0; i < deleteUsers.length; i++ ){
-                const user = deleteUsers[i];
-                const id = JSON.stringify(user._id).replace('"', '').replace('"', '')
-
-                const cartId = JSON.stringify(user.cart).replace('"', '').replace('"', '')
-                const deletedcart = CartsService.deleteCart(cartId)
-                const deleted = UsersService.deleteUserId(id);
-                console.log(deleted, deletedcart)
-                await sendInactivityEmail(user.email);    
-            }
-            res.json(`Se ha enviado un enlace a los correos para informarles sobre su inactividad.`)
-            
-        } catch (error) {
-            logger.error(error.message)
-            res.status(400).json({status:"error", message:error.message});
-        }
-    }
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* RESPALDO
-
-    static deleteUserRespaldo = async(req,res)=>{
-        try{ 
-            const userId = req.params.uid
-            const fullUser = await UsersService.getUserById(userId);
-            //const cartId = JSON.stringify(fullUser.cart).replace('"', '').replace('"', '')
-            if (!fullUser) {
-                return res.status(404).json({ status: "error", message: "Usuario no encontrado" });
-            }
-            //console.log("user:",fullUser);
-            console.log("userId:",userId);
-            //console.log("cartId:",cartId);
-            //console.log("cartId:",fullUser.cart);
-            //const cart = await CartsService.deleteCartId(cartId);
-            const user = await UsersService.deleteUser(userId);
+    //NUEVO
+    static userByCardId = async(req,res)=>{
+        try{
+            const cartId = req.params.cid
+            const user = await UsersService.userByCardId(cartId);
+            const userId = user._id
             res.send(userId)
         } catch (error) {
             logger.error(error.message)
             res.status(400).json({status:"error", message:error.message});
         }
     }
-*/
 
-
-/*
-static prueba = async(req,res)=>{
-    try {
-        const users = await UsersService.totalUsers();
-        
-        let deleteUsers = [];
-        for(let i = 0; i < users.length; i++ ){
-            const user = users[i];
-
-            const last_connection = user.last_connection
-            const today = new Date()
-
-            function sumarDias(fecha){
-                fecha.setDate(fecha.getDate() + 2);
-                return fecha;
-              }
-            const connection = sumarDias(last_connection);
-
-            if(connection < today){
-                deleteUsers.push(user)
-            }
-        }
-        console.log(deleteUsers)
-        res.json({status:"success", data:deleteUsers});
-        
-    } catch (error) {
-        res.json({status:"error", message:error.message});
-    }
-};
-
-static deleteInactiveUsers = async(req, res)=>{
-    try {
-        inactiveUsers = await UsersService.totalUsers();
-        
-        if(inactiveUsers.length === 0){
-            return res.json(`No se ha eliminado ningun usuario por inactividad`);
-        } else{
-            for(let i = 0; i < inactiveUsers.length; i++){
-
-                const user = inactiveUsers[i];
-                console.log("user:",user)
-            //COMENTARIOS INICIO
-                const userId = JSON.stringify(user.id)
-                const cartId = JSON.stringify(user.cart)
-                const deleted = UsersService.deleteUserId(userId);
-                const deletedcart = CartsService.deleteCart(cartId)
-                console.log(deleted, deletedcart)
-                await inactiveUsersEmail(user.email);
-            //COMENTARIOS FINAL
-            }
-        }
-        return {message: `Se informaron a ${inactiveUsers.length} usuarios por su inactividad`,inactiveUsers: inactiveUsers};
-    }catch (error) {
-        res.status(400).json({status:"error", message:error.message});
-    }
 }
-*/

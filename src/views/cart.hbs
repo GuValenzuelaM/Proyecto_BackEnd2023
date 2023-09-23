@@ -1,23 +1,82 @@
 <div>
-    <a href="/">Inicio</a>
     <a href="/products?page=1">Productos</a></a>
     <a href="/profile">Perfil</a>
 </div>
+
 <br/>
-<h1>Carrito</h1> 
-<br/>
+
+<h1>Carrito</h1>
+
+<button onclick="purchase(`{{this.id}}`)">Comprar</button>
+
+<br>
 {{#if _id}}
-    {{#each products}}
-    <h2>{{this.productId.title}}</h2>
-        <p>Precio: {{this.productId.price}}</p>
-        <p>Cantidad: {{this.quantity}}</p>
-        <p>Código: {{this.productId.code}}</p>
-        <p>Cateogría: {{this.productId.category}}</p>
-        <p>{{this.productId.thumbnail}}</p>
-        <br/>
-    {{/each}}
-{{else}}
+    <div>
+        {{#each products}}
+            <hr>
+            <h2>{{this.productId.title}}</h2>
+            <ul>
+                <p>Precio: ${{this.productId.price}}</p>
+                <p>Cantidad: {{this.quantity}}</p>
+                <p>Código: {{this.productId.code}}</p>
+                <p>Cateogría: {{this.productId.category}}</p>
+                <input type="number" placeholder="Cantidad" name="inputQuantity"/>
+                <button onclick="updateQuantity(`{{this.productId._id}}`)">Actualizar</button>
+                <button onclick="DeleteProduct(`{{this.productId._id}}`)">Eliminar</button>
+            </ul>
+        {{/each}}
+    {{else}}
     <p>Este carrito no existe</p>
+    </div>
 {{/if}}
 
-<script src="js/carts.js"></script>
+<script>
+
+console.log("vista carrito");
+
+const purchase = async ()=> {
+    try {
+		const userCart = await fetch(
+			`http://localhost:8080/cart`,
+			{
+				method: "GET",
+			}
+		);
+		const cartId = await userCart.json();
+        console.log("cartId:",cartId)
+        if (cartId) {
+            window.location.href =
+            `http://localhost:8080/api/carts/${cartId}/purchase`;
+        } else {
+            console.log("El carrito no existe");
+        }
+    } catch (error) {
+        console.log("Error: botón purchase", error.message);
+    }
+}
+
+const updateQuantity = async (cartId, productId, inputQuantity)=> {
+    try {
+        const cartId = this._id;
+        const productId = this.productId._id;
+        const quantity = inputQuantity;
+		const updateQuantity = await fetch(
+			`http://localhost:8080/api/carts/${cartId}/product/${productId}`,
+			{
+				method: "PUT",
+			}
+		);
+		const product = await updateQuantity.json();
+        console.log("cartId:",product)
+        if (cartId) {
+            window.location.href =
+            `http://localhost:8080/api/carts/${cartId}`;
+        } else {
+            console.log("El carrito no existe");
+        }
+    } catch (error) {
+        console.log("Error: botón updateQuantity", error.message);
+    }
+}
+
+</script>

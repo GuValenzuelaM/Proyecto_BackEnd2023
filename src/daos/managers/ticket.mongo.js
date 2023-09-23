@@ -1,7 +1,6 @@
 import {ticketsModel} from "../models/ticket.model.js";
 
 export class TicketsMongo{
-
     constructor(){
         this.model = ticketsModel;
     }
@@ -15,17 +14,39 @@ export class TicketsMongo{
         }
     }
 
-    async getTicket(email){
+    async getTicket(userId){
         try {
-            const ticket = await this.model.findById(email);
+            const ticket = await this.model.findById(userId);
             if(!ticket){
-                throw new Error(`No se ha encontrado el ticket ${ticket}`)
+                throw new Error(`el usuario no presenta tickets ${error.message}`);
             } else{
                 return JSON.parse(JSON.stringify(ticket));
                 logger.debug(`el ticket ${ticket} existe en el arreglo de tickets`)
             }
         } catch (error) {
             throw new Error(`Error al obtener ticket ${error.message}`);
+        }
+    };
+
+    async stockCheck(productId){
+        try {
+            const product = await this.model.findById(id);
+            if(!product){
+                throw new Error(`No se ha encontrado el producto ID ${id}`)
+            } else{
+                const productStock = product.stock
+                const productQ = product.quantity
+                const stockCheck = productStock - productQ
+                if(stockCheck>=0){
+                    return JSON.parse(JSON.stringify(stockCheck));
+                    logger.debug(`el producto ${id} tiene stock suficiente`)
+                } else {
+                    return JSON.parse(JSON.stringify(stockCheck));
+                    logger.debug(`el producto ${id} no tiene stock suficiente para ejecutar la compra`)
+                }
+            }
+        } catch (error) {
+            throw new Error(`Error al calcular stock del producto ${error.message}`);
         }
     };
 

@@ -15,7 +15,7 @@ const usersSchema = new mongoose.Schema({
     last_connection:{type:Date,default:null},
     status:{type:String,required:true, enum:["Incompleto", "Completo", "Pendiente"],default:"Pendiente"},
     avatar:{type:String,default:''},
-    cart:{type: mongoose.Schema.Types.ObjectId, ref:"carts"}
+    cart:{type: mongoose.Schema.Types.ObjectId, ref:"carts"} 
 });
 
 export const userModel = mongoose.model(usersCollection,usersSchema);

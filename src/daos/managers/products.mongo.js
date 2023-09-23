@@ -15,15 +15,6 @@ import {logger} from "../../utils/logger.js";
         }
     };
 
-    async getProducts(){
-         try {
-             const products = await this.model.find();
-             return JSON.parse(JSON.stringify(products));
-         } catch (error) {
-             throw new Error(`Error al obtener productos ${error.message}`);
-         }
-    };
-
     async getProductById(id){
         try {
             const product = await this.model.findById(id);
@@ -69,13 +60,14 @@ import {logger} from "../../utils/logger.js";
             throw new Error(`Error get all products ${error.message}`);
         }
     };
-};
 
-/*
-createProduct
-getProducts
-getProductById
-updateProduct
-deleteProduct
-getPaginate
-*/
+    async getProducts(){
+        try {
+           const products = await this.model.find();
+           return JSON.parse(JSON.stringify(products));
+        } catch (error) {
+           throw new Error(`Error al obtener productos ${error.message}`);
+        }
+   };
+
+};

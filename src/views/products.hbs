@@ -3,26 +3,30 @@
     <a href="/profile">Perfil</a>
 
 </div>
-<br/>
-<h1>Productos</h1>
-<br/>
+<br>
+<h1>Lista de Productos</h1>
+<br>
 <button id="cart" onclick="redirectToCart()">Ver carrito</button>
-<br/>
+<br>
 {{#if totalDocs}}
+    <div>
         {{#each payload}}
+        <hr>
+            <h2>{{this.title}}</h2>
         <ul>
-        <div>
-            <div>
-            <h3>{{this.title}}</h3>
-            </div>
-            <div>
-            {{this.code}} - ${{this.price}} - {{this.stock}} - {{this.category}}
-            </div>
-            <button onclick="addToCart(`{{this.id}}`)">Agregar al carrito</button>
-        </div>
+            <a>Código: {{this.code}}</a>
+            <br>
+            <a>Precio: ${{this.price}}</a>
+            <br>
+            <a>Stock: {{this.stock}}</a>
+            <br>
+            <a>Categoría: {{this.category}}</a>
         </ul>
-            <hr>
-        {{/each}}
+           
+    </div>
+
+    <button onclick="addToCart(`{{this.id}}`)">Agregar al carrito</button>
+    {{/each}}
     
     <div>
         {{#if hasPrevPage}}
@@ -35,6 +39,7 @@
             <a href={{nextLink}}>Siguiente</a>
         {{/if}}
     </div>
+
 {{else}}
     <p>no hay productos</p>
 {{/if}}

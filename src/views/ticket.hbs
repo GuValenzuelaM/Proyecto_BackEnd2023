@@ -1,0 +1,27 @@
+<div>
+    <a href="/products?page=1">Productos</a></a>
+    <a href="/profile">Perfil</a>
+</div>
+<br>
+
+<h1>Ticket</h1> 
+
+<br>
+    <button onclick="Buy(`{{this.id}}`)">Comprar</button>
+{{#each createTicket}}
+{{#if _id}}
+    <div>
+        <hr>
+            <h2>TicketId: {{this._id}}</h2>
+        <ul>
+
+            <p>Code: {{this.code}}</p>
+            <p>Datetime: {{this.purchase_datetime}}</p>
+            <p>Amount: ${{this.amount}}</p>
+            <p>Purchaser: {{this.purchaser}}</p>
+        </ul> 
+    </div>
+{{/if}}
+{{/each}}
+
+<script src="js/tickets.js"></script>

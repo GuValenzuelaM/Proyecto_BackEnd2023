@@ -7,7 +7,7 @@ import {logger} from "../utils/logger.js";
 import {isLoggedIn,checkUserAuthenticatedView,checkRoles} from "../middlewares/auth.js";
 import {uploadUserDoc,uploadProfile} from "../utils.js";
 
-const router = Router(); 
+const router = Router();
 
 //Registro de usuario (exitoso/fallido)
 router.post("/signup",uploadProfile.single("avatar"),passport.authenticate("signupStrategy",{

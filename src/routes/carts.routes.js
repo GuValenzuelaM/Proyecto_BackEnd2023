@@ -1,27 +1,28 @@
 import {CartsController} from "../controllers/carts.controller.js"
+import {TicketsController} from "../controllers/tickets.controller.js"
 import {Router} from "express";
 import {verifyUserCart, addOwnProduct} from "../middlewares/auth.js"
 
 const router = Router();
 
-//Crea una nuevo carrito
-router.post("/", CartsController.createCart);
-//Agrega productos al carrito
-router.post("/:cid/product/:pid", verifyUserCart, addOwnProduct, CartsController.addProductToCart);
-//Elima producto del carrito
-router.post("/:cid/purchase", verifyUserCart, CartsController.processPurchase)
-
-//Muestra los productos que se encuentran en el carrito
+//OK
 router.get("/:cid", verifyUserCart, CartsController.getCartById);
 
-//Actualiza carrito
-router.put("/:cid", verifyUserCart, addOwnProduct, CartsController.updateCart);
-//Actualiza cantidad de un producto
-router.put("/:cid/product/:pid", verifyUserCart, addOwnProduct, CartsController.updateQuantity);
+router.get("/:cid/purchase", verifyUserCart, CartsController.purchaseCart);
 
-//Elima producto del carrito
+//PENDIENTE
+router.post("/", CartsController.createCart);
+router.post("/:cid/product/:pid", verifyUserCart, addOwnProduct, CartsController.addProductToCart);
+router.put("/:cid", verifyUserCart, addOwnProduct, CartsController.updateCart);
+router.put("/:cid/product/:pid", verifyUserCart, addOwnProduct, CartsController.updateQuantity);
 router.delete("/:cid", verifyUserCart, CartsController.deleteCart);
-//Elima producto del carrito
 router.delete("/:cid/product/:pid", verifyUserCart, CartsController.deleteProductFromCart);
+
+//EN PROCESO
+//router.delete("/:cid/purchase", verifyUserCart, TicketsController.deleteProductFromCart);
+
+
+//REVISIÓN - DESPUÉS BORRAR
+
 
 export{router as cartsRouter};

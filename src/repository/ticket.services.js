@@ -8,4 +8,9 @@ export class TicketService {
     static async getTicket(email){
         return ticketsDao.getTicket(email)
     };
+
+    static async stockCheck(productId){
+        return ticketsDao.stockCheck(productId)
+    };
+
 }

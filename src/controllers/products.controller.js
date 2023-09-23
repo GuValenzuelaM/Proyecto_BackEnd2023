@@ -161,25 +161,14 @@ export class ProductsController{
         }
     };
 
-    //Función para eliminar un producto
-    //DeletedProductEmail
+    //Función para eliminar un producto con notificación para usuarios Premium
     static deleteProduct = async(req,res)=>{
         try {
             const productId = req.params.pid;
-            //console.log("productId:",productId)
             const product = await ProductsService.getProductById(productId);
-            //console.log("product:",product)
-            //console.log("product.owner:",product.owner)
             const userId = await UsersService.getUserById(product.owner);
-            //console.log("userId",userId)
-            //console.log("userId.role",userId.role)
-            //console.log("userId.email",userId.email)
-            //validamos si el usuario que esta borrando el producto es premium.
             if(userId.role === "premium" || productId.owner === "admin"){
                 const result = await ProductsService.deleteProduct(productId);
-                //console.log("userId.role:",userId.role)
-                //console.log("userId.email:",userId.email)
-                //const product = await ProductsService.getProductById(productId);
                 if(userId.role  === "premium"){
                     await deletedProductEmail(userId.email);
                 }

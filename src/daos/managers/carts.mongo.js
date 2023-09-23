@@ -130,6 +130,33 @@ import {logger} from "../../utils/logger.js"
         }
       }
 
+    //BORRAR?
+    //Recopila inforamción de productos según ID del carrito
+    async getPopulate(productId){
+        try {
+            //Busca la información de los productos incluidos en un cartID determinado
+            const product = await this.model.findById(id).populate(productId);
+            // Si el carrito no existe entrega mensaje de error
+            if (!product) {
+                throw new Error("El producto no existe");
+                logger.debug("El producto no existe");
+            } else{
+                //Caso contrario devuelve el carro con la inforamción de los productos
+                return product;
+                logger.debug(product);
+            }
+        } catch (error) {
+            //Si el código falla, enterga mensaje de error
+            throw new Error(`Error al obtener producto ${error.message}`);
+            logger.error("Error al obtener producto");
+        }
+    };
+} 
+
+
+
+/*
+
     //Recopila inforamción de productos según ID del carrito
     async getPopulate(id){
         try {
@@ -150,20 +177,5 @@ import {logger} from "../../utils/logger.js"
             logger.error("Error al obtener carrito");
         }
     };
-} 
 
-/* FUNCIONES CARTS MONGO
--CARRITOS-
-createCart  ok
-getCartById ok
-updateCart
-deleteProductFromCart ok
-
--PRODUCTOS-
-addProductToCart ok
-deleteCartId
-updateQuantity
-
--INFO-
-getPopulate
 */

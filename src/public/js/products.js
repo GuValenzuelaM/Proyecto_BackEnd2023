@@ -43,8 +43,7 @@ const redirectToCart = async () => {
         });
         const cartId = await resp.json();
         if (cartId) {
-            //window.location.href = `http://localhost:8080/api/carts/${cartId}`;
-            window.location.href = `http://localhost:8080/cart/${cartId}`;  
+            window.location.href = `http://localhost:8080/api/carts/${cartId}`;  
         } else {
             console.log("El carrito no existe");
         }

@@ -3,7 +3,9 @@
     <a href="/profile">Perfil</a>
 
 </div>
-<br/>
+
+<br>
+
 <h1>Administrador de Productos</h1>
     <a href="http://localhost:8080/api/users/inactiveUsers">Usuarios Inactivos</a>
     <br>
@@ -23,7 +25,7 @@
             <br>
             <a>Precio: {{this.email}}</a>
             <br>
-            <a>Stock: {{this.stock}}</a>    
+            <a>Stock: {{this.stock}}</a> 
         </ul>
             <button onclick="deleteProducts(`{{this._id}}`)">Eliminar Producto</button>
     {{/each}}

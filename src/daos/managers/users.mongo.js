@@ -79,7 +79,7 @@ export class userMongo{
     
     async inactiveUsers(){
         try {
-            const inactivity = 2 * 24 * 60 * 60 * 1000 //milisegundos
+            const inactivity = 1 * 24 * 60 * 60 * 1000 // 1 día en milisegundos
             const date = new Date(Date.now() - inactivity);
             const inactiveUsers = await userModel.find({
                 last_connection: { $lt: date },
@@ -89,5 +89,18 @@ export class userMongo{
             return { message: `Error al obtener los usuarios: ${error.message}` };
         }
     }
+
+    async userByCardId (cartId){
+        try {
+            const user = await this.model.findOne({cart:cartId});
+            if(user){
+                return JSON.parse(JSON.stringify(user));
+            } else{
+                return { message: "Usuario no encontrado" };
+            }
+        } catch (error) {
+            throw error;
+        }
+    };
 
 }
