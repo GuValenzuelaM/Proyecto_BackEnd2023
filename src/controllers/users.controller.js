@@ -1,5 +1,6 @@
 import {UsersService} from "../repository/users.services.js";
 import {CartsService} from "../repository/cart.services.js";
+import {TicketService} from "../repository/ticket.services.js";
 import {userModel} from "../daos/models/users.model.js";
 import {UsersDto} from "../daos/dto/user.dto.js";
 import {inactiveUsersEmail} from "../utils/message.js";
@@ -161,5 +162,33 @@ export class UsersController{
             res.status(400).json({status:"error", message:error.message});
         }
     }
-
 }
+
+//BORRAR???
+    /*
+    static activeTicket = async(req,res)=>{
+        try {
+        const userId1= req.user._id;
+        console.log("0 userId :", userId1)
+        const userId3= JSON.stringify(req.user._id); //DOBLE COMIILAS
+        console.log("1 userId :", userId3)
+        
+        //JSON.parse(JSON.stringify(ticket));
+        const activeTicket = await TicketService.getTicket(userId1);
+        console.log("2 activeTicket :", activeTicket)
+
+
+            //const activeTicket = await TicketService.getTicketByEmail(userId._id.email);
+            //console.log("2 activeTicket :", activeTicket)
+            
+            //REVISAR
+
+
+            res.render("activeTicket", {activeTicket});
+        } catch (error) {
+            res.json({status:"error", message:error.message});
+        }
+    };
+
+
+*/

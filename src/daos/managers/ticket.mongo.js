@@ -50,4 +50,19 @@ export class TicketsMongo{
         }
     };
 
+    //REVISAR BORRRAR?
+    async getTicketByEmail(userEmail){
+        try {
+            const ticket = await this.model.findOne({ticket:userEmail});
+            //const ticket = await this.model.findById(userEmail);
+            if(ticket){
+                return JSON.parse(JSON.stringify(ticket));
+            } else{
+                return null;
+            }
+        } catch (error) {
+            throw error;
+        }
+    };
+
 }

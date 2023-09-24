@@ -20,8 +20,6 @@
                 <p>Cantidad: {{this.quantity}}</p>
                 <p>Código: {{this.productId.code}}</p>
                 <p>Cateogría: {{this.productId.category}}</p>
-                <input type="number" placeholder="Cantidad" name="inputQuantity"/>
-                <button onclick="updateQuantity(`{{this.productId._id}}`)">Actualizar</button>
                 <button onclick="DeleteProduct(`{{this.productId._id}}`)">Eliminar</button>
             </ul>
         {{/each}}
@@ -44,9 +42,10 @@ const purchase = async ()=> {
 		);
 		const cartId = await userCart.json();
         console.log("cartId:",cartId)
+
         if (cartId) {
             window.location.href =
-            `http://localhost:8080/api/carts/${cartId}/purchase`;
+            `http://localhost:8080/api/carts/${cartId}/purchase/`;
         } else {
             console.log("El carrito no existe");
         }
@@ -55,10 +54,10 @@ const purchase = async ()=> {
     }
 }
 
-const updateQuantity = async (cartId, productId, inputQuantity)=> {
+const updateQuantity = async (cartId, productId, inputQuantity) => {
     try {
-        const cartId = this._id;
-        const productId = this.productId._id;
+        const cartId = cartId;
+        const productId = productId;
         const quantity = inputQuantity;
 		const updateQuantity = await fetch(
 			`http://localhost:8080/api/carts/${cartId}/product/${productId}`,
@@ -79,4 +78,20 @@ const updateQuantity = async (cartId, productId, inputQuantity)=> {
     }
 }
 
+
+/*
+        const cartId = await userCart.json(); //carrito de compra
+        const cartId = cartId;
+        const productId = productId;
+        const quantity = inputQuantity;
+        
+        const newTicket = await fetch(
+			`http://localhost:8080/api/carts/${cartId}/purchase/${ticketId}`,
+			{
+				method: "GET",
+			}
+		);
+		const infoTicket = await newTicket.json();
+        console.log("cartId:",cartId)
+*/
 </script>

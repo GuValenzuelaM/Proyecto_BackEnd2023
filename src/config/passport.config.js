@@ -89,8 +89,10 @@ export const initializePassport = ()=>{
         },
         async(accesstoken,refreshtoken,profile,done)=>{
             try {
-                logger.debug("profile", profile);
+                //logger.debug("profile", profile);
+                console.log("profile", profile);
                 const user = await userModel.findOne({email:profile.username});
+                const username = profile.username;
                 if(!user){
                     //Tipo de rol por defecto será "user"
                     let role = "user";
@@ -102,7 +104,7 @@ export const initializePassport = ()=>{
                     const cartUser = await cartService.addCart
                     const newUser = {
                         first_name:profile.username,
-                        last_name: "",
+                        last_name: " ",
                         age: null,
                         email: profile.username,
                         password:createHash(profile.id),

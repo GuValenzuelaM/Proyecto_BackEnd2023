@@ -278,5 +278,4 @@ export class ProductsController{
             }
         }
     }
-
 };

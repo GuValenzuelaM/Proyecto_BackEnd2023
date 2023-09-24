@@ -43,4 +43,5 @@ export class TicketsController{
             res.json({status:"error", message:error.message});
         }
     };
+
 }

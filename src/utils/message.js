@@ -72,3 +72,17 @@ export const deletedProductEmail = async(userEmail)=>{
         `
     })
 }
+
+export const purchaseProcess = async(userEmail)=>{
+    await transporter.sendMail({
+        from:"Ecommerce Proyecto BackEnd 2023",
+        to: userEmail,
+        subject:"Compra",
+        html:`
+            <div>
+            <h2>Hola!</h2>
+            <p>No tenemos stock de todos los productos/p>
+            </div>
+        `
+    })
+}

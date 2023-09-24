@@ -47,25 +47,3 @@ router.get("/logout",(req,res)=>{
 });
 
 export { router as authRouter};
-
-/*
-//Ruta para restaurar la contraseña del usuario
-router.post("/forgot", async(req,res)=>{
-    try {
-        const {email, newPassword} = req.body;
-        logger.debug("newPassword",newPassword)
-        const userDB = await userModel.findOne({email:email});
-        if(userDB){
-            //si el usuario esta registrado, restauramos la contraseña
-            userDB.password = createHash(newPassword);
-            const userUpdated = await userModel.findByIdAndUpdate(userDB._id, userDB , {new:true});
-            res.send('<div>contraseña actualizada, <a href="/login">ir al login</a></div>');
-        } else {
-            res.send('<div>usuario no registrado, <a href="/signup">registrarse</a> o <a href="/forgot">intente de nuevo</a></div>');
-        }
-    } catch (error) {
-        logger.error(error.message)
-        res.send('<div>Hubo un error al restaurar la contraseña, <a href="/forgot">intente de nuevo</a></div>')
-    }
-})
-*/

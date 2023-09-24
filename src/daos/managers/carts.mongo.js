@@ -128,7 +128,7 @@ import {logger} from "../../utils/logger.js"
         } catch (error) {
           throw new Error(error.message);
         }
-      }
+    }
 
     //BORRAR?
     //Recopila inforamción de productos según ID del carrito
@@ -152,30 +152,3 @@ import {logger} from "../../utils/logger.js"
         }
     };
 } 
-
-
-
-/*
-
-    //Recopila inforamción de productos según ID del carrito
-    async getPopulate(id){
-        try {
-            //Busca la información de los productos incluidos en un cartID determinado
-            const carrito = await this.model.findById(id).populate('products._id');
-            // Si el carrito no existe entrega mensaje de error
-            if (!carrito) {
-                throw new Error("El carrito no existe");
-                logger.debug("El carrito no existe");
-            } else{
-                //Caso contrario devuelve el carro con la inforamción de los productos
-                return carrito;
-                logger.debug(carrito);
-            }
-        } catch (error) {
-            //Si el código falla, enterga mensaje de error
-            throw new Error(`Error al obtener carrito ${error.message}`);
-            logger.error("Error al obtener carrito");
-        }
-    };
-
-*/

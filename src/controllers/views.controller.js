@@ -230,56 +230,59 @@ export class ViewsController{
         }
     };
 
-    static purchaseCart = async(req, res)=>{
-        try {
-            const cartId = req.params.cid;
-            console.log("cartId:",cartId)
-            if(!cartId){
+}
+
+/*
+//BORRAR?
+
+static purchaseCart = async(req, res)=>{
+    try {
+        const cartId = req.params.cid;
+        console.log("cartId:",cartId)
+        if(!cartId){
+            res.json({status:"error", message:error.message});
+        } else{
+            const cart = await CartsService.getCartById(cartId);
+            console.log("cart:",cart)
+            if(cart.products.length<=0){
                 res.json({status:"error", message:error.message});
             } else{
-                const cart = await CartsService.getCartById(cartId);
-                console.log("cart:",cart)
-                if(cart.products.length<=0){
-                    res.json({status:"error", message:error.message});
-                } else{
-                    for(let i=0; i<cart.products.length; i++){
-                        const product = await ProductsService.getProductById(cart.products[i].productId);
-                        console.log("product:",product)
-                        console.log("Cantidad Compra:",product.quantity)
-                        console.log("Stock:",product.stock)
-                        const stockCheck = await ProductsService.stockCheck(product.Id);
-                        console.log("stockCheck:",stockCheck)
-                    }
-                } 
-
-            }
-
-            
-            
-            const productId = req.params.pid;
-            if(productId){
-
-                if(stockCheck>=0){
-                    const updateProduct = await ProductsService.updateProduct(product.Id,{"stock": stockCheck});
-                    res.json({status:"success", data: stockCheck});
-                } else{
-
+                for(let i=0; i<cart.products.length; i++){
+                    const product = await ProductsService.getProductById(cart.products[i].productId);
+                    console.log("product:",product)
+                    console.log("Cantidad Compra:",product.quantity)
+                    console.log("Stock:",product.stock)
+                    const stockCheck = await ProductsService.stockCheck(product.Id);
+                    console.log("stockCheck:",stockCheck)
                 }
-            }else{
-                //res.status(400).json({status: "error", data: "el id no es un numero"});
-                CustomError.createError({
-                    name: "Error al obtener el producto",
-                    cause: ErrorServices.productIdError(id),
-                    message: "el id no es un numero",
-                    errorCode: EError.INVALID_PARAMS
-                });
             } 
 
-        } catch (error) {
-            res.status(400).json({status: "error", data: error.message});
         }
+
+        
+        
+        const productId = req.params.pid;
+        if(productId){
+
+            if(stockCheck>=0){
+                const updateProduct = await ProductsService.updateProduct(product.Id,{"stock": stockCheck});
+                res.json({status:"success", data: stockCheck});
+            } else{
+
+            }
+        }else{
+            //res.status(400).json({status: "error", data: "el id no es un numero"});
+            CustomError.createError({
+                name: "Error al obtener el producto",
+                cause: ErrorServices.productIdError(id),
+                message: "el id no es un numero",
+                errorCode: EError.INVALID_PARAMS
+            });
+        }
+
+    } catch (error) {
+        res.status(400).json({status: "error", data: error.message});
     }
-
-
-
 }
+
+*/

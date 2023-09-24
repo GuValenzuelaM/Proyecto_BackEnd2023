@@ -1,8 +1,4 @@
 # Ignora la carpeta node_modules
 node_modules/
-sessions/
-src/managers
-src/files
-
-
-scss/
+/test
+.env

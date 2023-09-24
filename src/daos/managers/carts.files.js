@@ -22,34 +22,6 @@ export class CartFiles{
         return newId;
     }
 
-    /*
-    async addCart(){
-        try {
-            const cart={
-                products:[]
-            }
-            if(this.fileExists()){
-                const content = await fs.promises.readFile(this.path,"utf-8");
-                const carts = JSON.parse(content);
-                const cartId = this.generateId(carts);
-                cart.id = cartId;
-
-                carts.push(cart);
-                await fs.promises.writeFile(this.path,JSON.stringify(carts,null,2));
-                return cart;
-            }else{
-                const cartId = this.generateId([]);
-                cart.id = cartId;
-
-                await fs.promises.writeFile(this.path,JSON.stringify([cart],null,2));
-                return cart;
-            }
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    }
-    */
-
     async getCartById(id){
         try {
             const cartId = parseInt(id);

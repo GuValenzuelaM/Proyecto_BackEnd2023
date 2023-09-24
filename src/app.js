@@ -19,7 +19,7 @@ import {sessionsRouter} from "./routes/sessions.routes.js";
 import {productsRouter} from "./routes/products.routes.js";
 import {cartsRouter} from "./routes/carts.routes.js";
 import {usersRouter} from "./routes/users.routes.js";
-//import {authRouter} from "./routes/auth.routes.js";
+import {authRouter} from "./routes/auth.routes.js";
 
 import {connectDB} from "./config/dbConnection.js";
 import {cartsModel} from "./daos/models/carts.model.js";
@@ -67,6 +67,6 @@ app.use("/api/products",productsRouter);
 app.use("/api/carts",cartsRouter);
 app.use("/api/users",usersRouter);
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
-//app.use("/api/users",authRouter);
+app.use("/api/users",authRouter);
 
 export {app}

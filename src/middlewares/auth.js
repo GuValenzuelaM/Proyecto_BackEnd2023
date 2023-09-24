@@ -15,7 +15,7 @@ const isAdmin = (req, res, next) => {
     if (userRole === "admin") {
         next();
     } else {
-        res.send('No cuentas con los permisos para realizar esta acción <a href="/home">Volver a inicio</a>');
+        res.send('No cuentas con los permisos para realizar esta acción <a href="/profile">Volver a inicio</a>');
     }
 };
 
@@ -25,7 +25,7 @@ const canAddProducts = (req, res, next) => {
     if (allowedRoles.includes(userRole)) {
         next();
     } else {
-        res.send('No tienes autorización para agregar los productos <a href="/home">Volver al home</a></div>');
+        res.send('No tienes autorización para agregar los productos <a href="/profile">Volver al home</a></div>');
     }
 };
 
@@ -39,7 +39,7 @@ const canEditProducts = async (req, res, next) => {
         if (productOwner === userId || userRole === "admin") {
             next();
         } else {
-            res.send('No tienes autorización para hacer esta acción<a href="/home">Volver al home</a></div>');
+            res.send('No tienes autorización para hacer esta acción<a href="/profile">Volver al home</a></div>');
         }
     } catch (error) {
         res.send('Error al verificar los permisos');
@@ -53,7 +53,7 @@ const addOwnProduct = async (req, res, next) => {
         const product = await ProductsService.getProductById(productId);
         const productOwner = JSON.parse(JSON.stringify(product.owner));
         if (userId == productOwner) {
-            res.send('Acción no válida, solo puedes editar tu carro<a href="/home">Volver al home</a></div>');
+            res.send('Acción no válida, solo puedes editar tu carro<a href="/profile">Volver al home</a></div>');
         } else {
             next();
         }
@@ -66,10 +66,10 @@ const verifyUserCart = (req, res, next)=>{
     const userRole = req.user.role;
     const userCart = req.user.cart;
     const cartId = req.params.cid;
-    if (userRole === "user" || userRole === "admin" && userCart == cartId) {
+    if (userRole === "user" || userRole === "admin" || userRole === "premium" && userCart == cartId) {
         next();
     } else {
-        res.send('No tienes autorización para editar el carrito <a href="/home">Volver al home</a></div>');
+        res.send('No tienes autorización para editar el carrito <a href="/profile">Volver al home</a></div>');
     }
 };
 
@@ -96,7 +96,7 @@ const showAuthView = (req,res,next)=>{
 const checkRoles = (urlRoles)=>{
     return (req,res,next)=>{
         if(!urlRoles.includes(req.user.role)){
-            return res.send("<p>No tienes permisos <a href='/'>Ir a inicio</a></p>")
+            return res.send("<p>No tienes permisos <a href='/profile'>Ir a inicio</a></p>")
         } else {
             next();
         }

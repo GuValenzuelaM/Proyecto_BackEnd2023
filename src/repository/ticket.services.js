@@ -13,4 +13,8 @@ export class TicketService {
         return ticketsDao.stockCheck(productId)
     };
 
+    static async getTicketByEmail(productId){
+        return ticketsDao.getTicketByEmail(productId)
+    };
+
 }

@@ -7,6 +7,7 @@ import {CustomError} from "../services/error/customError.service.js";
 import {EError} from "../enums/EError.js"; 
 import {ErrorServices} from "../services/error/errorInfo.service.js";
 import {v4 as uuidv4} from 'uuid';
+import {purchaseProcess} from "../utils/message.js"
 
 export class CartsController{
     static createCart = async(req,res)=>{
@@ -126,20 +127,20 @@ export class CartsController{
         }
     };
 
-    static purchaseCart = async(req, res)=>{
+    static ticketInformation = async(req, res)=>{
         try {
             const cartId = req.params.cid;
             console.log("1 cartId:",cartId)
             if(cartId || cart.products.length>0){
                 const cart = await CartsService.getCartById(cartId);
-                console.log("2 cart:",cart)
+                //console.log("2 cart:",cart)
                 let productsWithStock =[];
                 let productsWithOutStock =[];
                 for(let i=0; i<cart.products.length; i++){
                     let productList = cart.products[i]
-                    console.log("3 productList:",productList)
+                    //console.log("3 productList:",productList)
                     let productIidentifier = cart.products[i].productId._id
-                    console.log("4 productIidentifier:",productIidentifier)
+                    //console.log("4 productIidentifier:",productIidentifier)
                     console.log("5 Stock:",cart.products[i].productId.stock)
                     console.log("6 Cantidad Compra:",cart.products[i].quantity)
                     let stockCheck = (cart.products[i].productId.stock - cart.products[i].quantity)
@@ -150,27 +151,36 @@ export class CartsController{
                             } else{
                             productsWithOutStock.push(productList);
                         }
-                        console.log("8 productsWithStock:",productsWithStock)
-                        console.log("9 productsWithOutStock:",productsWithOutStock)
+                        //console.log("8 productsWithStock:",productsWithStock)
+                        //console.log("8.1 productsWithStock:",productsWithStock.length)
+                        //console.log("9 productsWithOutStock:",productsWithOutStock)
+                        //console.log("9.1 productsWithOutStock:",productsWithOutStock.length)
+
                     }
-                    console.log("8 productsWithStock:",productsWithStock)
+                    //console.log("8 productsWithStock:",productsWithStock)
                     //res.json({ status: "success", data: {productsWithStock}});
                     
                     const code = uuidv4();
                     let today = new Date();
                     let amount = productsWithStock.reduce((total, product) =>
                         total + (product.quantity * product.productId.price), 0);
-                    console.log("10 amount:",amount)
+                    //console.log("10 amount:",amount)
                     const user = await UsersService.userByCardId(cartId);
-                    console.log("11 user:",user)
+                    //console.log("11 user:",user)
                     const email= user.email
-                    console.log("12 email:",email)
+                    //console.log("12 email:",email)
                     const ticket = {code: code, purchase_datetime: today, amount: amount, purchaser: email}
-                    console.log("13 ticket:",ticket)
+                    //console.log("13 ticket:",ticket)
                     const createTicket  = await TicketService.createTicket(ticket);
-                    console.log("14 createTicket:",createTicket)
+                    //console.log("14 createTicket:",createTicket)
+                    //const totalInfoTicket ={createTicket,productsWithStock,productsWithOutStock} 
+                    //console.log("15 totalInfoTicket:",totalInfoTicket)
                     
-                    res.render("ticket", {createTicket});
+                    if(productsWithOutStock.length>0){
+                        await purchaseProcess(email);
+                    }
+                    //res.render("ticket", {totalInfoTicket});
+                    res.render("ticket", createTicket);
                 } else{
                 res.status(400).json({status:"error", message:"el carrito no tiene productos"});
                 }
@@ -180,7 +190,88 @@ export class CartsController{
     }
 }
 
+/*
+    static purchaseCart = async(req, res)=>{
+        try {
+            const cartId = req.params.cid;
+            //console.log("1 cartId:",cartId)
+            if(cartId || cart.products.length>0){
+                const cart = await CartsService.getCartById(cartId);
+                //console.log("2 cart:",cart)
+                let productsWithStock =[];
+                let productsWithOutStock =[];
+                for(let i=0; i<cart.products.length; i++){
+                    let productList = cart.products[i]
+                    //console.log("3 productList:",productList)
+                    let productIidentifier = cart.products[i].productId._id
+                    //console.log("4 productIidentifier:",productIidentifier)
+                    //console.log("5 Stock:",cart.products[i].productId.stock)
+                    //console.log("6 Cantidad Compra:",cart.products[i].quantity)
+                    let stockCheck = (cart.products[i].productId.stock - cart.products[i].quantity)
+                    //console.log("7 stockCheck:",stockCheck)
+                        if(stockCheck>=0){
 
+                            productsWithStock.push(productList);
+                            } else{
+                            productsWithOutStock.push(productList);
+                        }
+                        //console.log("8 productsWithStock:",productsWithStock)
+                        //console.log("9 productsWithOutStock:",productsWithOutStock)
+                    } if (productsWithStock>0){
+                        UPDATE
+                    } 
+
+
+                    //console.log("8 productsWithStock:",productsWithStock)
+                    
+                    
+                        await deletedProductEmail(email,productsWithOutStock);
+                        
+                    
+                    res.json({ status: "success", data: {productsWithStock}});
+
+                    //res.render("ticket", {totalInfoTicket});
+                } else{
+                res.status(400).json({status:"error", message:"el carrito no tiene productos"});
+                }
+            } catch (error) {
+            res.status(400).json({status:"error", message:error.message});
+        }
+    }    
+
+
+
+
+    static purchaseProcess = async(req,res)=>{
+        try {
+            const cartId = req.params.cid;
+            const cart = await CartsService.getCartById(cartId);
+            console.log("0 cartId:",cartId)
+            const ticketId = req.params.tid;
+            console.log("1 ticketId:",ticketId)
+            console.log("2 cart:",cart)
+            const user = await UsersService.userByCardId(cartId);
+            console.log("3 user:",user)
+            const email =user.email
+            console.log("4 email:",email)
+            const infoTicket = [cartId, ticketId, cart, user, email];
+            console.log("5 infoTicket:",infoTicket)
+
+            //ENVIAR CORREO
+            purchaseCart
+
+
+            //UPDATE PRODUCTS - REDUCIR STOCK
+
+            
+            res.render("ticket", {infoTicket});
+        } catch (error) {
+            res.json({status:"error", message:error.message});
+        }
+    };
+
+/*
+    
 
 
 /*
@@ -228,9 +319,6 @@ export class CartsController{
     }
 
 */
-
-
-
 
 
 /*

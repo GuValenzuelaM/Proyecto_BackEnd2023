@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app.js",
-    "start2": "node src/app.js",
+    "startv": "nodemon src/app.js",
+    "start": "node src/app.js",
     "testc": "mocha test/carts.test.js",
     "testp": "mocha test/products.test.js",
     "tests": "mocha test/sessions.test.js"
